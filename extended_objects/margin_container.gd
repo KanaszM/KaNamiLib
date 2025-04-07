@@ -27,6 +27,7 @@ signal margin_changed
 @export var margin_bottom: int: set = _set_margin_bottom
 
 @export_group("Percentage Margins", "percent_margin_")
+@export_range(0.0, 100.0, 0.01, "suffix:%") var percent_margin_all: float: set = _set_percent_margin_all
 @export_range(0.0, 100.0, 0.01, "suffix:%") var percent_margin_left: float: set = _set_percent_margin_left
 @export_range(0.0, 100.0, 0.01, "suffix:%") var percent_margin_right: float: set = _set_percent_margin_right
 @export_range(0.0, 100.0, 0.01, "suffix:%") var percent_margin_top: float: set = _set_percent_margin_top
@@ -123,6 +124,14 @@ func _set_margin_top(arg: int) -> void:
 func _set_margin_bottom(arg: int) -> void:
 	margin_bottom = arg
 	set_margin(margin_bottom, false, false, false, true)
+
+
+func _set_percent_margin_all(arg: float) -> void:
+	percent_margin_all = arg
+	_percent_margins_h = (Vector2.ONE * percent_margin_left) / 100.0
+	_percent_margins_v = _percent_margins_h
+	_update_resized_signal()
+	_update_percent_margins()
 
 
 func _set_percent_margin_left(arg: float) -> void:
