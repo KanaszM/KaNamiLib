@@ -99,7 +99,7 @@ func remove(send_to_trash: bool = true, log_errors: bool = true) -> bool:
 	
 	if error_code != OK:
 		if log_errors:
-			Logger.error(remove, "Could not be removed!")
+			Logger.error(remove, "Could not be removed! %s" % error_string(error_code))
 		
 		return false
 	
@@ -117,6 +117,7 @@ func file_validate_extension(extension: String) -> bool:
 		return false
 	
 	extension = extension.replace(".", "")
+	
 	return path.get_extension() == extension
 
 
@@ -145,7 +146,7 @@ func file_remove_if_exists() -> bool:
 		return false
 	
 	if DirAccess.remove_absolute(path) != OK:
-		_log_error(file_remove_if_exists, "File could not be removed!")
+		_log_error(file_remove_if_exists, "File could not be removed! %s" % error_string(FileAccess.get_open_error()))
 		return false
 	
 	return true
@@ -166,7 +167,7 @@ func file_open_stream(mode:  FileAccess.ModeFlags = FileAccess.WRITE) -> FileAcc
 	_file_stream = FileAccess.open(path, mode)
 	
 	if _file_stream == null:
-		_log_error(file_open_stream, "File stream could not be created!")
+		_log_error(file_open_stream, "File stream could not be created! %s" % error_string(FileAccess.get_open_error()))
 		return null
 	
 	return _file_stream
@@ -205,7 +206,7 @@ func file_get_contents(skip_empty_rows: bool = true) -> PackedStringArray:
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	
 	if file == null:
-		_log_error(file_get_contents, "File could not be opened!")
+		_log_error(file_get_contents, "File could not be opened! %s" % error_string(FileAccess.get_open_error()))
 		return contents
 	
 	var current_line: String
@@ -237,7 +238,7 @@ func file_get_csv_contents(skip_empty_rows: bool = true, csv_delimiter: String =
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	
 	if file == null:
-		_log_error(file_get_contents, "File could not be opened!")
+		_log_error(file_get_contents, "File could not be opened! %s" % error_string(FileAccess.get_open_error()))
 		return contents
 	
 	var current_line: PackedStringArray
