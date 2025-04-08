@@ -261,6 +261,7 @@ func file_get_csv_contents(skip_empty_rows: bool = true, csv_delimiter: String =
 	file.close()
 	
 	return contents
+func file_get_text_contents() -> String:
 #endregion
 
 #region Dir Public Methods
