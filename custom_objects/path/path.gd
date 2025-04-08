@@ -262,7 +262,29 @@ func file_get_csv_contents(skip_empty_rows: bool = true, csv_delimiter: String =
 	file.close()
 	
 	return contents
+
+
 func file_get_text_contents() -> String:
+	var contents: String
+	
+	if not is_valid:
+		_log_error(file_get_contents, "This path is invalid!")
+		return contents
+	
+	if is_dir:
+		_log_warning(file_get_contents, "This method is only applicable for files.")
+		return contents
+	
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	
+	if file == null:
+		_log_error(file_get_contents, "File could not be opened! %s" % error_string(FileAccess.get_open_error()))
+		return contents
+	
+	contents = file.get_as_text()
+	file.close()
+	
+	return contents
 #endregion
 
 #region Dir Public Methods
