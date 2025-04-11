@@ -119,3 +119,30 @@ static func bind_keys(control: Control, keys: Array[Key], callback: Callable) ->
 				callback.call()
 	
 	control.gui_input.connect(func_on_control_gui_input)
+
+
+static func get_layout_preset(control: Control) -> Control.LayoutPreset:
+	const PRESET_MAP: Dictionary[Vector4, Control.LayoutPreset] = {
+		Vector4(0.0, 0.0, 0.0, 0.0): Control.PRESET_TOP_LEFT,
+		Vector4(1.0, 0.0, 1.0, 0.0): Control.PRESET_TOP_RIGHT,
+		Vector4(0.0, 1.0, 0.0, 1.0): Control.PRESET_BOTTOM_LEFT,
+		Vector4(1.0, 1.0, 1.0, 1.0): Control.PRESET_BOTTOM_RIGHT,
+		Vector4(0.0, 0.5, 0.0, 0.5): Control.PRESET_CENTER_LEFT,
+		Vector4(0.5, 0.0, 0.5, 0.0): Control.PRESET_CENTER_TOP,
+		Vector4(1.0, 0.5, 1.0, 0.5): Control.PRESET_CENTER_RIGHT,
+		Vector4(0.5, 1.0, 0.5, 1.0): Control.PRESET_CENTER_BOTTOM,
+		Vector4(0.5, 0.5, 0.5, 0.5): Control.PRESET_CENTER,
+		Vector4(0.0, 0.0, 0.0, 1.0): Control.PRESET_LEFT_WIDE,
+		Vector4(0.0, 0.0, 1.0, 0.0): Control.PRESET_TOP_WIDE,
+		Vector4(1.0, 0.0, 1.0, 1.0): Control.PRESET_RIGHT_WIDE,
+		Vector4(0.0, 1.0, 1.0, 1.0): Control.PRESET_BOTTOM_WIDE,
+		Vector4(0.5, 0.0, 0.5, 1.0): Control.PRESET_VCENTER_WIDE,
+		Vector4(0.0, 0.5, 1.0, 0.5): Control.PRESET_HCENTER_WIDE,
+		Vector4(0.0, 0.0, 1.0, 1.0): Control.PRESET_FULL_RECT,
+	}
+	
+	var control_anchors: Vector4 = Vector4(
+		control.anchor_left, control.anchor_top, control.anchor_right, control.anchor_bottom
+		)
+	
+	return PRESET_MAP[control_anchors] if control_anchors in PRESET_MAP else -1
