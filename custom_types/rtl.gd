@@ -149,18 +149,6 @@ static func append_to(label: RichTextLabel, rtl: RTL, clear: bool = false) -> vo
 	label.append_text(str(rtl))
 
 
-static func append_sentence_to(label: RichTextLabel, sentence: Sentence, clear: bool = false) -> void:
-	if clear:
-		label.clear()
-	
-	var texts: PackedStringArray
-	
-	for rtl: RTL in sentence.rtls:
-		texts.append(str(rtl))
-	
-	label.append_text(" ".join(texts))
-
-
 static func append_paragraph_to(
 	label: RichTextLabel, entries: Array, base_text_size: int = DEFAULT_TEXT_SIZE, clear: bool = true
 	) -> void:
@@ -219,14 +207,29 @@ static func strip_tags(source: String) -> String:
 
 #region SubClasses
 class Sentence:
-	# Public Variables
+	#region Public Variables
 	var rtls: Array[RTL]
 	var join_character: String
+	#endregion
 	
-	# Virtual Methods
-	func _init(rtls_param: Array[RTL], join_character_param: String = " ") -> void:
-		rtls = rtls_param
-		join_character = join_character_param
+	#region Virtual Methods
+	func _init(rtls_arg: Array[RTL], join_character_arg: String = " ") -> void:
+		rtls = rtls_arg
+		join_character = join_character_arg
+	#endregion
+	
+	#region Public Methods
+	func append_to(label: RichTextLabel, clear: bool = false) -> void:
+		if clear:
+			label.clear()
+		
+		var texts: PackedStringArray
+		
+		for rtl: RTL in rtls:
+			texts.append(str(rtl))
+		
+		label.append_text(join_character.join(texts))
+	#endregion
 #endregion
 
 #region Setter Methods
