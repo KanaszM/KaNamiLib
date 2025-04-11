@@ -26,4 +26,10 @@ static func enum_to_str_capizalized(enum_param: Dictionary, idx: int) -> String:
 
 static func enum_to_typed_dict(enum_arg: Dictionary) -> Dictionary[String, int]:
 	return Dictionary(enum_arg, TYPE_STRING, &"", null, TYPE_INT, &"", null) as Dictionary[String, int]
+
+
+static func enum_get_flag(enum_arg: Dictionary, name: String, default_flag: int = -1) -> int:
+	var enum_dict: Dictionary[String, int] = enum_to_typed_dict(enum_arg)
+	
+	return default_flag if not name in enum_dict else enum_dict[name]
 #endregion
