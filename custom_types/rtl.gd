@@ -172,7 +172,7 @@ static func append_paragraph_to(
 				TYPE_OBJECT when entry is RTL:
 					entry = entry as RTL
 					
-					if entry._size < base_text_size:
+					if base_text_size > 0 and entry._size < base_text_size:
 						entry.size(base_text_size)
 					
 					if entry_idx < entries.size():
@@ -186,7 +186,7 @@ static func append_paragraph_to(
 					var texts: PackedStringArray
 					
 					for rtl: RTL in entry.rtls:
-						if rtl._size < base_text_size:
+						if base_text_size > 0 and rtl._size < base_text_size:
 							rtl.size(base_text_size)
 						
 						texts.append(str(rtl))
