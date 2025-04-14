@@ -3,8 +3,6 @@ class_name TreeOrganizer
 #extends 
 
 #region Enums
-enum SorterType {ASC, DESC}
-enum FilterType {TEXT, NUMERIC, BOOL, LENGTH, LIST}
 enum ValueMode {CELL, TOOLTIP, CELL_AND_TOOLTIP}
 #endregion
 
@@ -60,7 +58,7 @@ static func apply_grouping(
 
 
 static func apply_sorting(
-	source: Object, sorters: Array[Sorter], recursive: bool = true, value_mode: ValueMode = ValueMode.CELL
+	source: Object, sorters: Array[TreeOrganizerSorter], recursive: bool = true, value_mode: ValueMode = ValueMode.CELL
 	) -> void:
 		if sorters.is_empty():
 			Logger.error(apply_sorting, "No sorters were provided!")
@@ -88,11 +86,11 @@ static func apply_sorting(
 			
 			item_root.remove_child(item_row)
 		
-		for sorter: Sorter in sorters:
-			var sorter_is_asc: bool = sorter.type == SorterType.ASC
+		for sorter: TreeOrganizerSorter in sorters:
+			var sorter_is_asc: bool = sorter.type == TreeOrganizerSorter.Type.ASC
 			
 			match sorter.mode:
-				Sorter.Mode.TEXT:
+				TreeOrganizerSorter.Mode.TEXT:
 					row_items.sort_custom(func(item_row_1: TreeItem, item_row_2: TreeItem) -> bool:
 						var item_row_1_value: String = _get_value_by_mode(item_row_1, sorter.col_idx, value_mode)
 						var item_row_2_value: String = _get_value_by_mode(item_row_2, sorter.col_idx, value_mode)
@@ -103,7 +101,7 @@ static func apply_sorting(
 							)
 					)
 				
-				Sorter.Mode.NUMERIC:
+				TreeOrganizerSorter.Mode.NUMERIC:
 					row_items.sort_custom(func(item_row_1: TreeItem, item_row_2: TreeItem) -> bool:
 						var item_row_1_value: float = float(_get_value_by_mode(item_row_1, sorter.col_idx, value_mode))
 						var item_row_2_value: float = float(_get_value_by_mode(item_row_2, sorter.col_idx, value_mode))
@@ -130,7 +128,7 @@ static func apply_sorting(
 
 static func apply_filters(
 	source: Object,
-	filters: Array[Filter],
+	filters: Array[TreeOrganizerFilter],
 	strict: bool = false,
 	recursive: bool = true,
 	value_mode: ValueMode = ValueMode.CELL
@@ -155,12 +153,12 @@ static func apply_filters(
 			
 			var passed_filters_count: int = 0
 			
-			for filter: Filter in filters:
+			for filter: TreeOrganizerFilter in filters:
 				var filter_passed: bool
 				var value: String = _get_value_by_mode(item_row, filter.col_idx, value_mode)
 				
-				if filter is TextFilter:
-					var text_filter := filter as TextFilter
+				if filter is TreeOrganizerTextFilter:
+					var text_filter := filter as TreeOrganizerTextFilter
 					
 					if text_filter.criteria.is_empty():
 						filter_passed = true
@@ -170,72 +168,72 @@ static func apply_filters(
 							value = value.to_lower()
 						
 						match text_filter.mode:
-							TextFilter.Mode.EQUALS:
+							TreeOrganizerTextFilter.Mode.EQUALS:
 								filter_passed = (
 									(value != text_filter.criteria) if filter.negative
 									else (value == text_filter.criteria)
 									)
 							
-							TextFilter.Mode.CONTAINS:
+							TreeOrganizerTextFilter.Mode.CONTAINS:
 								filter_passed = (
 									(not text_filter.criteria in value) if filter.negative
 									else (text_filter.criteria in value)
 									)
 							
-							TextFilter.Mode.BEGINS_WITH:
+							TreeOrganizerTextFilter.Mode.BEGINS_WITH:
 								filter_passed = (
 									(not value.begins_with(text_filter.criteria)) if filter.negative
 									else value.begins_with(text_filter.criteria)
 									)
 							
-							TextFilter.Mode.ENDS_WITH:
+							TreeOrganizerTextFilter.Mode.ENDS_WITH:
 								filter_passed = (
 									(not value.ends_with(text_filter.criteria)) if filter.negative
 									else value.ends_with(text_filter.criteria)
 									)
 				
-				elif filter is NumFilter:
-					var num_filter := filter as NumFilter
+				elif filter is TreeOrganizerNumericFilter:
+					var num_filter := filter as TreeOrganizerNumericFilter
 					var num_cell_value: float = float(value)
 					
 					match num_filter.mode:
-						NumFilter.Mode.EQUALS:
+						TreeOrganizerNumericFilter.Mode.EQUALS:
 							filter_passed = (
 								(num_cell_value != num_filter.criteria) if filter.negative
 								else (num_cell_value == num_filter.criteria)
 								)
 						
-						NumFilter.Mode.GREATER_THAN:
+						TreeOrganizerNumericFilter.Mode.GREATER_THAN:
 							filter_passed = (
 								(num_cell_value < num_filter.criteria) if filter.negative
 								else (num_cell_value > num_filter.criteria)
 								)
 						
-						NumFilter.Mode.GREATER_THAN_OR_EQUAL_TO:
+						TreeOrganizerNumericFilter.Mode.GREATER_THAN_OR_EQUAL_TO:
 							filter_passed = (
 								(num_cell_value <= num_filter.criteria) if filter.negative
 								else (num_cell_value >= num_filter.criteria)
 								)
 						
-						NumFilter.Mode.LOWER_THAN:
+						TreeOrganizerNumericFilter.Mode.LOWER_THAN:
 							filter_passed = (
 								(num_cell_value > num_filter.criteria) if filter.negative
 								else (num_cell_value < num_filter.criteria)
 								)
 						
-						NumFilter.Mode.LOWER_THAN_OR_EQUAL_TO:
+						TreeOrganizerNumericFilter.Mode.LOWER_THAN_OR_EQUAL_TO:
 							filter_passed = (
 								(num_cell_value >= num_filter.criteria) if filter.negative
 								else (num_cell_value <= num_filter.criteria)
 								)
 				
-				elif filter is BoolFilter:
-					var bool_filter := filter as BoolFilter
+				elif filter is TreeOrganizerBoolFilter:
+					var bool_filter := filter as TreeOrganizerBoolFilter
 					
 					filter_passed = value == bool_filter.get_text()
 				
-				elif filter is LengthFilter:
-					var length_filter := filter as LengthFilter
+				elif filter is TreeOrganizerLengthFilter:
+					var length_filter := filter as TreeOrganizerLengthFilter
 					var length_cell_value: int = value.length()
 					
 					filter_passed = (
@@ -243,8 +241,8 @@ static func apply_filters(
 						else (length_cell_value == length_filter.criteria)
 						)
 				
-				elif filter is ListFilter:
-					var list_filter := filter as ListFilter
+				elif filter is TreeOrganizerListFilter:
+					var list_filter := filter as TreeOrganizerListFilter
 					
 					if not list_filter.case_sensitive:
 						value = value.to_lower()
@@ -315,7 +313,7 @@ static func get_distinct(
 		return results.items()
 
 
-func str_item(
+static func str_item(
 	item: TreeItem,
 	max_length: int = 0,
 	value_mode: ValueMode = ValueMode.CELL,
@@ -371,327 +369,13 @@ static func _get_value_by_mode(
 static func _sort_elements(elements: Array) -> void:
 	elements.sort_custom(
 		func(
-			element_1: _TreeOrganizerElement,
-			element_2: _TreeOrganizerElement
+			element_1: TreeOrganizerElement,
+			element_2: TreeOrganizerElement
 			) -> bool: return element_1.col_idx < element_2.col_idx
 		)
 #endregion
 
 #region SubClasses
-class _TreeOrganizerElement extends RefCounted:
-	#region Public Variables
-	var col_idx: int = -1: set = set_col_idx
-	#endregion
-	
-	#region Setget Methods
-	func set_col_idx(arg: int = col_idx) -> TreeOrganizer._TreeOrganizerElement:
-		if arg < 0:
-			arg = 0
-		
-		col_idx = arg
-		
-		return self
-	#endregion
-
-
-class Sorter extends TreeOrganizer._TreeOrganizerElement:
-	#region Enums
-	enum Mode {TEXT, NUMERIC}
-	#endregion
-	
-	#region Public Variables
-	var type: TreeOrganizer.SorterType = TreeOrganizer.SorterType.ASC
-	var mode: Mode = Mode.TEXT
-	#endregion
-	
-	#region Virtual Methods
-	func _init(column_index: int) -> void:
-		col_idx = column_index
-	#endregion
-	
-	#region Public Methods
-	func is_asc() -> bool:
-		return type == SorterType.ASC
-	
-	
-	func asc_text() -> TreeOrganizer.Sorter:
-		type = SorterType.ASC
-		mode = Mode.TEXT
-		
-		return self
-	
-	
-	func desc_text() -> TreeOrganizer.Sorter:
-		type = SorterType.DESC
-		mode = Mode.TEXT
-		
-		return self
-	
-	
-	func asc_numeric() -> TreeOrganizer.Sorter:
-		type = SorterType.ASC
-		mode = Mode.NUMERIC
-		
-		return self
-	
-	
-	func desc_numeric() -> TreeOrganizer.Sorter:
-		type = SorterType.DESC
-		mode = Mode.NUMERIC
-		
-		return self
-	
-	
-	func reverse_type() -> TreeOrganizer.Sorter:
-		type = SorterType.DESC if type == SorterType.ASC else SorterType.ASC
-		
-		return self
-	#endregion
-
-
-class Filter extends TreeOrganizer._TreeOrganizerElement:
-	#region Public Variables
-	var type: TreeOrganizer.FilterType = TreeOrganizer.FilterType.TEXT
-	var negative: bool
-	#endregion
-	
-	#region Virtual Methods
-	func _init(filter_type: TreeOrganizer.FilterType, column_index: int) -> void:
-		type = filter_type
-		col_idx = column_index
-	#endregion
-	
-	#region Public Methods
-	func set_negative(state: bool = true) -> TreeOrganizer.Filter:
-		negative = state
-		
-		return self
-	#endregion
-	
-	#region Private Methods
-	func _to_string_formatter(sub_class_name: String, mode: String, criteria: Variant) -> String:
-		return "%s[%d] %s%s '%s'>" % [sub_class_name, col_idx, "not " if negative else "", mode, criteria]
-	#endregion
-
-
-class TextFilter extends TreeOrganizer.Filter:
-	#region Enums
-	enum Mode {EQUALS, CONTAINS, BEGINS_WITH, ENDS_WITH}
-	#endregion
-	
-	#region Public Variables
-	var mode: Mode = Mode.EQUALS
-	var criteria: String
-	var case_sensitive: bool
-	#endregion
-	
-	#region Virtual Methods
-	func _init(column_index: int) -> void:
-		super._init(FilterType.TEXT, column_index)
-	
-	
-	func _to_string() -> String:
-		return _to_string_formatter("TextFilter", UtilsDictionary.enum_to_str(Mode, mode, true), criteria)
-	#endregion
-	
-	#region Public Methods
-	func update(
-		new_mode: Mode, criteria_value: String, is_negative: bool, is_case_sensitive: bool
-		) -> TreeOrganizer.TextFilter:
-			mode = new_mode
-			criteria = criteria_value
-			negative = is_negative
-			case_sensitive = is_case_sensitive
-			
-			if not is_case_sensitive:
-				criteria = criteria.to_lower()
-			
-			return self
-	
-	
-	func equals(
-		criteria_value: String, is_negative: bool = false, is_case_sensitive: bool = false
-		) -> TreeOrganizer.TextFilter:
-			return update(Mode.EQUALS, criteria_value, is_negative, is_case_sensitive)
-	
-	
-	func contains(
-		criteria_value: String, is_negative: bool = false, is_case_sensitive: bool = false
-		) -> TreeOrganizer.TextFilter:
-			return update(Mode.CONTAINS, criteria_value, is_negative, is_case_sensitive)
-	
-	
-	func begins_with(
-		criteria_value: String, is_negative: bool = false, is_case_sensitive: bool = false
-		) -> TreeOrganizer.TextFilter:
-			return update(Mode.BEGINS_WITH, criteria_value, is_negative, is_case_sensitive)
-	
-	
-	func ends_with(
-		criteria_value: String, is_negative: bool = false, is_case_sensitive: bool = false
-		) -> TreeOrganizer.TextFilter:
-			return update(Mode.ENDS_WITH, criteria_value, is_negative, is_case_sensitive)
-	
-	
-	func set_case_sensitive(state: bool = true) -> TreeOrganizer.TextFilter:
-		case_sensitive = state
-		return self
-	#endregion
-
-
-class NumFilter extends TreeOrganizer.Filter:
-	#region Enums
-	enum Mode {EQUALS, GREATER_THAN, GREATER_THAN_OR_EQUAL_TO, LOWER_THAN, LOWER_THAN_OR_EQUAL_TO}
-	#endregion
-	
-	#region Public Variables
-	var mode: Mode = Mode.EQUALS
-	var criteria: float
-	#endregion
-	
-	#region Virtual Methods
-	func _init(column_index: int) -> void:
-		super._init(FilterType.NUMERIC, column_index)
-	
-	
-	func _to_string() -> String:
-		return _to_string_formatter("NumFilter", UtilsDictionary.enum_to_str(Mode, mode, true), criteria)
-	#endregion
-	
-	#region Public Methods
-	func update(new_mode: Mode, criteria_value: float, is_negative: bool) -> TreeOrganizer.NumFilter:
-		mode = new_mode
-		criteria = criteria_value
-		negative = is_negative
-		
-		return self
-	
-	
-	func equals(criteria_value: float, is_negative: bool = false) -> TreeOrganizer.NumFilter:
-		return update(Mode.EQUALS, criteria_value, is_negative)
-	
-	
-	func greater_than(criteria_value: float, is_negative: bool = false) -> TreeOrganizer.NumFilter:
-		return update(Mode.GREATER_THAN, criteria_value, is_negative)
-	
-	
-	func greater_than_or_equals_to(criteria_value: float, is_negative: bool = false) -> TreeOrganizer.NumFilter:
-		return update(Mode.GREATER_THAN_OR_EQUAL_TO, criteria_value, is_negative)
-	
-	
-	func lower_than(criteria_value: float, is_negative: bool = false) -> TreeOrganizer.NumFilter:
-		return update(Mode.LOWER_THAN, criteria_value, is_negative)
-	
-	
-	func lower_than_or_equals_to(criteria_value: float, is_negative: bool = false) -> TreeOrganizer.NumFilter:
-		return update(Mode.LOWER_THAN_OR_EQUAL_TO, criteria_value, is_negative)
-	#endregion
-
-
-class BoolFilter extends TreeOrganizer.Filter:
-	#region Public Variables
-	var criteria: bool
-	var text_true: String = "true": set = _set_text_true
-	var text_false: String = "false": set = _set_text_false
-	#endregion
-	
-	#region Virtual Methods
-	func _init(column_index: int) -> void:
-		super._init(FilterType.BOOL, column_index)
-	
-	
-	func _to_string() -> String:
-		return _to_string_formatter("BoolFilter", "=", get_text())
-	#endregion
-	
-	#region Public Methods
-	func update(criteria_value: bool) -> TreeOrganizer.BoolFilter:
-		criteria = criteria_value
-		
-		return self
-	
-	
-	func equals(criteria_value: bool) -> TreeOrganizer.BoolFilter:
-		return update(criteria_value)
-	
-	
-	func get_text() -> String:
-		return text_true if criteria else text_false
-	#endregion
-	
-	#region Setter Methods
-	func _set_text_true(arg: String) -> void:
-		text_true = arg.strip_edges().strip_escapes()
-	
-	
-	func _set_text_false(arg: String) -> void:
-		text_false = arg.strip_edges().strip_escapes()
-	#endregion
-
-
-class LengthFilter extends TreeOrganizer.Filter:
-	#region Public Variables
-	var criteria: int
-	#endregion
-	
-	#region Virtual Methods
-	func _init(column_index: int) -> void:
-		super._init(FilterType.LENGTH, column_index)
-	
-	
-	func _to_string() -> String:
-		return _to_string_formatter("LengthFilter", "=", criteria)
-	#endregion
-	
-	#region Public Methods
-	func update(criteria_value: int, is_negative: bool) -> TreeOrganizer.LengthFilter:
-		criteria = criteria_value
-		negative = is_negative
-		
-		return self
-	
-	
-	func equals(criteria_value: int, is_negative: bool = false) -> TreeOrganizer.LengthFilter:
-		return update(criteria_value, is_negative)
-	#endregion
-
-
-class ListFilter extends TreeOrganizer.Filter:
-	#region Public Variables
-	var criteria: Array
-	var case_sensitive: bool
-	#endregion
-	
-	#region Virtual Methods
-	func _init(column_index: int) -> void:
-		super._init(FilterType.LENGTH, column_index)
-	
-	
-	func _to_string() -> String:
-		return _to_string_formatter("ListFilter", "=", criteria)
-	#endregion
-	
-	#region Public Methods
-	func update(criteria_value: Array, is_negative: bool, is_case_sensitive: bool) -> TreeOrganizer.ListFilter:
-		criteria = criteria_value.map(
-			func(entry: Variant) -> String: return str(entry) if is_case_sensitive else str(entry).to_lower()
-			)
-		negative = is_negative
-		case_sensitive = is_case_sensitive
-		
-		return self
-	
-	
-	func is_one_of(
-		criteria_value: Array, is_negative: bool = false, is_case_sensitive: bool = false
-		) -> TreeOrganizer.ListFilter:
-			return update(criteria_value, is_negative, is_case_sensitive)
-	
-	
-	func set_case_sensitive(state: bool = true) -> TreeOrganizer.ListFilter:
-		case_sensitive = state
-		return self
-	#endregion
 #endregion
 
 #region Setter Methods
