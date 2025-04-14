@@ -1,22 +1,3 @@
-"""
-# Version 3.2.0 (29-Mar-2025):
-	- Using the `Path` class for all file-related operations;
-	- Eliminated static initialization, allowing users to manually initiate it if file logging is desired;
-	- Moved constants into a dedicated options class;
-
-# Version 2.2.0 (29-Mar-2025):
-	- Separated the internal classes into their own files;
-
-# Version 2.1.0 (25-Mar-2025):
-	- Verifying the number of debug instance runs during initialization to prevent the cleanup of
-	old log files from being executed multiple times;
-
-# Version 2.0.0 (20-Mar-2025):
-	- Refactored the entire class;
-	- Replaced logging with engine prints;
-	- Introduced an `LoggerEntryOptions` class to streamline method calls by reducing the number of arguments;
-"""
-
 #@tool
 class_name Logger
 #extends 

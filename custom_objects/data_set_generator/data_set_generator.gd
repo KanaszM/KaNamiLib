@@ -1,15 +1,3 @@
-"""
-# Version 1.1.1 (03-Apr-2025):
-	- Added verification on initialization for duplicate property names;
-
-# Version 1.1.0 (29-Mar-2025):
-	- Separated the internal classes into their own files;
-	- Added the new `DataSetPropertyArray` class;
-
-# Version 1.0.0 (28-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name DataSetGenerator
 #extends 

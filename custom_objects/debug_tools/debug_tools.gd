@@ -1,11 +1,3 @@
-"""
-# Version 1.1.0 (29-Mar-2025):
-	- Separated the internal classes into their own files;
-
-# Version 1.0.0 (27-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name DebugTools
 extends Node

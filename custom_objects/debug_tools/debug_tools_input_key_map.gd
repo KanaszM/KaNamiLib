@@ -1,8 +1,3 @@
-"""
-# Version 1.0.0 (27-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name _DebugToolsInputKeyMap
 #extends 

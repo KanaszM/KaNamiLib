@@ -1,8 +1,3 @@
-"""
-# Version 1.0.0 (02-Apr-2025):
-	- Initial release;
-"""
-
 @tool
 extends EditorScript
 

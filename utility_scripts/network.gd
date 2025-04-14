@@ -1,12 +1,3 @@
-"""
-# Version 1.0.1 (02-Apr-2025):
-	- Using the `UtilsRegex.is_valid` method for host validations;
-
-# Version 1.0.0 (01-Apr-2025):
-	- Initial release;
-"""
-
-
 class_name UtilsNetwork
 
 

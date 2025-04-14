@@ -1,8 +1,3 @@
-"""
-# Version 1.0.0 (20-Mar-2025):
-	- Initial release;
-"""
-
 @tool
 class_name ExtendedCamera2D
 extends Camera2D

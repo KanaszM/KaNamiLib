@@ -1,11 +1,3 @@
-"""
-# Version 1.0.1 (29-Mar-2025):
-	- Removed the `custom_extension_name` variable. Only Node and Resource is permited;
-
-# Version 1.0.0 (28-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name DataSetGeneratorOptions
 extends Node

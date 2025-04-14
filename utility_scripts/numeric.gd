@@ -1,9 +1,3 @@
-"""
-# Version 1.0.0 (01-Apr-2025):
-	- Initial release;
-"""
-
-
 class_name UtilsNumeric
 
 

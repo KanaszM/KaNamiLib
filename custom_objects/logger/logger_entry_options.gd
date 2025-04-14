@@ -1,11 +1,3 @@
-"""
-# Version 1.0.1 (04-Apr-2025):
-	- Renamed to `LoggerEntryOptions`;
-
-# Version 1.0.0 (20-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name LoggerEntryOptions
 #extends 

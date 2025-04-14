@@ -1,8 +1,3 @@
-"""
-# Version 1.0.0 (04-Apr-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name ExternalCSVEditor
 extends Object

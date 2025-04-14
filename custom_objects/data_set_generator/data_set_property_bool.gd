@@ -1,8 +1,3 @@
-"""
-# Version 1.0.0 (28-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name DataSetPropertyBool
 extends DataSetProperty

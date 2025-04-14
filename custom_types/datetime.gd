@@ -1,9 +1,3 @@
-"""
-# Version 2.0.0 (20-Mar-2025):
-	- Refactored the entire class, integrating the functionalities of the former `Date` and `UtilsTime` classes into
-	a single unified class;
-"""
-
 #@tool
 class_name DateTime
 extends Resource

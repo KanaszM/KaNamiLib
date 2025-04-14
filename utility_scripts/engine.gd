@@ -1,9 +1,3 @@
-"""
-# Version 1.0.0 (02-Apr-2025):
-	- Reviewed release;
-"""
-
-
 class_name UtilsEngine
 
 

@@ -1,8 +1,3 @@
-"""
-# Version 1.0.0 (03-Apr-2025):
-	- Reviewed release;
-"""
-
 #@tool
 class_name ExternalTextEditor
 extends Object

@@ -1,11 +1,3 @@
-"""
-# Version 1.1.0 (29-Mar-2025):
-	- Separated the internal classes into their own files;
-
-# Version 1.0.0 (20-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name SceneManager
 extends RefCounted

@@ -1,8 +1,3 @@
-"""
-# Version 2.0.0 (20-Mar-2025):
-	- Refactored the entire class and updated its name;
-"""
-
 #@tool
 class_name Shade
 extends Resource

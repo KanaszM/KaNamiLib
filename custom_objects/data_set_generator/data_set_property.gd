@@ -1,11 +1,3 @@
-"""
-# Version 1.0.1 (03-Apr-2025):
-	- Added to_string definition;
-	
-# Version 1.0.0 (28-Mar-2025):
-	- Initial release;
-"""
-
 #@tool
 class_name DataSetProperty
 #extends 
