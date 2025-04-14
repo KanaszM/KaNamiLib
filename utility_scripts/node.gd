@@ -25,3 +25,9 @@ static func free_children_and_wait(parent: Node) -> void:
 		child.queue_free()
 		
 		await child.tree_exited
+
+
+static func set_process(node: Node, mode: bool) -> void:
+	node.set_process(mode)
+	node.set_process_input(mode)
+	node.set_physics_process(mode)
