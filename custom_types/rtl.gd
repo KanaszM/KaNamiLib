@@ -175,8 +175,8 @@ static func append_paragraph_to(
 					
 					label.append_text(str(entry))
 				
-				TYPE_OBJECT when entry is RTL.Sentence:
-					entry = entry as RTL.Sentence
+				TYPE_OBJECT when entry is RTLSentence:
+					entry = entry as RTLSentence
 					
 					var texts: PackedStringArray
 					
@@ -201,30 +201,6 @@ static func strip_tags(source: String) -> String:
 #endregion
 
 #region SubClasses
-class Sentence:
-	#region Public Variables
-	var rtls: Array[RTL]
-	var join_character: String
-	#endregion
-	
-	#region Virtual Methods
-	func _init(rtls_arg: Array[RTL], join_character_arg: String = " ") -> void:
-		rtls = rtls_arg
-		join_character = join_character_arg
-	#endregion
-	
-	#region Public Methods
-	func append_to(label: RichTextLabel, clear: bool = false) -> void:
-		if clear:
-			label.clear()
-		
-		var texts: PackedStringArray
-		
-		for rtl: RTL in rtls:
-			texts.append(str(rtl))
-		
-		label.append_text(join_character.join(texts))
-	#endregion
 #endregion
 
 #region Setter Methods
