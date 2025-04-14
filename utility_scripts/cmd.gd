@@ -41,7 +41,7 @@ static func get_process_id(process_name: String) -> PackedInt32Array:
 		if not result.is_empty():
 			for slice in (result as String).split("\n"):
 				if not slice.is_empty():
-					results.append(int((slice as String).get_slice(SPTerm.Divider.COMMA, 1).replace("\"", "")))
+					results.append(int((slice as String).get_slice(",", 1).replace("\"", "")))
 	
 	return results
 
