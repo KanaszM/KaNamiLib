@@ -71,11 +71,18 @@ func build_from_items_array(items: Array[Item]) -> void:
 				sub_menu.id_pressed.connect(_on_radio_id_pressed.bind(sub_menu, item.callback))
 		
 		if item.icon != null:
-			var icon_color: Color = get_font_color() if item.modulate_icon else Color.WHITE
+			var icon_color: Color = Color.WHITE
+			
+			if item.icon_custom_color != Color.TRANSPARENT:
+				icon_color = item.icon_custom_color
+			
+			else:
+				if item.icon_modulate_enabled:
+					icon_color = get_font_color()
 			
 			set_item_icon(-1, item.icon)
 			set_item_icon_max_width(-1, 16)
-			set_item_icon_modulate(-1, icon_color.darkened(item.darken_icon))
+			set_item_icon_modulate(-1, icon_color.darkened(item.icon_darkened_ratio))
 		
 		set_item_metadata(-1, item)
 
@@ -184,8 +191,9 @@ class Item:
 	var text: String
 	var callback: Callable
 	var icon: Texture2D
-	var modulate_icon: bool = true
-	var darken_icon: float
+	var icon_modulate_enabled: bool = true
+	var icon_darkened_ratio: float
+	var icon_custom_color: Color = Color.TRANSPARENT
 	#endregion
 	
 	#region Virtual Methods
@@ -201,12 +209,15 @@ class Item:
 	#endregion
 	
 	#region Public Methods
-	func set_icon(texture: Texture2D, modulate: bool = true, darken: float = 0.0) -> Item:
-		icon = texture
-		modulate_icon = modulate
-		darken_icon = darken
-		
-		return self
+	func set_icon(
+		texture: Texture2D, modulate: bool = true, darkened_ratio: float = 0.0, custom_color: Color = Color.TRANSPARENT
+		) -> Item:
+			icon = texture
+			icon_modulate_enabled = modulate
+			icon_darkened_ratio = darkened_ratio
+			icon_custom_color = custom_color
+			
+			return self
 	#endregion
 
 
