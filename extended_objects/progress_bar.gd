@@ -15,7 +15,7 @@ const SMOOTHING_THRESHOLD: float = 0.005
 
 #region Export Variables
 @export_group("Smoothing", "smoothing_")
-@export var smoothing_enabled: bool = true: set = _set_smoothing_enabled
+@export var smoothing_enabled: bool: set = _set_smoothing_enabled
 @export var smoothing_duration: float = 0.25: set = _set_smoothing_duration
 @export var smoothing_ease: Tween.EaseType = Tween.EaseType.EASE_IN_OUT
 @export var smoothing_transition: Tween.TransitionType = Tween.TransitionType.TRANS_CUBIC
