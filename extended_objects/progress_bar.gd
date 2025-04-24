@@ -1,5 +1,5 @@
 @tool
-class_name ExtendedProgressBars
+class_name ExtendedProgressBar
 extends ProgressBar
 
 #region Signals
