@@ -7,12 +7,16 @@ signal margin_changed
 #endregion
 
 #region Enums
+enum Mode {UNIT, PERCENTAGE}
 #endregion
 
 #region Constants
 #endregion
 
 #region Export Variables
+@export var mode: Mode = Mode.UNIT: set = _set_mode
+
+@export_group("Unit Margins", "margin_")
 @export var margin_all: int: set = _set_margin_all
 @export var margin_left_right: int: set = _set_margin_left_right
 @export var margin_top_bottom: int: set = _set_margin_top_bottom
@@ -67,125 +71,107 @@ func set_margin(value: int, left: bool, right: bool, top: bool, bottom: bool) ->
 
 #region Private Methods
 func _update_margins() -> void:
-	var margin_all_set: bool = margin_all != 0
-	var margin_left_right_set: bool = margin_left_right != 0
-	var margin_top_bottom_set: bool = margin_top_bottom != 0
-	var margin_left_set: bool = margin_left != 0
-	var margin_right_set: bool = margin_right != 0
-	var margin_top_set: bool = margin_top != 0
-	var margin_bottom_set: bool = margin_bottom != 0
-	
-	var margins_any_set: bool = ([
-		margin_all_set, margin_left_right_set, margin_top_bottom_set,
-		margin_left_set, margin_right_set, margin_top_set, margin_bottom_set
-		] as Array[bool]).any(func(state: bool) -> bool: return state)
-	
-	if margins_any_set:
-		if margin_all_set:
-			set_margin(margin_all, true, true, true, true)
+	match mode:
+		Mode.UNIT:
+			UtilsSignal.disconnect_safe(resized, _update_margins)
+			
+			if margin_all != 0:
+				set_margin(margin_all, true, true, true, true)
+			
+			elif (margin_left_right + margin_top_bottom) != 0:
+				set_margin(margin_left_right, true, true, false, false)
+				set_margin(margin_top_bottom, false, false, true, true)
+			
+			else:
+				set_margin(margin_left, true, false, false, false)
+				set_margin(margin_right, false, true, false, false)
+				set_margin(margin_top, false, false, true, false)
+				set_margin(margin_bottom, false, false, false, true)
 		
-		elif margin_left_right_set or margin_top_bottom_set:
-			set_margin(margin_left_right, true, true, false, false)
-			set_margin(margin_top_bottom, false, false, true, true)
-		
-		else:
-			set_margin(margin_left, true, false, false, false)
-			set_margin(margin_right, false, true, false, false)
-			set_margin(margin_top, false, false, true, false)
-			set_margin(margin_bottom, false, false, false, true)
-	
-	else:
-		var percent_margins_enabled = (_percent_margins_h + _percent_margins_v) != Vector2.ZERO
-		var size_h: Vector2i = (Vector2i.ONE * size.x) * _percent_margins_h
-		var size_v: Vector2i = (Vector2i.ONE * size.y) * _percent_margins_v
-		
-		UtilsSignal.connect_safe_if(resized, _update_margins, percent_margins_enabled)
-		
-		set_margin(size_h.x, true, false, false, false)
-		set_margin(size_h.y, false, true, false, false)
-		set_margin(size_v.x, false, false, true, false)
-		set_margin(size_v.y, false, false, false, true)
+		Mode.PERCENTAGE:
+			UtilsSignal.connect_safe(resized, _update_margins)
+			
+			var size_h: Vector2i = (Vector2i.ONE * size.x) * _percent_margins_h
+			var size_v: Vector2i = (Vector2i.ONE * size.y) * _percent_margins_v
+			
+			set_margin(size_h.x, true, false, false, false)
+			set_margin(size_h.y, false, true, false, false)
+			set_margin(size_v.x, false, false, true, false)
+			set_margin(size_v.y, false, false, false, true)
 #endregion
 
 #region SubClasses
 #endregion
 
 #region Setter Methods
+func _set_mode(arg: Mode) -> void:
+	mode = arg
+	_update_margins()
+
+# Unit Margins
 func _set_margin_all(arg: int) -> void:
 	margin_all = arg
-	
 	_update_margins()
 
 
 func _set_margin_left_right(arg: int) -> void:
 	margin_left_right = arg
-	
 	_update_margins()
 
 
 func _set_margin_top_bottom(arg: int) -> void:
 	margin_top_bottom = arg
-	
 	_update_margins()
 
 
 func _set_margin_left(arg: int) -> void:
 	margin_left = arg
-	
 	_update_margins()
 
 
 func _set_margin_right(arg: int) -> void:
 	margin_right = arg
-	
 	_update_margins()
 
 
 func _set_margin_top(arg: int) -> void:
 	margin_top = arg
-	
 	_update_margins()
 
 
 func _set_margin_bottom(arg: int) -> void:
 	margin_bottom = arg
-	
 	_update_margins()
 
-
+# Percentage Margins
 func _set_percent_margin_all(arg: float) -> void:
 	percent_margin_all = arg
 	_percent_margins_h = (Vector2.ONE * percent_margin_all) / 100.0
 	_percent_margins_v = _percent_margins_h
-	
 	_update_margins()
 
 
 func _set_percent_margin_left(arg: float) -> void:
 	percent_margin_left = arg
 	_percent_margins_h.x = percent_margin_left / 100.0
-	
 	_update_margins()
 
 
 func _set_percent_margin_right(arg: float) -> void:
 	percent_margin_right = arg
 	_percent_margins_h.y = percent_margin_right / 100.0
-	
 	_update_margins()
 
 
 func _set_percent_margin_top(arg: float) -> void:
 	percent_margin_top = arg
 	_percent_margins_v.x = percent_margin_top / 100.0
-	
 	_update_margins()
 
 
 func _set_percent_margin_bottom(arg: float) -> void:
 	percent_margin_bottom = arg
 	_percent_margins_v.y = percent_margin_bottom / 100.0
-	
 	_update_margins()
 #endregion
 
