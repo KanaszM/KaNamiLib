@@ -72,6 +72,31 @@ func _process(_delta: float) -> void:
 #region Public Methods
 #endregion
 
+#region Theme Methods
+func get_font_size() -> int:
+	return get_theme_font_size(&"font_size")
+
+
+func get_background_style() -> StyleBox:
+	return get_theme_stylebox(&"background")
+
+
+func get_fill_style() -> StyleBox:
+	return get_theme_stylebox(&"fill")
+
+
+func set_font_size(font_size: int) -> void:
+	add_theme_font_size_override(&"font_size", font_size)
+
+
+func set_background_style(style: StyleBox) -> void:
+	add_theme_stylebox_override(&"background", style)
+
+
+func set_fill_style(style: StyleBox) -> void:
+	add_theme_stylebox_override(&"fill", style)
+#endregion
+
 #region Private Methods
 #endregion
 
