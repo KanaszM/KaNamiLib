@@ -33,7 +33,6 @@ signal margin_changed
 #endregion
 
 #region Private Variables
-var _percent_margins_enabled: bool: get = _get_percent_margins_enabled
 var _percent_margins_h: Vector2
 var _percent_margins_v: Vector2
 #endregion
@@ -43,8 +42,7 @@ var _percent_margins_v: Vector2
 
 #region Virtual Methods
 func _ready() -> void:
-	_update_resized_signal()
-	_update_percent_margins()
+	_update_margins()
 #endregion
 
 #region Public Methods
@@ -68,18 +66,45 @@ func set_margin(value: int, left: bool, right: bool, top: bool, bottom: bool) ->
 #endregion
 
 #region Private Methods
-func _update_percent_margins() -> void:
-	if not _percent_margins_enabled:
-		return
+func _update_margins() -> void:
+	var margin_all_set: bool = margin_all != 0
+	var margin_left_right_set: bool = margin_left_right != 0
+	var margin_top_bottom_set: bool = margin_top_bottom != 0
+	var margin_left_set: bool = margin_left != 0
+	var margin_right_set: bool = margin_right != 0
+	var margin_top_set: bool = margin_top != 0
+	var margin_bottom_set: bool = margin_bottom != 0
 	
-	set_margin(int(size.x * _percent_margins_h.x), true, false, false, false)
-	set_margin(int(size.x * _percent_margins_h.y), false, true, false, false)
-	set_margin(int(size.y * _percent_margins_v.x), false, false, true, false)
-	set_margin(int(size.y * _percent_margins_v.y), false, false, false, true)
-
-
-func _update_resized_signal() -> void:
-	UtilsSignal.connect_safe_if(resized, _update_percent_margins, _percent_margins_enabled)
+	var margins_any_set: bool = ([
+		margin_all_set, margin_left_right_set, margin_top_bottom_set,
+		margin_left_set, margin_right_set, margin_top_set, margin_bottom_set
+		] as Array[bool]).any(func(state: bool) -> bool: return state)
+	
+	if margins_any_set:
+		if margin_all_set:
+			set_margin(margin_all, true, true, true, true)
+		
+		elif margin_left_right_set or margin_top_bottom_set:
+			set_margin(margin_left_right, true, true, false, false)
+			set_margin(margin_top_bottom, false, false, true, true)
+		
+		else:
+			set_margin(margin_left, true, false, false, false)
+			set_margin(margin_right, false, true, false, false)
+			set_margin(margin_top, false, false, true, false)
+			set_margin(margin_bottom, false, false, false, true)
+	
+	else:
+		var percent_margins_enabled = (_percent_margins_h + _percent_margins_v) != Vector2.ZERO
+		var size_h: Vector2i = (Vector2i.ONE * size.x) * _percent_margins_h
+		var size_v: Vector2i = (Vector2i.ONE * size.y) * _percent_margins_v
+		
+		UtilsSignal.connect_safe_if(resized, _update_margins, percent_margins_enabled)
+		
+		set_margin(size_h.x, true, false, false, false)
+		set_margin(size_h.y, false, true, false, false)
+		set_margin(size_v.x, false, false, true, false)
+		set_margin(size_v.y, false, false, false, true)
 #endregion
 
 #region SubClasses
@@ -88,76 +113,81 @@ func _update_resized_signal() -> void:
 #region Setter Methods
 func _set_margin_all(arg: int) -> void:
 	margin_all = arg
-	set_margin(margin_all, true, true, true, true)
+	
+	_update_margins()
 
 
 func _set_margin_left_right(arg: int) -> void:
 	margin_left_right = arg
-	set_margin(margin_left_right, true, true, false, false)
+	
+	_update_margins()
 
 
 func _set_margin_top_bottom(arg: int) -> void:
 	margin_top_bottom = arg
-	set_margin(margin_top_bottom, false, false, true, true)
+	
+	_update_margins()
 
 
 func _set_margin_left(arg: int) -> void:
 	margin_left = arg
-	set_margin(margin_left, true, false, false, false)
+	
+	_update_margins()
 
 
 func _set_margin_right(arg: int) -> void:
 	margin_right = arg
-	set_margin(margin_right, false, true, false, false)
+	
+	_update_margins()
 
 
 func _set_margin_top(arg: int) -> void:
 	margin_top = arg
-	set_margin(margin_top, false, false, true, false)
+	
+	_update_margins()
 
 
 func _set_margin_bottom(arg: int) -> void:
 	margin_bottom = arg
-	set_margin(margin_bottom, false, false, false, true)
+	
+	_update_margins()
 
 
 func _set_percent_margin_all(arg: float) -> void:
 	percent_margin_all = arg
-	_percent_margins_h = (Vector2.ONE * percent_margin_left) / 100.0
+	_percent_margins_h = (Vector2.ONE * percent_margin_all) / 100.0
 	_percent_margins_v = _percent_margins_h
-	_update_resized_signal()
-	_update_percent_margins()
+	
+	_update_margins()
 
 
 func _set_percent_margin_left(arg: float) -> void:
 	percent_margin_left = arg
 	_percent_margins_h.x = percent_margin_left / 100.0
-	_update_resized_signal()
-	_update_percent_margins()
+	
+	_update_margins()
 
 
 func _set_percent_margin_right(arg: float) -> void:
 	percent_margin_right = arg
 	_percent_margins_h.y = percent_margin_right / 100.0
-	_update_resized_signal()
-	_update_percent_margins()
+	
+	_update_margins()
 
 
 func _set_percent_margin_top(arg: float) -> void:
 	percent_margin_top = arg
 	_percent_margins_v.x = percent_margin_top / 100.0
-	_update_resized_signal()
-	_update_percent_margins()
+	
+	_update_margins()
 
 
 func _set_percent_margin_bottom(arg: float) -> void:
 	percent_margin_bottom = arg
 	_percent_margins_v.y = percent_margin_bottom / 100.0
-	_update_resized_signal()
-	_update_percent_margins()
+	
+	_update_margins()
 #endregion
 
 #region Getter Methods
-func _get_percent_margins_enabled() -> bool:
-	return (_percent_margins_h + _percent_margins_v) != Vector2.ZERO
 #endregion
