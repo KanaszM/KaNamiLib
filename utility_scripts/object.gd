@@ -48,15 +48,13 @@ static func get_property_names(object: Object, property_names_to_ignore: Array[S
 		)
 
 
-static func inject_properties(object: Object, properties_map: Dictionary[Variant, Variant]) -> void:
+static func inject_properties(object: Object, properties_map: Dictionary[StringName, Variant]) -> void:
 	if object == null:
 		return
 	
-	for key: Variant in properties_map:
-		var property: StringName = StringName(str(key))
-		
+	for property: StringName in properties_map:
 		if property in object:
-			object.set(property, properties_map[key])
+			object.set(property, properties_map[property])
 
 
 static func get_scene_path_from_reference(object: Object) -> String:
