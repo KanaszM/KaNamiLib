@@ -69,6 +69,22 @@ static func convert_text_direction_flag(flag: Control.TextDirection) -> TextServ
 		_: return TextServer.Direction.DIRECTION_AUTO
 
 
+static func convert_horizontal_alignment_to_size_flags(flag: HorizontalAlignment) -> Control.SizeFlags:
+	match flag:
+		HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER: return Control.SizeFlags.SIZE_SHRINK_CENTER
+		HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT: return Control.SizeFlags.SIZE_SHRINK_END
+		HorizontalAlignment.HORIZONTAL_ALIGNMENT_FILL: return Control.SizeFlags.SIZE_EXPAND_FILL
+		_: return Control.SizeFlags.SIZE_SHRINK_BEGIN
+
+
+static func convert_vertical_alignment_to_size_flags(flag: VerticalAlignment) -> Control.SizeFlags:
+	match flag:
+		VerticalAlignment.VERTICAL_ALIGNMENT_CENTER: return Control.SizeFlags.SIZE_SHRINK_CENTER
+		VerticalAlignment.VERTICAL_ALIGNMENT_BOTTOM: return Control.SizeFlags.SIZE_SHRINK_END
+		VerticalAlignment.VERTICAL_ALIGNMENT_FILL: return Control.SizeFlags.SIZE_EXPAND_FILL
+		_: return Control.SizeFlags.SIZE_SHRINK_BEGIN
+
+
 static func bind_callback(
 	control: Control,
 	callback: Callable,
