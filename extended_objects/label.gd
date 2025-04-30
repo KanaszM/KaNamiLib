@@ -162,6 +162,10 @@ func get_font_color() -> Color:
 
 func get_font_size() -> int:
 	return get_theme_font_size(&"font_size")
+
+
+func get_font_text_size() -> Vector2:
+	return get_font().get_string_size(text, horizontal_alignment, -1, get_font_size())
 #endregion
 
 #region Signal Callbacks
