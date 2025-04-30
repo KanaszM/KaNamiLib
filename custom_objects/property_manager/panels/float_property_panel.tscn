@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://dlbbdyjawb1iu"]
+
+[ext_resource type="PackedScene" uid="uid://d33q46hl68k35" path="res://common/custom_objects/property_manager/property_panel.tscn" id="1_b58a7"]
+[ext_resource type="Script" uid="uid://c23424qyt3165" path="res://common/custom_objects/property_manager/panels/float_property_panel.gd" id="2_u0qeo"]
+[ext_resource type="Script" uid="uid://c6i4nkiu7ecge" path="res://common/extended_objects/h_box_container.gd" id="3_krcbg"]
+[ext_resource type="Script" uid="uid://umjps4hhqfob" path="res://common/extended_objects/line_edit.gd" id="3_vyi2q"]
+[ext_resource type="Script" uid="uid://ctn230dohtff2" path="res://common/extended_objects/v_box_container.gd" id="5_xbwb0"]
+[ext_resource type="Script" uid="uid://ckwhvxnkawkof" path="res://common/extended_objects/button.gd" id="6_u1qe2"]
+
+[node name="FloatPropertyPanel" instance=ExtResource("1_b58a7")]
+script = ExtResource("2_u0qeo")
+property = null
+
+[node name="HBoxBackground" type="HBoxContainer" parent="MarginBackground/GridBackground/PanelContents" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_krcbg")
+metadata/_custom_type_script = "uid://c6i4nkiu7ecge"
+
+[node name="LineEditInput" type="LineEdit" parent="MarginBackground/GridBackground/PanelContents/HBoxBackground" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
+script = ExtResource("3_vyi2q")
+pattern = 4
+metadata/_custom_type_script = "uid://umjps4hhqfob"
+
+[node name="VBoxBackground" type="VBoxContainer" parent="MarginBackground/GridBackground/PanelContents/HBoxBackground" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("5_xbwb0")
+metadata/_custom_type_script = "uid://ctn230dohtff2"
+
+[node name="ButtonIncrement" type="Button" parent="MarginBackground/GridBackground/PanelContents/HBoxBackground/VBoxBackground" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 8
+text = "+"
+script = ExtResource("6_u1qe2")
+metadata/_custom_type_script = "uid://ckwhvxnkawkof"
+
+[node name="ButtonDecrement" type="Button" parent="MarginBackground/GridBackground/PanelContents/HBoxBackground/VBoxBackground" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 8
+text = "-"
+script = ExtResource("6_u1qe2")
+metadata/_custom_type_script = "uid://ckwhvxnkawkof"

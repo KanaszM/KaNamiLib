@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://d33q46hl68k35"]
+
+[ext_resource type="Script" uid="uid://btcvc5hcg3354" path="res://common/custom_objects/property_manager/property_panel.gd" id="1_2a5px"]
+[ext_resource type="Script" uid="uid://b8gj6mqyssc63" path="res://common/extended_objects/grid_container.gd" id="2_2ogpt"]
+[ext_resource type="Script" uid="uid://cgnpo8qcsp43u" path="res://common/extended_objects/margin_container.gd" id="2_vrqa0"]
+[ext_resource type="Script" uid="uid://dydgarpu6dx4u" path="res://common/extended_objects/label.gd" id="3_lktyd"]
+[ext_resource type="Script" uid="uid://c6dgm6t38jbbj" path="res://common/extended_objects/panel_container.gd" id="4_w2ta3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vrqa0"]
+
+[node name="PropertyPanel" type="PanelContainer"]
+offset_right = 5.0
+offset_bottom = 23.0
+mouse_filter = 2
+script = ExtResource("1_2a5px")
+metadata/_custom_type_script = "uid://c6dgm6t38jbbj"
+
+[node name="MarginBackground" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("2_vrqa0")
+metadata/_custom_type_script = "uid://cgnpo8qcsp43u"
+
+[node name="GridBackground" type="GridContainer" parent="MarginBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+columns = 2
+script = ExtResource("2_2ogpt")
+metadata/_custom_type_script = "uid://b8gj6mqyssc63"
+
+[node name="LabelName" type="Label" parent="MarginBackground/GridBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_lktyd")
+metadata/_custom_type_script = "uid://dydgarpu6dx4u"
+
+[node name="PanelContents" type="PanelContainer" parent="MarginBackground/GridBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_vrqa0")
+script = ExtResource("4_w2ta3")
+metadata/_custom_type_script = "uid://c6dgm6t38jbbj"
