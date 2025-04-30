@@ -3,7 +3,6 @@ class_name ExtendedLineEdit
 extends LineEdit
 
 #region Signals
-signal text_cleared
 #endregion
 
 #region Enums
