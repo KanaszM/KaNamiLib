@@ -16,11 +16,7 @@ enum Type {NONE, BOOL, COLOR, ENUM_BOX_ALIGN, ENUM_H_ALIGN, ENUM_V_ALIGN, FLOAT,
 @export var name: String: set = _set_name, get = _get_name
 @export_multiline var description: String: set = _set_description, get = _get_description
 @export var section: PropertySection: set = _set_section
-
-@export_group("Icon", "icon_")
-@export var icon_texture: CompressedTexture2D: set = _set_icon_texture
-@export var icon_size: Vector2: set = _set_icon_size
-@export var icon_modulate: Color = Color.WHITE: set = _set_icon_modulate
+@export var icon: Icon: set = _set_icon
 #endregion
 
 #region Public Variables
@@ -31,7 +27,6 @@ var id: int = -1
 #region Private Variables
 @warning_ignore("unused_private_class_variable")
 var _default_value_set: bool
-var _icon_changed_emission_blocked: bool
 #endregion
 
 #region OnReady Variables
@@ -54,19 +49,6 @@ func is_valid() -> bool:
 		return false
 	
 	return true
-
-
-func set_icon(texture: CompressedTexture2D, size: Vector2, color: Color = Color.WHITE) -> Property:
-	_icon_changed_emission_blocked = true
-	
-	icon_texture = texture
-	icon_size = size
-	icon_modulate = color
-	
-	_icon_changed_emission_blocked = false
-	emit_changed()
-	
-	return self
 
 
 func get_address(delimiter: String = "_", to_lower: bool = true) -> String:
@@ -132,26 +114,14 @@ func _set_section(arg: PropertySection) -> void:
 	
 	emit_changed()
 
-# Icon
-func _set_icon_texture(arg: CompressedTexture2D) -> void:
-	icon_texture = arg
+
+func _set_icon(arg: Icon) -> void:
+	icon = arg
 	
-	if not _icon_changed_emission_blocked:
-		emit_changed()
-
-
-func _set_icon_size(arg: Vector2) -> void:
-	icon_size = arg.max(Vector2.ZERO)
+	if icon != null:
+		UtilsSignal.connect_safe(icon.changed, emit_changed)
 	
-	if not _icon_changed_emission_blocked:
-		emit_changed()
-
-
-func _set_icon_modulate(arg: Color) -> void:
-	icon_modulate = arg
-	
-	if not _icon_changed_emission_blocked:
-		emit_changed()
+	emit_changed()
 #endregion
 
 #region Getter Methods
