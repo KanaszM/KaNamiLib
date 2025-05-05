@@ -148,6 +148,7 @@ static func static_context_menu(
 			popup_menu.free_on_hide = true
 			parent.add_child(popup_menu)
 		
+		popup_menu.clear()
 		popup_menu.build_from_items_array(items)
 		
 		if popup_after_build and not items.is_empty():
