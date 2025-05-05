@@ -2,19 +2,33 @@ class_name UtilsNumeric
 
 
 #region Numeric Bounds
-const UINT8_MAX: int  = (1 << 8)  - 1 # 255
+const UINT8_MAX: int = (1 << 8)  - 1 # 255
 const UINT16_MAX: int = (1 << 16) - 1 # 65535
 const UINT32_MAX: int = (1 << 32) - 1 # 4294967295
 
-const INT8_MIN: int  = -(1 << 7)  # -128
+const INT8_MIN: int = -(1 << 7)  # -128
 const INT16_MIN: int = -(1 << 15) # -32768
 const INT32_MIN: int = -(1 << 31) # -2147483648
 const INT64_MIN: int = -(1 << 63) # -9223372036854775808
 
-const INT8_MAX: int  = (1 << 7)  - 1 # 127
+const INT8_MAX: int = (1 << 7)  - 1 # 127
 const INT16_MAX: int = (1 << 15) - 1 # 32767
 const INT32_MAX: int = (1 << 31) - 1 # 2147483647
 const INT64_MAX: int = (1 << 63) - 1 # 9223372036854775807
+
+const UFLOAT8_MAX: float = float(UINT8_MAX)
+const UFLOAT16_MAX: float = float(UINT16_MAX)
+const UFLOAT32_MAX: float = float(UINT32_MAX)
+
+const FLOAT8_MIN: float = float(INT8_MIN)
+const FLOAT16_MIN: float = float(INT16_MIN)
+const FLOAT32_MIN: float = float(INT32_MIN)
+const FLOAT64_MIN: float = float(INT64_MIN)
+
+const FLOAT8_MAX: float = float(INT8_MAX)
+const FLOAT16_MAX: float = float(INT16_MAX)
+const FLOAT32_MAX: float = float(INT32_MAX)
+const FLOAT64_MAX: float = float(INT64_MAX)
 
 const VECTOR_MAX_COORD: int = int(pow(2.0, 31.0)) - 1
 const VECTOR_MIN_COORD: int = -VECTOR_MAX_COORD
