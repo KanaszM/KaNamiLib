@@ -68,16 +68,16 @@ static func group_properties_by_sections(sections: Array[PropertySection]) -> Di
 static func _build_grouped_properties_by_sections_tree(
 	section: PropertySection, section_tree_map: Dictionary[PropertySection, Array]
 	) -> Variant: # Array[Property] or Dictionary[PropertySection, Variant]
-		var children: Array = section_tree_map[section]
+		var child_sections: Array = section_tree_map[section]
 		
-		if children.is_empty():
+		if child_sections.is_empty():
 			return section.properties
 		
 		else:
 			var branch: Dictionary[PropertySection, Variant] = {}
 			
-			for child in children:
-				branch[child] = _build_grouped_properties_by_sections_tree(child, section_tree_map)
+			for child_section: PropertySection in child_sections:
+				branch[child_section] = _build_grouped_properties_by_sections_tree(child_section, section_tree_map)
 			
 			return branch
 #endregion
