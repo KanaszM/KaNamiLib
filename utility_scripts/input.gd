@@ -29,3 +29,50 @@ static func event_mouse_button_callback(
 				
 				else:
 					callback.call()
+
+
+static func int_to_number_key(value: int) -> Key:
+	match value:
+		0: return KEY_0
+		1: return KEY_1
+		2: return KEY_2
+		3: return KEY_3
+		4: return KEY_4
+		5: return KEY_5
+		6: return KEY_6
+		7: return KEY_7
+		8: return KEY_8
+		9: return KEY_9
+		_: return KEY_NONE
+
+
+static func int_to_numpad_key(value: int) -> Key:
+	match value:
+		0: return KEY_KP_0
+		1: return KEY_KP_1
+		2: return KEY_KP_2
+		3: return KEY_KP_3
+		4: return KEY_KP_4
+		5: return KEY_KP_5
+		6: return KEY_KP_6
+		7: return KEY_KP_7
+		8: return KEY_KP_8
+		9: return KEY_KP_9
+		_: return KEY_NONE
+
+
+static func int_to_functional_key(value: int) -> Key:
+	match value:
+		1: return KEY_F1
+		2: return KEY_F2
+		3: return KEY_F3
+		4: return KEY_F4
+		5: return KEY_F5
+		6: return KEY_F6
+		7: return KEY_F7
+		8: return KEY_F8
+		9: return KEY_F9
+		10: return KEY_F10
+		11: return KEY_F11
+		12: return KEY_F12
+		_: return KEY_NONE
