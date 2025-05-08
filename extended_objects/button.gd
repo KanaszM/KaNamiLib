@@ -186,6 +186,10 @@ func execute_callbacks() -> void:
 			
 			else:
 				callback.call()
+
+
+func remove_callbacks() -> void:
+	_callbacks.clear()
 #endregion
 
 #region Signals Methods
