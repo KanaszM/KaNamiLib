@@ -237,7 +237,7 @@ func _on_block_timer_timeout() -> void:
 
 
 func _on_pressed() -> void:
-	if not is_blocked and not continuous:
+	if not is_blocked and not continuous and visible:
 		execute_everything()
 		set_blocked(true)
 
