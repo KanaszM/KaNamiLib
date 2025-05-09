@@ -27,7 +27,7 @@ static func get_properties(
 			
 			var property_value: Variant = object.get(property_name)
 			
-			if property_value is Object and not allow_other_objects:
+			if (property_value is Object or property_value == null) and not allow_other_objects:
 				continue
 			
 			if property_value is Array:
