@@ -28,13 +28,15 @@ var value: bool
 #endregion
 
 #region Public Methods
-func set_value(value_arg: bool, logger_callback: Callable = Callable()) -> BoolResult:
-	value = value_arg
-	
-	if logger_callback.is_valid():
-		Logger.success(logger_callback, value)
-	
-	return self
+func set_value(
+	value_arg: bool, sucess_message_arg: String = "", logger_callback: Callable = Callable(),
+	) -> BoolResult:
+		value = value_arg
+		
+		if not sucess_message_arg.is_empty() and logger_callback.is_valid():
+			Logger.success(logger_callback, sucess_message_arg)
+		
+		return self
 
 
 func set_error(

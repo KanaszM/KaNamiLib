@@ -28,13 +28,15 @@ var value: Vector2i
 #endregion
 
 #region Public Methods
-func set_value(value_arg: Vector2i, logger_callback: Callable = Callable()) -> Vector2iResult:
-	value = value_arg
-	
-	if logger_callback.is_valid():
-		Logger.success(logger_callback, value)
-	
-	return self
+func set_value(
+	value_arg: Vector2i, sucess_message_arg: String = "", logger_callback: Callable = Callable(),
+	) -> Vector2iResult:
+		value = value_arg
+		
+		if not sucess_message_arg.is_empty() and logger_callback.is_valid():
+			Logger.success(logger_callback, sucess_message_arg)
+		
+		return self
 
 
 func set_error(
