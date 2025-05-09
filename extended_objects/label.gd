@@ -28,11 +28,12 @@ var asynchronous: bool
 #endregion
 
 #region Private Variables
-var _callbacks: Array[Callable]
-
 var _previous_visibility_state: bool = true
 var _previous_font_size: int
 var _previous_clip_text: bool
+
+var _callbacks: Array[Callable]
+var _signals: Array[Signal]
 #endregion
 
 #region OnReady Variables
@@ -86,6 +87,17 @@ func clear() -> void:
 	text = ""
 
 
+func execute_everything() -> void:
+	execute_callbacks()
+	execute_signals()
+
+
+func reeverything() -> void:
+	reall_callbacks()
+	reall_signals()
+#endregion
+
+#region Callback Methods
 func callback_exists(callback: Callable) -> bool:
 	return callback in _callbacks
 
@@ -135,6 +147,42 @@ func remove_callback(callback: Callable) -> void:
 		_update_mouse_properties()
 #endregion
 
+#region Signals Methods
+func signal_exists(signal_param: Signal) -> bool:
+	return signal_param in _signals
+
+
+func add_signal(signal_param: Signal, unique: bool = true) -> void:
+	if unique and signal_exists(signal_param):
+		return
+	
+	_signals.append(signal_param)
+
+
+func readd_signal(signal_param: Signal) -> void:
+	if signal_exists(signal_param):
+		resignal(signal_param)
+	
+	_signals.append(signal_param)
+
+
+func resignal(signal_param: Signal) -> void:
+	if signal_exists(signal_param):
+		Logger.warning(resignal, "The signal: '%s' is not registered." % signal_param)
+		return
+	
+	_signals.erase(signal_param)
+
+
+func reall_signals() -> void:
+	_signals.clear()
+
+
+func execute_signals() -> void:
+	for signal_param: Signal in _signals:
+		signal_param.emit()
+#endregion
+
 #region Theme Methods
 func set_font_size(value: int) -> void:
 	add_theme_font_size_override(&"font_size", value)
@@ -170,7 +218,7 @@ func get_font_text_size() -> Vector2:
 
 #region Signal Callbacks
 func _on_gui_input(event: InputEvent) -> void:
-	UtilsInput.event_mouse_button_callback(event, MOUSE_BUTTON_LEFT, execute_callbacks)
+	UtilsInput.event_mouse_button_callback(event, MOUSE_BUTTON_LEFT, execute_everything)
 #endregion
 
 #region Private Methods
