@@ -16,6 +16,7 @@ enum Type {INFO, ERROR, WARNING, SUCCESS, DEBUG, CRITICAL, TRACE, NOTICE, ALERT,
 #endregion
 
 #region Public Variables
+static var enabled: bool = true
 #endregion
 
 #region Private Variables
@@ -37,6 +38,9 @@ static var _file_options: LoggerFileOptions = LoggerFileOptions.new()
 
 #region Static Methods
 static func initialize_file_logging(options: LoggerFileOptions = null) -> void:
+	if not enabled:
+		return
+	
 	if options != null:
 		_file_options = options
 	
@@ -116,6 +120,9 @@ static func fatal(callback: Callable, message: Variant, options: LoggerEntryOpti
 
 
 static func _format_entry(type: Type, callback: Callable, message: Variant, options: LoggerEntryOptions = null) -> void:
+	if not enabled:
+		return
+	
 	if options == null:
 		options = LoggerEntryOptions.new()
 	
