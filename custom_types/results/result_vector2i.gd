@@ -1,6 +1,6 @@
 #@tool
-class_name Vector2iResult
-extends VariantResult
+class_name ResultVector2i
+extends ResultVariant
 
 #region Signals
 #endregion
@@ -29,19 +29,19 @@ var value: Vector2i
 
 #region Public Methods
 func set_value(
-	value_arg: Vector2i, sucess_message_arg: String = "", logger_callback: Callable = Callable(),
-	) -> Vector2iResult:
+	value_arg: Vector2i, success_message_arg: String = "", logger_callback: Callable = Callable(),
+	) -> ResultVector2i:
 		value = value_arg
 		
-		if not sucess_message_arg.is_empty() and logger_callback.is_valid():
-			Logger.success(logger_callback, sucess_message_arg)
+		if not success_message_arg.is_empty() and logger_callback.is_valid():
+			Logger.success(logger_callback, success_message_arg)
 		
 		return self
 
 
 func set_error(
 	error_code_arg: Error, error_message_arg: String = "", logger_callback: Callable = Callable(),
-	) -> Vector2iResult:
+	) -> ResultVector2i:
 		error_code = error_code_arg
 		error_message = error_message_arg
 		

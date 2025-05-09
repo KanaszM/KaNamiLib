@@ -1,5 +1,5 @@
 #@tool
-class_name VariantResult
+class_name ResultVariant
 #extends 
 
 #region Signals
@@ -28,7 +28,7 @@ var is_ok: bool: get = _get_is_ok
 
 #region Virtual Methods
 func _to_string() -> String:
-	return "<VariantResult[%s][%s]>" % [is_ok, get(&"value")]
+	return "<ResultVariant[%s][%s]>" % [is_ok, get(&"value")]
 #endregion
 
 #region Public Methods
