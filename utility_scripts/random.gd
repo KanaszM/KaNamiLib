@@ -19,6 +19,10 @@ static func get_float_from_float_range(float_value: float) -> float:
 	return randf_range(-float_value, float_value)
 
 
+static func get_normal(allow_negative_range: bool = false) -> float:
+	return randf_range(-1.0, 1.0) if allow_negative_range else randf_range(0.0, 1.0)
+
+
 static func get_enum_flag(enum_arg: Dictionary, start_idx: int = 0) -> int:
 	var enum_dict: Dictionary[String, int] = UtilsDictionary.enum_to_typed_dict(enum_arg)
 	var enum_values := Array(enum_dict.values(), TYPE_INT, &"", null) as Array[int]
@@ -28,3 +32,7 @@ static func get_enum_flag(enum_arg: Dictionary, start_idx: int = 0) -> int:
 
 static func execute_callback(callbacks: Array[Callable], args: Array = []) -> Variant:
 	return callbacks[randi_range(0, callbacks.size() - 1)].callv(args)
+
+
+static func get_triangle_point(a: Vector2, b: Vector2, c: Vector2) -> Vector2:
+	return a + sqrt(randf()) * (-a + b + randf() * (c - b))
