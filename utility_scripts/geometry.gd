@@ -89,3 +89,7 @@ static func get_polygon_rect(polygon: PackedVector2Array) -> Rect2:
 		max_point = Vector2(maxf(max_point.x, point.x), maxf(max_point.y, point.y))
 	
 	return Rect2(min_point, (max_point - min_point).abs())
+
+
+static func get_triangle_area(a: Vector2, b: Vector2, c: Vector2) -> float:
+	return 0.5 * absf((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y))
