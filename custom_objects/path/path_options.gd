@@ -22,6 +22,7 @@ var logging_warnings_enabled: bool
 var logging_successes_enabled: bool
 
 var dir_create_if_not_exists: bool
+var file_create_if_not_exists: bool
 
 var to_str_show_full_path: bool = true
 var to_str_left_length: int = 16
