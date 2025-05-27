@@ -43,9 +43,9 @@ func _init(path_arg: String, options_arg: PathOptions = null) -> void:
 func _to_string() -> String:
 	var path_str: String = (
 		path
-		if options.to_str_show_full_path else
-		UtilsText.truncate_middle(path, options.to_str_left_length, options.to_str_right_length)
-	)
+		if options.to_str_show_full_path
+		else UtilsText.truncate_middle(path, options.to_str_left_length, options.to_str_right_length)
+		)
 	
 	return "<PathFile[%d][%s][%s]>" % [type, is_valid, path_str]
 #endregion
@@ -402,22 +402,31 @@ func dir_remove_contents(dir_remove_contents_options: PathDirRemoveContentsOptio
 func _log_error(callback: Callable, message: String) -> void:
 	if options.logging_errors_enabled:
 		match options.logging_type:
-			PathOptions.LoggingType.ENGINE: printerr("%s: %s" % [callback.get_method(), message])
-			PathOptions.LoggingType.INTERNAL: Logger.error(callback, message)
+			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
+				Logger.error(callback, message)
+			
+			_:
+				push_error("%s: %s" % [callback.get_method(), message])
 
 
 func _log_warning(callback: Callable, message: String) -> void:
 	if options.logging_warnings_enabled:
 		match options.logging_type:
-			PathOptions.LoggingType.ENGINE: push_warning("%s: %s" % [callback.get_method(), message])
-			PathOptions.LoggingType.INTERNAL: Logger.warning(callback, message)
+			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
+				Logger.warning(callback, message)
+			
+			_:
+				push_warning("%s: %s" % [callback.get_method(), message])
 
 
 func _log_success(callback: Callable, message: String) -> void:
 	if options.logging_successes_enabled:
 		match options.logging_type:
-			PathOptions.LoggingType.ENGINE: print("%s: %s" % [callback.get_method(), message])
-			PathOptions.LoggingType.INTERNAL: Logger.success(callback, message)
+			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
+				Logger.success(callback, message)
+			
+			_:
+				print("%s: %s" % [callback.get_method(), message])
 #endregion
 
 #region Static Methods
@@ -497,14 +506,42 @@ func _set_type(arg: Type) -> void:
 	is_valid = type != Type.NONE
 	
 	if is_dir:
-		if not exists() and options != null and options.dir_create_if_not_exists:
+		if options != null and options.dir_create_if_not_exists:
+			if exists():
+				_log_success(_set_type, "File exists at path: '%s'." % path)
+				return
+			
 			var error_code: int = DirAccess.make_dir_recursive_absolute(path)
 			
 			if error_code != OK:
-				_log_error(_set_type, "The directory could not be created! %s" % error_string(error_code))
+				_log_error(
+					_set_type,
+					"The directory could not be created at path: '%s'! Error: %s" % [
+						path, error_string(error_code)
+						]
+					)
 				return
 			
-			_log_success(_set_type, "Directory created.")
+			_log_success(_set_type, "Directory created at path: '%s'." % path)
+	
+	else:
+		if options != null and options.file_create_if_not_exists:
+			if exists():
+				_log_success(_set_type, "File exists at path: '%s'." % path)
+				return
+			
+			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+			
+			if file == null:
+				_log_error(
+					_set_type,
+					"The file could not be created at path: '%s'! Error: %s" % [
+						path, FileAccess.get_open_error()
+						]
+					)
+				return
+			
+			_log_success(_set_type, "File created at path: '%s'." % path)
 #endregion
 
 #region Getter Methods
