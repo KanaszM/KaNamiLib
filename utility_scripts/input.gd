@@ -8,27 +8,36 @@ static func move_mouse_cursor(origin: CanvasItem, factor: float = 0.0001) -> voi
 static func event_keys_press_callback(
 	event: InputEvent, keys: Array[Key], callback: Callable, deferred: bool = false
 	) -> void:
-		if event is InputEventKey and (event as InputEventKey).pressed and (event as InputEventKey).keycode in keys:
-			if deferred:
-				callback.call_deferred()
+		if event is InputEventKey:
+			var input_key_event := event as InputEventKey
 			
-			else:
-				callback.call()
+			if input_key_event.pressed and input_key_event.keycode in keys:
+				UtilsCallback.call_safe(callback, deferred)
 
 
 static func event_mouse_button_callback(
 	event: InputEvent, mouse_button: MouseButton, callback: Callable, deferred: bool = false
 	) -> void:
-		if (
-			event is InputEventMouseButton
-			and (event as InputEventMouseButton).pressed
-			and (event as InputEventMouseButton).button_index == mouse_button
-			):
-				if deferred:
-					callback.call_deferred()
-				
-				else:
-					callback.call()
+		if event is InputEventMouseButton:
+			var mouse_button_event := event as InputEventMouseButton
+		
+			if mouse_button_event.pressed and mouse_button_event.button_index == mouse_button:
+				UtilsCallback.call_safe(callback, deferred)
+
+
+static func action_pressed_callback(action: StringName, callback: Callable, deferred: bool = false) -> void:
+	if Input.is_action_pressed(action):
+		UtilsCallback.call_safe(callback, deferred)
+
+
+static func action_just_pressed_callback(action: StringName, callback: Callable, deferred: bool = false) -> void:
+	if Input.is_action_just_pressed(action):
+		UtilsCallback.call_safe(callback, deferred)
+
+
+static func action_just_released_callback(action: StringName, callback: Callable, deferred: bool = false) -> void:
+	if Input.is_action_just_released(action):
+		UtilsCallback.call_safe(callback, deferred)
 
 
 static func int_to_number_key(value: int) -> Key:
