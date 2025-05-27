@@ -20,7 +20,7 @@ var instance_socket: TCPServer
 #endregion
 
 #region Private Variables
-var _input_key_maps: Dictionary[Key, _DebugToolsInputKeyMap]
+var _input_key_maps: Dictionary[Key, InputKeyMap]
 #endregion
 
 #region OnReady Variables
@@ -41,7 +41,7 @@ func _input(event: InputEvent) -> void:
 			if not key_event.keycode in _input_key_maps:
 				return
 			
-			var input_key_map: _DebugToolsInputKeyMap = _input_key_maps[key_event.keycode]
+			var input_key_map: InputKeyMap = _input_key_maps[key_event.keycode]
 			
 			input_key_map.execute()
 #endregion
@@ -53,7 +53,7 @@ func bind_input_key(key: Key, callback: Callable, mode: bool = true, deferred: b
 	
 	if mode:
 		if key not in _input_key_maps:
-			_input_key_maps[key] = _DebugToolsInputKeyMap.new()
+			_input_key_maps[key] = InputKeyMap.new()
 		
 		_input_key_maps[key].add(callback, deferred)
 	
@@ -121,6 +121,32 @@ static func print_array(array: Array, indexed: bool = true) -> void:
 #endregion
 
 #region SubClasses
+class InputKeyMap:
+	#region Private Variables
+	var _map: Dictionary[Callable, bool]
+	#endregion
+	
+	#region Public Methods
+	func add(callback: Callable, deferred: bool) -> void:
+		_map[callback] = deferred
+	
+	
+	func remove(callback: Callable) -> void:
+		_map.erase(callback)
+	
+	
+	func is_empty() -> bool:
+		return _map.is_empty()
+	
+	
+	func execute() -> void:
+		for callback: Callable in _map:
+			if _map[callback]:
+				callback.call_deferred()
+			
+			else:
+				callback.call()
+	#endregion
 #endregion
 
 #region Setter Methods
