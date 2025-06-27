@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedScrollContainer
-extends ScrollContainer
+class_name ExtendedScrollContainer extends ScrollContainer
 
 #region Enums
 enum FollowScrollSmoothMode {FIXED, BY_LENGTH}

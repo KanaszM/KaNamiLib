@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedTextEdit
-extends TextEdit
+class_name ExtendedTextEdit extends TextEdit
 
 #region Export Variables
 @export var max_length: int: set = _set_max_length

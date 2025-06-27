@@ -1,6 +1,4 @@
-#@tool
-class_name TreeOrganizerFilter
-extends TreeOrganizerElement
+class_name TreeOrganizerFilter extends TreeOrganizerElement
 
 #region Enums
 enum Type {TEXT, NUMERIC, BOOL, LENGTH, LIST}

@@ -1,5 +1,4 @@
-#class_name WS
-extends Node
+class_name WebSocketClient extends Node
 
 #region Signals
 signal connected

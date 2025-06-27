@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedHBoxContainer
-extends HBoxContainer
+class_name ExtendedHBoxContainer extends HBoxContainer
 
 #region Theme Methods
 func set_separation(value: int) -> void:

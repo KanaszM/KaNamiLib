@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedGridContainer
-extends GridContainer
+class_name ExtendedGridContainer extends GridContainer
 
 #region Constants
 const AWAIT_INTERVALS: int = 2

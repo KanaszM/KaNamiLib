@@ -1,5 +1,4 @@
-class_name ExtendedAnimationPlayer 
-extends AnimationPlayer
+class_name ExtendedAnimationPlayer extends AnimationPlayer
 
 #region Export Variables
 @export var one_shot: bool: set = _set_one_shot

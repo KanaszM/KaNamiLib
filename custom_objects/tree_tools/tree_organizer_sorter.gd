@@ -1,5 +1,4 @@
-class_name TreeOrganizerSorter
-extends TreeOrganizerElement
+class_name TreeOrganizerSorter extends TreeOrganizerElement
 
 #region Enums
 enum Type {ASC, DESC}

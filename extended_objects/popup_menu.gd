@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedPopupMenu
-extends PopupMenu
+class_name ExtendedPopupMenu extends PopupMenu
 
 #region Export Variables
 @export var free_on_hide: bool

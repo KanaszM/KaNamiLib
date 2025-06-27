@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedMarginContainer
-extends MarginContainer
+class_name ExtendedMarginContainer extends MarginContainer
 
 #region Signals
 signal margin_changed

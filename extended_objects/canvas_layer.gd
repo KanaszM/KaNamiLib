@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedCanvasLayer
-extends CanvasLayer
+class_name ExtendedCanvasLayer extends CanvasLayer
 
 #region Constants
 const MAX_LAYER: int = 128

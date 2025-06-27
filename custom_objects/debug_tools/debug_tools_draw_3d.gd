@@ -1,5 +1,4 @@
-class_name DebugToolsDraw3D
-extends Node
+class_name DebugToolsDraw3D extends Node
 
 #region Public Methods
 func line(

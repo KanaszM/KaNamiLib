@@ -1,5 +1,4 @@
-class_name DebugTools
-extends Node
+class_name DebugTools extends Node
 
 #region Public Variables
 var instance_index: int = -1

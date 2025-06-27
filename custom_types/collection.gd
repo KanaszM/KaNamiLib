@@ -1,5 +1,4 @@
-class_name Collection
-extends Resource
+class_name Collection extends Resource
 
 #region Private Variables
 var _items: Dictionary[Variant, int]
@@ -13,6 +12,7 @@ func _to_string() -> String:
 #region Public Methods
 func add(item: Variant) -> Collection:
 	_items[item] = 0
+	emit_changed()
 	
 	return self
 
@@ -24,12 +24,16 @@ func add_incremented(item: Variant) -> Collection:
 	else:
 		_items[item] = 1
 	
+	emit_changed()
+	
 	return self
 
 
 func add_array(array: Array) -> Collection:
 	for item: Variant in array:
 		add(item)
+	
+	emit_changed()
 	
 	return self
 
@@ -43,12 +47,14 @@ func add_array_incremented(array: Array) -> Collection:
 
 func remove(item: Variant) -> Collection:
 	_items.erase(item)
+	emit_changed()
 	
 	return self
 
 
 func clear() -> Collection:
 	_items.clear()
+	emit_changed()
 	
 	return self
 

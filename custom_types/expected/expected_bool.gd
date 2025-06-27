@@ -1,5 +1,4 @@
-class_name ExpectedBool
-extends ExpectedVariant
+class_name ExpectedBool extends ExpectedVariant
 
 #region Private Variables
 var _value: bool

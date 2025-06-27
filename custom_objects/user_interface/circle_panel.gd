@@ -1,6 +1,5 @@
 @tool
-class_name CirclePanel
-extends Control
+class_name CirclePanel extends Control
 
 #region Enums
 enum Alignment {LEFT, CENTER, RIGHT}

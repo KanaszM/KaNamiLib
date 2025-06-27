@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedPopupPanel
-extends PopupPanel
+class_name ExtendedPopupPanel extends PopupPanel
 
 #region Export Variables
 @export var one_shot: bool: set = _set_one_shot

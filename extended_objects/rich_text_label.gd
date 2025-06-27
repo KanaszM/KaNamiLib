@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedRichTextLabel
-extends RichTextLabel
+class_name ExtendedRichTextLabel extends RichTextLabel
 
 #region Virtual Methods
 func _init() -> void:

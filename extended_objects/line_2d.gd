@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedLine2D
-extends Line2D
+class_name ExtendedLine2D extends Line2D
 
 #region Enums
 enum SyncColorMode {DEFAULT, SYNCED, BLENDED}

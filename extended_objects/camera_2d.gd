@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedCamera2D
-extends Camera2D
+class_name ExtendedCamera2D extends Camera2D
 
 #region Signals
 signal target_reached

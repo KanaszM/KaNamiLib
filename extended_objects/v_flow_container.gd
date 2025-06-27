@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedVFlowContainer
-extends VFlowContainer
+class_name ExtendedVFlowContainer extends VFlowContainer
 
 #region Theme Methods
 func set_separation(value: int) -> void:

@@ -1,5 +1,4 @@
-class_name TreeOrganizerBoolFilter
-extends TreeOrganizerFilter
+class_name TreeOrganizerBoolFilter extends TreeOrganizerFilter
 
 #region Public Variables
 var criteria: bool

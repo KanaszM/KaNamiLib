@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedColorRect
-extends ColorRect
+class_name ExtendedColorRect extends ColorRect
 
 #region Public Methods
 func set_random_shade_color(shade_color_index: int = 6, color_alpha: float = 1.0) -> void:

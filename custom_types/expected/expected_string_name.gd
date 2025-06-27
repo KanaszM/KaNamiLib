@@ -1,5 +1,4 @@
-class_name ExpectedStringName
-extends ExpectedVariant
+class_name ExpectedStringName extends ExpectedVariant
 
 #region Private Variables
 var _value: StringName

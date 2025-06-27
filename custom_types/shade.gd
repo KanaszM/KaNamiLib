@@ -1,5 +1,4 @@
-class_name Shade
-extends Resource
+class_name Shade extends Resource
 
 #region Enums
 enum Type {GRAY, RED, PINK, GRAPE, VIOLET, INDIGO, BLUE, CYAN, TEAL, GREEN, LIME, YELLOW, ORANGE}

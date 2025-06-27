@@ -1,5 +1,4 @@
-class_name Array1D
-extends Resource
+class_name Array1D extends Resource
 
 #region Public Variables
 var contents: Array
@@ -177,14 +176,17 @@ func find(what: Variant, from: int = 0) -> int:
 
 
 func insert(position: int, value: Variant) -> int:
+	emit_changed()
 	return contents.insert(get_unbounded_index(position), value)
 
 
 func pop_at(position: int) -> Variant:
+	emit_changed()
 	return contents.pop_at(get_unbounded_index(position))
 
 
-func reat(position: int) -> void:
+func remove_at(position: int) -> void:
+	emit_changed()
 	contents.remove_at(get_unbounded_index(position))
 
 
@@ -239,14 +241,17 @@ func any(method: Callable) -> bool:
 
 
 func append(value: Variant) -> void:
+	emit_changed()
 	contents.append(value)
 
 
 func append_array(array: Array) -> void:
+	emit_changed()
 	contents.append_array(array)
 
 
 func assign(array: Array) -> void:
+	emit_changed()
 	contents.assign(array)
 
 
@@ -263,6 +268,7 @@ func bsearch_custom(value: Variant, method: Callable, before: bool = true) -> in
 
 
 func clear() -> void:
+	emit_changed()
 	contents.clear()
 
 
@@ -271,10 +277,12 @@ func count(value: Variant) -> int:
 
 
 func erase(value: Variant) -> void:
+	emit_changed()
 	contents.erase(value)
 
 
 func fill(value: Variant) -> void:
+	emit_changed()
 	contents.fill(value)
 
 
@@ -299,18 +307,22 @@ func pick_random() -> Variant:
 
 
 func pop_back() -> Variant:
+	emit_changed()
 	return contents.pop_back()
 
 
 func pop_front() -> Variant:
+	emit_changed()
 	return contents.pop_front()
 
 
 func push_back(value: Variant) -> void:
+	emit_changed()
 	contents.push_back(value)
 
 
 func push_front(value: Variant) -> void:
+	emit_changed()
 	contents.push_front(value)
 
 
@@ -319,14 +331,17 @@ func reduce(method: Callable, accum: Variant = null) -> Variant:
 
 
 func resize(new_size: int) -> int:
+	emit_changed()
 	return contents.resize(new_size)
 
 
 func reverse() -> void:
+	emit_changed()
 	contents.reverse()
 
 
 func shuffle() -> void:
+	emit_changed()
 	contents.shuffle()
 
 
@@ -335,9 +350,11 @@ func size() -> int:
 
 
 func sort() -> void:
+	emit_changed()
 	contents.sort()
 
 
 func sort_custom(method: Callable) -> void:
+	emit_changed()
 	contents.sort_custom(method)
 #endregion

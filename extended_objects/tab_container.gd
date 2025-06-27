@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedTabContainer
-extends TabContainer
+class_name ExtendedTabContainer extends TabContainer
 
 #region Signals
 signal tab_closed(node: Node)

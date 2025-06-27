@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedPanelContainer
-extends PanelContainer
+class_name ExtendedPanelContainer extends PanelContainer
 
 #region Theme Methods
 func get_style() -> StyleBox:

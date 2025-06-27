@@ -1,5 +1,4 @@
-class_name ExternalTextEditor
-extends Object
+class_name ExternalTextEditor extends Object
 
 #region Signals
 signal finished(results: PackedStringArray, error_message: String)

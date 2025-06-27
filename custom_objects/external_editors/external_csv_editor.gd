@@ -1,5 +1,4 @@
-class_name ExternalCSVEditor
-extends Object
+class_name ExternalCSVEditor extends Object
 
 #region Signals
 signal finished(results: Array[Dictionary], error_message: String)

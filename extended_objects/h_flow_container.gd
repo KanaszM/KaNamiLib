@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedHFlowContainer
-extends HFlowContainer
+class_name ExtendedHFlowContainer extends HFlowContainer
 
 #region Theme Methods
 func set_separation(value: int) -> void:

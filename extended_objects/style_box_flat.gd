@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedStyleBoxFlat
-extends StyleBoxFlat
+class_name ExtendedStyleBoxFlat extends StyleBoxFlat
 
 #region Export Variables
 @export var invert_colors: bool: set = _set_invert_colors

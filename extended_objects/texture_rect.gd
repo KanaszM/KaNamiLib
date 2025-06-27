@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedTextureRect
-extends TextureRect
+class_name ExtendedTextureRect extends TextureRect
 
 #region Public Variables
 var asynchronous: bool

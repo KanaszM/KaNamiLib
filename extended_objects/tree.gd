@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedTree
-extends Tree
+class_name ExtendedTree extends Tree
 
 #region Public Variables
 var copy_enabled: bool = true

@@ -1,6 +1,5 @@
 @tool
-class_name Icon
-extends CompressedTexture2D
+class_name Icon extends CompressedTexture2D
 
 #region Export Variables
 @export var modulate: Color = Color.WHITE: set = _set_modulate

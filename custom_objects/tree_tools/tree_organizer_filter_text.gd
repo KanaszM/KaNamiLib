@@ -1,5 +1,4 @@
-class_name TreeOrganizerTextFilter
-extends TreeOrganizerFilter
+class_name TreeOrganizerTextFilter extends TreeOrganizerFilter
 
 #region Enums
 enum Mode {EQUALS, CONTAINS, BEGINS_WITH, ENDS_WITH}

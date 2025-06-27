@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedLabel
-extends Label
+class_name ExtendedLabel extends Label
 
 #region Signals
 signal text_changed(new_text: String)

@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedButton
-extends Button
+class_name ExtendedButton extends Button
 
 #region Signals
 signal disabled_set(mode: bool)

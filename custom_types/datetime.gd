@@ -1,5 +1,4 @@
-class_name DateTime
-extends Resource
+class_name DateTime extends Resource
 
 #region Enums
 enum Language {EN}
@@ -60,6 +59,8 @@ func increment_day(mode: bool, max_iteration: int = 1) -> void:
 			day = get_days_in_month()
 		
 		current_iteration += 1
+	
+	emit_changed()
 
 
 func increment_month(mode: bool, max_iteration: int = 1) -> void:
@@ -77,11 +78,14 @@ func increment_month(mode: bool, max_iteration: int = 1) -> void:
 			year -= 1
 		
 		current_iteration += 1
+	
+	emit_changed()
 
 
 func increment_year(mode: bool, max_iteration: int = 1) -> void:
 	year = (year + max_iteration) if mode else (year - max_iteration)
 	day = day
+	emit_changed()
 #endregion
 
 #region Format Methods
@@ -204,6 +208,8 @@ func set_today() -> void:
 	day = today_dict.day
 	month = today_dict.month
 	year = today_dict.year
+	
+	emit_changed()
 
 
 func get_days_in_month(m: int = month, y: int = year) -> int:
@@ -475,12 +481,15 @@ static func split_system_stamp(datetime_stamp: String) -> Dictionary[String, int
 #region Setter Methods
 func _set_day(arg: int) -> void:
 	day = clamp_day(arg, month, year)
+	emit_changed()
 
 
 func _set_month(arg: int) -> void:
 	month = clamp_month(arg)
+	emit_changed()
 
 
 func _set_year(arg: int) -> void:
 	year = clamp_year(arg)
+	emit_changed()
 #endregion

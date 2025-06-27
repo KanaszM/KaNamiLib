@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedPolygon2D
-extends Polygon2D
+class_name ExtendedPolygon2D extends Polygon2D
 
 #region Signals
 signal polygon_changed

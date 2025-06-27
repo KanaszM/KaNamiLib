@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedSplitContainer
-extends SplitContainer
+class_name ExtendedSplitContainer extends SplitContainer
 
 #region Public Methods
 func set_offset_at_half(reversed: bool = true) -> void:

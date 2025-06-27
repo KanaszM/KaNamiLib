@@ -1,5 +1,4 @@
-class_name TreeOrganizerLengthFilter
-extends TreeOrganizerFilter
+class_name TreeOrganizerLengthFilter extends TreeOrganizerFilter
 
 #region Public Variables
 var criteria: int

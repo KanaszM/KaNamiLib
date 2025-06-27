@@ -1,5 +1,4 @@
-class_name TreeOrganizerNumericFilter
-extends TreeOrganizerFilter
+class_name TreeOrganizerNumericFilter extends TreeOrganizerFilter
 
 #region Enums
 enum Mode {EQUALS, GREATER_THAN, GREATER_THAN_OR_EQUAL_TO, LOWER_THAN, LOWER_THAN_OR_EQUAL_TO}

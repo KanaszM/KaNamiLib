@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedBoxContainer
-extends BoxContainer
+class_name ExtendedBoxContainer extends BoxContainer
 
 #region Theme Methods
 func set_separation(value: int) -> void:

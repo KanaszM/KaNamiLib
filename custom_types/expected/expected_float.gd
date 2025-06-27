@@ -1,5 +1,4 @@
-class_name ExpectedFloat
-extends ExpectedVariant
+class_name ExpectedFloat extends ExpectedVariant
 
 #region Private Variables
 var _value: float

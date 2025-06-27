@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedVBoxContainer
-extends VBoxContainer
+class_name ExtendedVBoxContainer extends VBoxContainer
 
 #region Theme Methods
 func set_separation(value: int) -> void:

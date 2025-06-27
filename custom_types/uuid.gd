@@ -1,5 +1,4 @@
-class_name UUID
-extends Resource
+class_name UUID extends Resource
 
 #region Constants
 const FORMAT: String = "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"

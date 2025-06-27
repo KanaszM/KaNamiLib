@@ -1,5 +1,4 @@
-class_name ExpectedVector3
-extends ExpectedVariant
+class_name ExpectedVector3 extends ExpectedVariant
 
 #region Private Variables
 var _value: Vector3

@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedLineEdit
-extends LineEdit
+class_name ExtendedLineEdit extends LineEdit
 
 #region Enums
 enum PatternType {ANY, LETTERS, INTEGER, POSITIVE_INTEGER, FLOAT, POSITIVE_FLOAT, ALPHANUMERIC}

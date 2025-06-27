@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedCheckBox
-extends CheckBox
+class_name ExtendedCheckBox extends CheckBox
 
 #region Private Variables
 var _signals: Array[Signal]

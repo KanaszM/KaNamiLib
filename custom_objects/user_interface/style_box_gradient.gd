@@ -1,6 +1,5 @@
 @tool
-class_name StyleBoxGradient
-extends StyleBoxTexture
+class_name StyleBoxGradient extends StyleBoxTexture
 
 #region Enums
 enum Direction {

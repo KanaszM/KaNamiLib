@@ -1,6 +1,5 @@
 @tool
-class_name ExtendedProgressBar
-extends ProgressBar
+class_name ExtendedProgressBar extends ProgressBar
 
 #region Signals
 signal smooth_target_reached
