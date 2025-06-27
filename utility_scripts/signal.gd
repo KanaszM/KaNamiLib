@@ -1,6 +1,10 @@
 class_name UtilsSignal
 
 
+static func delegate(signal_arg: Signal, other_signal_arg: Signal) -> bool:
+	return connect_safe(signal_arg, other_signal_arg.emit)
+
+
 static func interrupt(signal_arg: Signal, signal_callback: Callable, callback: Callable, args: Array = []) -> void:
 	var is_initially_connected: bool = signal_arg.is_connected(signal_callback)
 	
