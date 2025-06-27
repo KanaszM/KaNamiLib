@@ -1,21 +1,8 @@
-#@tool
 class_name ExternalTextEditor
 extends Object
 
 #region Signals
 signal finished(results: PackedStringArray, error_message: String)
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
 #endregion
 
 #region Private Variables
@@ -25,9 +12,6 @@ var _active_instance_path: String
 var _active_instance_pid: int
 var _results: PackedStringArray
 var _results_skip_empty_rows: bool
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -67,9 +51,6 @@ func _init(
 		_tree.create_timer(_processing_wait_time).timeout.connect(_on_tree_timer_timeout)
 #endregion
 
-#region Public Methods
-#endregion
-
 #region Private Methods
 func _read() -> void:
 	_results = Path.new(_active_instance_path).file_get_contents(_results_skip_empty_rows)
@@ -83,9 +64,6 @@ func _reset(error_message: String) -> void:
 	free.call_deferred()
 #endregion
 
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_tree_timer_timeout() -> void:
 	if OS.is_process_running(_active_instance_pid):
@@ -93,10 +71,4 @@ func _on_tree_timer_timeout() -> void:
 	
 	else:
 		_read()
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
 #endregion

@@ -2,9 +2,6 @@
 class_name StyleBoxGradient
 extends StyleBoxTexture
 
-#region Signals
-#endregion
-
 #region Enums
 enum Direction {
 	LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP,
@@ -119,12 +116,6 @@ func set_custom_bg_color_2(color: Color) -> void:
 	
 	changed.emit()
 	update()
-#endregion
-
-#region Private Methods
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods

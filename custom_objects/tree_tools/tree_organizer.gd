@@ -1,6 +1,4 @@
-#@tool
 class_name TreeOrganizer
-#extends 
 
 #region Enums
 enum ValueMode {CELL, TOOLTIP, CELL_AND_TOOLTIP}
@@ -373,13 +371,4 @@ static func _sort_elements(elements: Array) -> void:
 			element_2: TreeOrganizerElement
 			) -> bool: return element_1.col_idx < element_2.col_idx
 		)
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

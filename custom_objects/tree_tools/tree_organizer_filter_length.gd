@@ -1,28 +1,5 @@
-#@tool
 class_name TreeOrganizerLengthFilter
 extends TreeOrganizerFilter
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-var criteria: int
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
 
 #region Virtual Methods
 func _init(column_index: int) -> void:
@@ -43,22 +20,4 @@ func update(criteria_value: int, is_negative: bool) -> TreeOrganizerLengthFilter
 
 func equals(criteria_value: int, is_negative: bool = false) -> TreeOrganizerLengthFilter:
 	return update(criteria_value, is_negative)
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

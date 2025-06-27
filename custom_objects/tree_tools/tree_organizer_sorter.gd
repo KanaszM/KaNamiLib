@@ -1,30 +1,9 @@
-#@tool
 class_name TreeOrganizerSorter
 extends TreeOrganizerElement
-
-#region Signals
-#endregion
-
-#region Enums
-enum Type {ASC, DESC}
-enum Mode {TEXT, NUMERIC}
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
 
 #region Public Variables
 var type: Type = Type.ASC
 var mode: Mode = Mode.TEXT
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -69,22 +48,4 @@ func reverse_type() -> TreeOrganizerSorter:
 	type = Type.DESC if type == Type.ASC else Type.ASC
 	
 	return self
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

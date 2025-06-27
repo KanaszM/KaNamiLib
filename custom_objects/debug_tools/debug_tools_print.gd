@@ -1,6 +1,6 @@
 class_name DebugToolsPrint
 
-
+#region Static Methods
 static func print_variable(variable: Variant, name: String) -> void:
 	print(get_variable_string(variable, name))
 
@@ -79,3 +79,4 @@ static func get_variable_value_string(variable: Variant) -> String:
 		
 		_:
 			return str(variable)
+#endregion

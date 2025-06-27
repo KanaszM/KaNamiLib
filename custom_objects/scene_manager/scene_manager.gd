@@ -1,4 +1,3 @@
-#@tool
 class_name SceneManager
 extends RefCounted
 
@@ -6,18 +5,6 @@ extends RefCounted
 signal setting_scene
 signal previous_scene_freed
 signal scene_set(state: bool)
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
 #endregion
 
 #region Private Variables
@@ -28,9 +15,6 @@ var _current_scene_index: Variant
 var _current_scene_node: Node
 
 var _init_is_valid: bool
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -120,22 +104,4 @@ func set_scene(scene_index: Variant, options: SceneManagerOptions = null) -> voi
 	)
 	
 	scene_set.emit(true)
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

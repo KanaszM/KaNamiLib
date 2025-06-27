@@ -1,18 +1,7 @@
-#@tool
 class_name Logger
-#extends 
-
-#region Signals
-#endregion
 
 #region Enums
 enum Type {INFO, ERROR, WARNING, SUCCESS, DEBUG, CRITICAL, TRACE, NOTICE, ALERT, FATAL}
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
 #endregion
 
 #region Public Variables
@@ -22,18 +11,6 @@ static var enabled: bool = true
 #region Private Variables
 static var _file: FileAccess
 static var _file_options: LoggerFileOptions = LoggerFileOptions.new()
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
-#endregion
-
-#region Public Methods
-#endregion
-
-#region Private Methods
 #endregion
 
 #region Static Methods
@@ -199,16 +176,4 @@ static func _get_entry_color(type: Type) -> Color:
 		Type.ALERT: return Shade.orange(5)
 		Type.FATAL: return Shade.grape(6)
 		_: return Shade.gray(0) 
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

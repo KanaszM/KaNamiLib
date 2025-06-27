@@ -1,9 +1,5 @@
-#@tool
 class_name DateTime
 extends Resource
-
-#region Signals
-#endregion
 
 #region Enums
 enum Language {EN}
@@ -33,15 +29,6 @@ const DATE_NAMES_EN: Dictionary[DateNameType, Array] = {
 @export var day: int: set = _set_day
 @export var month: int: set = _set_month
 @export var year: int: set = _set_year
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -485,12 +472,6 @@ static func split_system_stamp(datetime_stamp: String) -> Dictionary[String, int
 	}
 #endregion
 
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_day(arg: int) -> void:
 	day = clamp_day(arg, month, year)
@@ -502,7 +483,4 @@ func _set_month(arg: int) -> void:
 
 func _set_year(arg: int) -> void:
 	year = clamp_year(arg)
-#endregion
-
-#region Getter Methods
 #endregion

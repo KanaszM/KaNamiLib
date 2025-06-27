@@ -1,18 +1,5 @@
-#@tool
 class_name DebugTools
 extends Node
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
 
 #region Public Variables
 var instance_index: int = -1
@@ -21,9 +8,6 @@ var instance_socket: TCPServer
 
 #region Private Variables
 var _input_key_maps: Dictionary[Key, InputKeyMap]
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -96,9 +80,6 @@ func update_instance_window_rect(window: Window, max_instances_count: int, title
 	window.position = origin + Vector2.DOWN * title_bar_height
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Static Methods
 static func attach(origin: Node) -> DebugTools:
 	var debug_tools: DebugTools = DebugTools.new()
@@ -115,9 +96,6 @@ static func print_array(array: Array, indexed: bool = true) -> void:
 		var entry: Variant = array[entry_idx]
 		
 		print("%s%s" % [("[%s] " % str(entry_idx + 1).lpad(max_index_length)) if indexed else "", entry])
-#endregion
-
-#region Signal Callbacks
 #endregion
 
 #region SubClasses
@@ -147,10 +125,4 @@ class InputKeyMap:
 			else:
 				callback.call()
 	#endregion
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

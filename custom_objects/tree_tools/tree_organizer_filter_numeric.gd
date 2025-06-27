@@ -1,29 +1,13 @@
-#@tool
 class_name TreeOrganizerNumericFilter
 extends TreeOrganizerFilter
-
-#region Signals
-#endregion
 
 #region Enums
 enum Mode {EQUALS, GREATER_THAN, GREATER_THAN_OR_EQUAL_TO, LOWER_THAN, LOWER_THAN_OR_EQUAL_TO}
 #endregion
 
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
 #region Public Variables
 var mode: Mode = Mode.EQUALS
 var criteria: float
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -62,22 +46,4 @@ func lower_than(criteria_value: float, is_negative: bool = false) -> TreeOrganiz
 
 func lower_than_or_equals_to(criteria_value: float, is_negative: bool = false) -> TreeOrganizerNumericFilter:
 	return update(Mode.LOWER_THAN_OR_EQUAL_TO, criteria_value, is_negative)
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

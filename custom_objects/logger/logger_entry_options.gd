@@ -1,18 +1,4 @@
-#@tool
 class_name LoggerEntryOptions
-#extends 
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
 
 #region Public Variables
 var indent_length: int
@@ -25,34 +11,4 @@ var enable_file_logging: bool = true
 
 var output_custom_color: Color = Color.TRANSPARENT
 var output_font_size: int = 14
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
-#endregion
-
-#region Public Methods
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

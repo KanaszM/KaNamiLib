@@ -1,28 +1,9 @@
-#@tool
 class_name TreeOrganizerListFilter
 extends TreeOrganizerFilter
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
 
 #region Public Variables
 var criteria: Array
 var case_sensitive: bool
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -56,22 +37,4 @@ func set_case_sensitive(state: bool = true) -> TreeOrganizerListFilter:
 	case_sensitive = state
 	
 	return self
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

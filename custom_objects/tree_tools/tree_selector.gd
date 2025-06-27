@@ -1,19 +1,11 @@
-#@tool
 class_name TreeSelector
-#extends 
 
 #region Signals
 signal changed
 #endregion
 
-#region Enums
-#endregion
-
 #region Constants
 const SELECTION_COLOR_ALPHA: float = 0.5
-#endregion
-
-#region Export Variables
 #endregion
 
 #region Public Variables
@@ -26,12 +18,6 @@ var selection_col_idx: int
 var selection_color: Color = Shade.green(2): set = _set_selection_color
 
 var selected_rows: Array[TreeItem]
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -142,25 +128,13 @@ func toggle_row_selection(item_row: TreeItem) -> void:
 	set_row_selected(item_row, not row_is_selected(item_row))
 #endregion
 
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_tree_item_activated() -> void:
 	set_row_activated(tree.get_selected())
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods
 func _set_selection_color(arg: Color) -> void:
 	selection_color = arg
 	selection_color.a = SELECTION_COLOR_ALPHA
-#endregion
-
-#region Getter Methods
 #endregion

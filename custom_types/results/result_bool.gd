@@ -1,31 +1,5 @@
-#@tool
 class_name ResultBool
 extends ResultVariant
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-var value: bool
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
-#endregion
 
 #region Public Methods
 func set_value(
@@ -49,22 +23,4 @@ func set_error(
 			Logger.error(logger_callback, "%s :: %s" % [error_string(error_code), error_message])
 		
 		return self
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

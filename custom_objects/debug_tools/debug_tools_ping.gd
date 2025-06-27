@@ -1,32 +1,8 @@
-#@tool
 class_name DebugToolsPing
-#extends 
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
 
 #region Constants
 const DEFAULT_MICROSECONDS_PER_SECOND: float = 1000000.0
 const DEFAULT_PREFIX: String = "Time spent: "
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-var _start_value: float
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
 #endregion
 
 #region Public Methods
@@ -50,9 +26,6 @@ func stop(
 			print(str(result) if print_ping_value_only else ("%s%f" % [prefix, result]))
 		
 		return result
-#endregion
-
-#region Private Methods
 #endregion
 
 #region Static Methods
@@ -98,16 +71,4 @@ static func measure_callback_result_average(
 			print("%s%f" % [prefix, result])
 		
 		return result
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

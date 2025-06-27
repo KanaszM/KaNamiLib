@@ -2,9 +2,6 @@
 class_name CirclePanel
 extends Control
 
-#region Signals
-#endregion
-
 #region Enums
 enum Alignment {LEFT, CENTER, RIGHT}
 #endregion
@@ -20,18 +17,12 @@ const DEFAULT_CORNER_DETAIL_THRESHOLD: int = 30
 @export var corner_detail_override: int: set = _set_corner_detail_override
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _panel: Panel
 var _style: StyleBoxFlat
 var _aspect: AspectRatioContainer
 
 var _updates_enabled: bool
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -52,9 +43,6 @@ func _ready() -> void:
 	_update()
 	
 	resized.connect(_update)
-#endregion
-
-#region Public Methods
 #endregion
 
 #region Private Methods
@@ -83,15 +71,6 @@ func _get_default_corner_detail(corner_radius: int) -> int:
 		)
 #endregion
 
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_alignment(arg: Alignment) -> void:
 	alignment = arg
@@ -107,7 +86,4 @@ func _set_style(arg: StyleBoxFlat) -> void:
 func _set_corner_detail_override(arg: int) -> void:
 	corner_detail_override = maxi(0, arg)
 	_update()
-#endregion
-
-#region Getter Methods
 #endregion

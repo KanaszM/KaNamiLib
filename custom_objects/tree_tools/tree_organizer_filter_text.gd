@@ -1,30 +1,14 @@
-#@tool
 class_name TreeOrganizerTextFilter
 extends TreeOrganizerFilter
 
-#region Signals
-#endregion
-
 #region Enums
 enum Mode {EQUALS, CONTAINS, BEGINS_WITH, ENDS_WITH}
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
 #endregion
 
 #region Public Variables
 var mode: Mode = Mode.EQUALS
 var criteria: String
 var case_sensitive: bool
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -78,22 +62,4 @@ func ends_with(
 func set_case_sensitive(state: bool = true) -> TreeOrganizerTextFilter:
 	case_sensitive = state
 	return self
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

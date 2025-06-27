@@ -1,28 +1,8 @@
-#@tool
 class_name UUID
 extends Resource
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
 #region Constants
 const FORMAT: String = "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-var b: PackedByteArray
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -59,9 +39,6 @@ func is_equal(uuid: UUID) -> bool:
 	return b == uuid.b
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Static Methods
 static func get_binary(mask: int = 0b11111111) -> PackedByteArray:
 	randomize()
@@ -79,16 +56,4 @@ static func get_formatted(_b: PackedByteArray = get_binary()) -> String:
 		_b[0], _b[1], _b[2], _b[3], _b[4], _b[5], _b[6], _b[7], _b[8],
 		_b[9], _b[10], _b[11], _b[12], _b[13], _b[14], _b[15]
 		]
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

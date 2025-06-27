@@ -1,4 +1,3 @@
-#@tool
 #class_name WS
 extends Node
 
@@ -6,15 +5,6 @@ extends Node
 signal connected
 signal disconnected
 signal packet_received(packet: Packets.Packet)
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
 #endregion
 
 #region Public Variables
@@ -28,9 +18,6 @@ var has_connection: bool
 
 #region Private Variables
 var _paused: bool: set = _set_paused
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -144,12 +131,6 @@ func _retrieve_packet() -> Packets.Packet:
 	return packet
 #endregion
 
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
 #region SubClasses
 # Use the Protobuf add-on to parse a "packets.proto" Protocol Buffers file and prepend the resulting file with
 # the line "class_name Packets". Alternatively, you can define your own Packets.Packet class structures
@@ -170,7 +151,4 @@ func _set_client_id(arg: int) -> void:
 func _set_paused(arg: bool) -> void:
 	_paused = arg
 	set_process(not arg)
-#endregion
-
-#region Getter Methods
 #endregion

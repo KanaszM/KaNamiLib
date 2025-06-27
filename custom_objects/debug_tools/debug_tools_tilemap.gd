@@ -1,16 +1,6 @@
-@tool
 class_name DebugToolsTileMap
-extends Node2D
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
+#region Properties
 #region Export Variables
 @export var tile_map_layer: TileMapLayer
 @export var persistent_mode: bool
@@ -51,14 +41,6 @@ extends Node2D
 @export var label_stats_enabled: bool
 @export var label_stats_text_size: int = 12: set = _set_label_stats_text_size
 #endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -194,21 +176,6 @@ func _draw() -> void:
 			)
 #endregion
 
-#region Public Methods
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_continuous_update_mode(arg: bool) -> void:
 	continuous_update_mode = arg
@@ -237,7 +204,4 @@ func _set_label_title_text_size(arg: int) -> void:
 
 func _set_label_stats_text_size(arg: int) -> void:
 	label_stats_text_size = maxi(0, arg)
-#endregion
-
-#region Getter Methods
 #endregion

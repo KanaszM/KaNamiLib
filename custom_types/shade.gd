@@ -1,9 +1,5 @@
-#@tool
 class_name Shade
 extends Resource
-
-#region Signals
-#endregion
 
 #region Enums
 enum Type {GRAY, RED, PINK, GRAPE, VIOLET, INDIGO, BLUE, CYAN, TEAL, GREEN, LIME, YELLOW, ORANGE}
@@ -67,27 +63,6 @@ const COLORS: Dictionary[Type, Array] = {
 	Color("#ff922b"), Color("#fd7e14"), Color("#f76707"), Color("#e8590c"), Color("#d9480f"),
   ]
 }
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
-#endregion
-
-#region Public Methods
-#endregion
-
-#region Private Methods
 #endregion
 
 #region Static Methods
@@ -177,13 +152,4 @@ static func yellow(idx: int = DEFAULT_IDX, reversed: bool = false, a: float = 1.
 
 static func orange(idx: int = DEFAULT_IDX, reversed: bool = false, a: float = 1.0) -> Color:
 	return get_color(Type.ORANGE, idx, reversed, a)
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

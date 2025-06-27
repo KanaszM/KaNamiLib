@@ -1,18 +1,7 @@
-#@tool
 class_name Path
-#extends 
-
-#region Signals
-#endregion
 
 #region Enums
 enum Type {NONE, FILE, DIR}
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
 #endregion
 
 #region Public Variables
@@ -484,12 +473,6 @@ static func open_externally(file_path: String) -> Error:
 		Logger.error(open_externally, "File at path: '%s' could not be opened externally!" % file_path)
 	
 	return error_code
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods

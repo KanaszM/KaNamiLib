@@ -1,28 +1,5 @@
-#@tool
 class_name Array1D
 extends Resource
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-var contents: Array
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
 
 #region Virtual Methods
 func _init(array: Array = []) -> void:
@@ -177,18 +154,9 @@ func get_random_index() -> int:
 	return 0 if contents_size == 0 else (randi() % size())
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Static Methods
 static func new_from_array_1d(array_1d: Array1D) -> Array1D:
 	return Array1D.new(array_1d.contents)
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Array Shortcut Methods (Extended)
@@ -368,10 +336,4 @@ func sort() -> void:
 
 func sort_custom(method: Callable) -> void:
 	contents.sort_custom(method)
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

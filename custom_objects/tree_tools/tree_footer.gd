@@ -1,12 +1,4 @@
-#@tool
 class_name TreeFooter
-#extends 
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
 
 #region Constants
 const META: StringName = &"TREE_FOOTER"
@@ -14,9 +6,6 @@ const META_IS_NUMERIC: StringName = &"TREE_FOOTER_IS_NUMERIC"
 const META_CONTEXT_MENU: StringName = &"TREE_FOOTER_CONTEXT_MENU"
 
 const DEFAULT_CELL_TOOLTIP: String = "Double click on this cell to select and apply one of the calculation options."
-#endregion
-
-#region Export Variables
 #endregion
 
 #region Public Variables
@@ -32,9 +21,6 @@ var roots_with_footers: Dictionary[TreeItem, TreeItem]
 
 #region Private Variables
 var _applied_operations: Array[TreeFooterAppliedOperation] = []
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -150,9 +136,6 @@ func _clear_all(item_footer: TreeItem) -> void:
 	_applied_operations.clear()
 #endregion
 
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_tree_item_activated() -> void:
 	var item_row_selected: TreeItem = tree.get_selected()
@@ -209,13 +192,4 @@ func _on_tree_item_activated() -> void:
 		footer_menu_items.append_array(footer_menu_clear_items)
 	
 	ExtendedPopupMenu.static_context_menu(META_CONTEXT_MENU, footer_menu_items)
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

@@ -1,21 +1,5 @@
-#@tool
 class_name Collection
 extends Resource
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-#endregion
 
 #region Private Variables
 var _items: Dictionary[Variant, int]
@@ -137,9 +121,6 @@ func dump_to_file(file: FileAccess, close_on_finished: bool = true) -> void:
 		file.close()
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Static Methods
 static func new_from_array(array: Array) -> Collection:
 	return Collection.new().add_array(array)
@@ -147,16 +128,4 @@ static func new_from_array(array: Array) -> Collection:
 
 static func new_from_collection(collection: Collection) -> Collection:
 	return Collection.new().merge(collection)
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

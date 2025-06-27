@@ -1,21 +1,8 @@
-#@tool
 class_name ExternalCSVEditor
 extends Object
 
 #region Signals
 signal finished(results: Array[Dictionary], error_message: String)
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
 #endregion
 
 #region Private Variables
@@ -27,9 +14,6 @@ var _results: PackedStringArray
 var _headers: PackedStringArray
 var _headers_size: int
 var _divider: String
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -90,9 +74,6 @@ func _init(
 		_tree.create_timer(_processing_wait_time).timeout.connect(_on_tree_timer_timeout)
 #endregion
 
-#region Public Methods
-#endregion
-
 #region Private Methods
 func _read() -> void:
 	var file: FileAccess = FileAccess.open(_active_instance_path, FileAccess.READ)
@@ -134,9 +115,6 @@ func _reset(error_message: String) -> void:
 	free.call_deferred()
 #endregion
 
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_tree_timer_timeout() -> void:
 	if OS.is_process_running(_active_instance_pid):
@@ -144,10 +122,4 @@ func _on_tree_timer_timeout() -> void:
 	
 	else:
 		_read()
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
 #endregion

@@ -1,22 +1,8 @@
-#@tool
 class_name RTL
-#extends 
-
-#region Signals
-#endregion
-
-#region Enums
-#endregion
 
 #region Constants
 const DEFAULT_TEXT_SIZE: int = 14
 const DEFAULT_NEWLINES_COUNT: int = 1
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
 #endregion
 
 #region Private Variables
@@ -32,9 +18,6 @@ var _image_path: String
 
 var _newlines_before: int: set = newlines_before
 var _newlines_after: int: set = newlines_after
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -196,13 +179,6 @@ static func strip_tags(source: String) -> String:
 	return UtilsRegex.sub(UtilsRegex.SUB_BBCODE, source).strip_edges()
 #endregion
 
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func bold(arg: bool = true) -> RTL:
 	_bold = arg
@@ -237,7 +213,4 @@ func newlines_before(arg: int = DEFAULT_NEWLINES_COUNT) -> RTL:
 func newlines_after(arg: int = DEFAULT_NEWLINES_COUNT) -> RTL:
 	_newlines_after = arg
 	return self
-#endregion
-
-#region Getter Methods
 #endregion
