@@ -1,6 +1,11 @@
 class_name TreeOrganizerSorter
 extends TreeOrganizerElement
 
+#region Enums
+enum Type {ASC, DESC}
+enum Mode {TEXT, NUMERIC}
+#endregion
+
 #region Public Variables
 var type: Type = Type.ASC
 var mode: Mode = Mode.TEXT

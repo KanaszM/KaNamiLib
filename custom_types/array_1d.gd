@@ -1,6 +1,10 @@
 class_name Array1D
 extends Resource
 
+#region Public Variables
+var contents: Array
+#endregion
+
 #region Virtual Methods
 func _init(array: Array = []) -> void:
 	append_array(array)

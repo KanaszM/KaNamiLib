@@ -1,4 +1,5 @@
 class_name DebugToolsTileMap
+extends Node2D
 
 #region Properties
 #region Export Variables

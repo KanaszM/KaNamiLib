@@ -2,14 +2,8 @@
 class_name ExtendedLine2D
 extends Line2D
 
-#region Signals
-#endregion
-
 #region Enums
 enum SyncColorMode {DEFAULT, SYNCED, BLENDED}
-#endregion
-
-#region Constants
 #endregion
 
 #region Export Variables
@@ -18,14 +12,8 @@ enum SyncColorMode {DEFAULT, SYNCED, BLENDED}
 @export var sync_color_mode: SyncColorMode = SyncColorMode.DEFAULT: set = _set_sync_color_mode
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _update_synced_polygon_enabled: bool
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -81,15 +69,6 @@ func _update_synced_polygon() -> void:
 		default_color = get_synced_color()
 #endregion
 
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 # Polygon Sync
 func _set_sync_polygon(arg: ExtendedPolygon2D) -> void:
@@ -100,7 +79,4 @@ func _set_sync_polygon(arg: ExtendedPolygon2D) -> void:
 func _set_sync_color_mode(arg: SyncColorMode) -> void:
 	sync_color_mode = arg
 	_update_synced_polygon()
-#endregion
-
-#region Getter Methods
 #endregion

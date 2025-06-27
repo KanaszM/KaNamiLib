@@ -5,6 +5,10 @@ extends Resource
 const FORMAT: String = "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"
 #endregion
 
+#region Public Variables
+var b: PackedByteArray
+#endregion
+
 #region Virtual Methods
 func _init() -> void:
 	b = UUID.get_binary()

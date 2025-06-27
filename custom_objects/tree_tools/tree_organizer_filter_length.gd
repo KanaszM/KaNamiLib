@@ -1,6 +1,10 @@
 class_name TreeOrganizerLengthFilter
 extends TreeOrganizerFilter
 
+#region Public Variables
+var criteria: int
+#endregion
+
 #region Virtual Methods
 func _init(column_index: int) -> void:
 	super._init(Type.LENGTH, column_index)

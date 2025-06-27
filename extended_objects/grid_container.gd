@@ -2,12 +2,6 @@
 class_name ExtendedGridContainer
 extends GridContainer
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
 #region Constants
 const AWAIT_INTERVALS: int = 2
 #endregion
@@ -15,21 +9,6 @@ const AWAIT_INTERVALS: int = 2
 #region Export Variables
 @export var squared: bool: set = _set_squared
 @export var separation: Vector2i = Vector2i.ONE * 4: set = _set_separation
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
-#endregion
-
-#region Public Methods
 #endregion
 
 #region Theme Methods
@@ -63,12 +42,6 @@ func get_vertical_separation() -> int:
 	return get_theme_constant(&"v_separation")
 #endregion
 
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_child_order_changed() -> void:
 	if not is_inside_tree():
@@ -85,9 +58,6 @@ func _on_child_order_changed() -> void:
 	columns = maxi(1, int(get_child_count() / 2.0))
 #endregion
 
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_squared(arg: bool) -> void:
 	squared = arg
@@ -97,7 +67,4 @@ func _set_squared(arg: bool) -> void:
 func _set_separation(arg: Vector2i) -> void:
 	separation = arg
 	set_vseparation(separation)
-#endregion
-
-#region Getter Methods
 #endregion

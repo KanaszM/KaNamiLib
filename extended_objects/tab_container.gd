@@ -229,9 +229,6 @@ func _update_tab_processes() -> void:
 		tab_control.set_physics_process(tab_control == current_tab_control)
 #endregion
 
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_tab_changed(_tab_idx: int) -> void:
 	_update_tab_processes()
@@ -269,14 +266,8 @@ func _on_child_detection(node: Node = null, entered: bool = false) -> void:
 	set_popup(null if get_tab_count() == 0 else TabsMenu)
 #endregion
 
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_single_tab_processing_enabled(arg: bool) -> void:
 	single_tab_processing_enabled = arg
 	_update_tab_processes()
-#endregion
-
-#region Getter Methods
 #endregion

@@ -6,9 +6,6 @@ extends ProgressBar
 signal smooth_target_reached
 #endregion
 
-#region Enums
-#endregion
-
 #region Constants
 const SMOOTHING_THRESHOLD: float = 0.005
 #endregion
@@ -21,15 +18,9 @@ const SMOOTHING_THRESHOLD: float = 0.005
 @export var smoothing_transition: Tween.TransitionType = Tween.TransitionType.TRANS_CUBIC
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _smooth_target_value: float
 var _smooth_current_value: float
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -69,9 +60,6 @@ func _process(_delta: float) -> void:
 		set_process(false)
 #endregion
 
-#region Public Methods
-#endregion
-
 #region Theme Methods
 func get_font_size() -> int:
 	return get_theme_font_size(&"font_size")
@@ -97,15 +85,6 @@ func set_fill_style(style: StyleBox) -> void:
 	add_theme_stylebox_override(&"fill", style)
 #endregion
 
-#region Private Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_smoothing_enabled(arg: bool) -> void:
 	smoothing_enabled = arg
@@ -118,7 +97,4 @@ func _set_smoothing_enabled(arg: bool) -> void:
 
 func _set_smoothing_duration(arg: float) -> void:
 	smoothing_enabled = maxf(0.0, arg)
-#endregion
-
-#region Getter Methods
 #endregion

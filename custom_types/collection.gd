@@ -5,9 +5,6 @@ extends Resource
 var _items: Dictionary[Variant, int]
 #endregion
 
-#region OnReady Variables
-#endregion
-
 #region Virtual Methods
 func _to_string() -> String:
 	return "<Collection:%s>" % str(items())

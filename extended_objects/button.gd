@@ -6,9 +6,6 @@ extends Button
 signal disabled_set(mode: bool)
 #endregion
 
-#region Enums
-#endregion
-
 #region Constants
 const DEFAULT_TOOLTIP: String = "N/A"
 #endregion
@@ -37,9 +34,6 @@ var _previous_tooltip: String = DEFAULT_TOOLTIP
 
 var _callbacks: Array[Callable]
 var _signals: Array[Signal]
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -168,7 +162,7 @@ func readd_callback(callback: Callable, unique: bool = true) -> void:
 
 func recallback(callback: Callable) -> void:
 	if callback_exists(callback):
-		Logger.warning(recallback, "The callback: '%s' is not registered." % callback)
+		Log.warning(recallback, "The callback: '%s' is not registered." % callback)
 		return
 	
 	_callbacks.erase(callback)
@@ -213,7 +207,7 @@ func readd_signal(signal_param: Signal) -> void:
 
 func resignal(signal_param: Signal) -> void:
 	if signal_exists(signal_param):
-		Logger.warning(resignal, "The signal: '%s' is not registered." % signal_param)
+		Log.warning(resignal, "The signal: '%s' is not registered." % signal_param)
 		return
 	
 	_signals.erase(signal_param)
@@ -226,9 +220,6 @@ func reall_signals() -> void:
 func execute_signals() -> void:
 	for signal_param: Signal in _signals:
 		signal_param.emit()
-#endregion
-
-#region Private Methods
 #endregion
 
 #region Signal Callbacks
@@ -249,9 +240,6 @@ func _on_gui_input(event: InputEvent) -> void:
 		if mouse_button_event.is_pressed():
 			match mouse_button_event.button_index:
 				MOUSE_BUTTON_RIGHT: ExtendedPopupMenu.static_context_menu_from_object(self, rmb_menu_items)
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods
@@ -300,7 +288,4 @@ func _set_rmb_menu_items(arg: Array[ExtendedPopupMenu.Item]) -> void:
 	
 	else:
 		UtilsSignal.connect_safe(gui_input, _on_gui_input)
-#endregion
-
-#region Getter Methods
 #endregion

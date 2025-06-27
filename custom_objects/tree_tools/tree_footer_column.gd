@@ -13,7 +13,7 @@ func _init(
 	alignment_value: HorizontalAlignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 	) -> void:
 		if idx_value < 0:
-			Logger.error(_init, "The index value cannot be lower than 0!")
+			Log.error(_init, "The index value cannot be lower than 0!")
 			return
 		
 		idx = idx_value

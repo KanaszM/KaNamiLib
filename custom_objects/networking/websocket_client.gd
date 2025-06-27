@@ -46,20 +46,20 @@ func connect_to_url(
 		var host_error_message: String = UtilsNetwork.validate_host(host, host_is_ip)
 		
 		if not host_error_message.is_empty():
-			Logger.error(connect_to_url, "Host validation error: %s" % host_error_message)
+			Log.error(connect_to_url, "Host validation error: %s" % host_error_message)
 			return ERR_INVALID_PARAMETER
 		
 		var port_error_message: String = UtilsNetwork.validate_port(port)
 		
 		if not port_error_message.is_empty():
-			Logger.error(connect_to_url, "Port validation error: %s" % port_error_message)
+			Log.error(connect_to_url, "Port validation error: %s" % port_error_message)
 			return ERR_INVALID_PARAMETER
 		
 		url = "%s://%s:%d/ws" % ["wss" if tls_options else "ws", host, port]
 		
 		var connection_error: Error = socket.connect_to_url(url, tls_options)
 		
-		Logger.info(connect_to_url, "Connecting to %s..." % url)
+		Log.info(connect_to_url, "Connecting to %s..." % url)
 		
 		if connection_error != OK:
 			_paused = true
@@ -102,12 +102,12 @@ func poll() -> void:
 			WebSocketPeer.STATE_OPEN:
 				connected.emit()
 				has_connection = true
-				Logger.success(poll, "Connected")
+				Log.success(poll, "Connected")
 			
 			WebSocketPeer.STATE_CLOSED:
 				disconnected.emit()
 				has_connection = false
-				Logger.success(poll, "Disconnected")
+				Log.success(poll, "Disconnected")
 	
 	while current_state == WebSocketPeer.STATE_OPEN and socket.get_available_packet_count():
 		var packet: Packets.Packet = _retrieve_packet()
@@ -126,7 +126,7 @@ func _retrieve_packet() -> Packets.Packet:
 	var result: int = packet.from_bytes(data)
 	
 	if result != OK:
-		Logger.error(_retrieve_packet, "Error forming packet from data %s" % data.get_string_from_utf8())
+		Log.error(_retrieve_packet, "Error forming packet from data %s" % data.get_string_from_utf8())
 	
 	return packet
 #endregion
@@ -145,7 +145,7 @@ class Packets:
 #region Setter Methods
 func _set_client_id(arg: int) -> void:
 	client_id = arg
-	Logger.debug(_set_client_id, "Client ID is: %d" % client_id)
+	Log.debug(_set_client_id, "Client ID is: %d" % client_id)
 
 
 func _set_paused(arg: bool) -> void:

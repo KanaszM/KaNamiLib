@@ -2,29 +2,14 @@
 class_name ExtendedTextEdit
 extends TextEdit
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
 #region Export Variables
 @export var max_length: int: set = _set_max_length
-#endregion
-
-#region Public Variables
 #endregion
 
 #region Private Variables
 var _previous_text: String
 var _caret_column: int
 var _caret_line: int
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -82,12 +67,6 @@ func get_normal_style() -> StyleBox:
 	return get_theme_stylebox(&"normal")
 #endregion
 
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_text_changed() -> void:
 	if max_length > 0:
@@ -101,14 +80,8 @@ func _on_text_changed() -> void:
 		_caret_column = get_caret_column()
 #endregion
 
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_max_length(arg: int) -> void:
 	max_length = maxi(0, arg)
 	UtilsSignal.connect_safe_if(text_changed, _on_text_changed, max_length > 0)
-#endregion
-
-#region Getter Methods
 #endregion

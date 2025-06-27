@@ -17,4 +17,3 @@ var to_str_show_full_path: bool = true
 var to_str_left_length: int = 16
 var to_str_right_length: int = 32
 #endregion
-

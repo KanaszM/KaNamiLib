@@ -2,30 +2,12 @@
 class_name ExtendedTextureRect
 extends TextureRect
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
 #region Public Variables
 var asynchronous: bool
 #endregion
 
 #region Private Variables
 var _callbacks: Array[Callable]
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
 #endregion
 
 #region Public Methods
@@ -50,7 +32,7 @@ func readd_callback(callback: Callable, unique: bool = true) -> void:
 
 func recallback(callback: Callable) -> void:
 	if callback_exists(callback):
-		Logger.warning(recallback, "The callback: '%s' is not registered." % callback)
+		Log.warning(recallback, "The callback: '%s' is not registered." % callback)
 		return
 	
 	_callbacks.erase(callback)
@@ -89,19 +71,7 @@ func _update_mouse_properties() -> void:
 	UtilsSignal.connect_safe_if(gui_input, _on_gui_input, callbacks_available)
 #endregion
 
-#region Static Methods
-#endregion
-
 #region Signal Callbacks
 func _on_gui_input(event: InputEvent) -> void:
 	UtilsInput.event_mouse_button_callback(event, MOUSE_BUTTON_LEFT, execute_callbacks)
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

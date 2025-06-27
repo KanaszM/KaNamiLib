@@ -2,33 +2,6 @@
 class_name ExtendedHFlowContainer
 extends HFlowContainer
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
-#endregion
-
-#region Virtual Methods
-#endregion
-
-#region Public Methods
-#endregion
-
 #region Theme Methods
 func set_separation(value: int) -> void:
 	set_horizontal_separation(value)
@@ -58,22 +31,4 @@ func get_horizontal_separation() -> int:
 
 func get_vertical_separation() -> int:
 	return get_theme_constant(&"v_separation")
-#endregion
-
-#region Private Methods
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

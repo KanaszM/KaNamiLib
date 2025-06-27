@@ -7,9 +7,6 @@ signal text_changed(new_text: String)
 signal font_size_changed(font_size: int)
 #endregion
 
-#region Enums
-#endregion
-
 #region Constants
 const MIN_RECT_SIZE_ON_DYNAMIC_FONT_RESIZE: Vector2 = Vector2.ONE * 4.0
 #endregion
@@ -34,9 +31,6 @@ var _previous_clip_text: bool
 
 var _callbacks: Array[Callable]
 var _signals: Array[Signal]
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -119,7 +113,7 @@ func readd_callback(callback: Callable, unique: bool = true) -> void:
 
 func recallback(callback: Callable) -> void:
 	if callback_exists(callback):
-		Logger.warning(recallback, "The callback: '%s' is not registered." % callback)
+		Log.warning(recallback, "The callback: '%s' is not registered." % callback)
 		return
 	
 	_callbacks.erase(callback)
@@ -168,7 +162,7 @@ func readd_signal(signal_param: Signal) -> void:
 
 func resignal(signal_param: Signal) -> void:
 	if signal_exists(signal_param):
-		Logger.warning(resignal, "The signal: '%s' is not registered." % signal_param)
+		Log.warning(resignal, "The signal: '%s' is not registered." % signal_param)
 		return
 	
 	_signals.erase(signal_param)
@@ -327,7 +321,4 @@ func _set_dynamic_font_size_sync(arg: Array[Control]) -> void:
 	
 	if dynamic_font_size_enabled:
 		_update_dynamic_font_size()
-#endregion
-
-#region Getter Methods
 #endregion

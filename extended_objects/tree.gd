@@ -2,28 +2,10 @@
 class_name ExtendedTree
 extends Tree
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
-#region Export Variables
-#endregion
-
 #region Public Variables
 var copy_enabled: bool = true
 var copy_row_divider: String = ", "
 var copy_column_divider: String = "\n"
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -273,9 +255,6 @@ func set_title_font_size(value: int) -> void:
 	add_theme_font_size_override(&"title_button_font_size", value)
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Signal Callbacks
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -286,13 +265,4 @@ func _on_gui_input(event: InputEvent) -> void:
 				KEY_C when key_event.ctrl_pressed: copy_selected_cell()
 				KEY_C when key_event.shift_pressed: copy_selected_cell_row()
 				KEY_C when key_event.alt_pressed: copy_selected_cell_column()
-#endregion
-
-#region Static Methods
-#endregion
-
-#region SubClasses
-#endregion
-
-#region Setter Methods
 #endregion

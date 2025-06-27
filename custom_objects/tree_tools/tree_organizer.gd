@@ -15,7 +15,7 @@ static func apply_grouping(
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
 		if item_root == null:
-			Logger.error(apply_grouping, "The root TreeItem is null!")
+			Log.error(apply_grouping, "The root TreeItem is null!")
 			return
 		
 		var grouped_rows: Dictionary[String, Array]
@@ -59,13 +59,13 @@ static func apply_sorting(
 	source: Object, sorters: Array[TreeOrganizerSorter], recursive: bool = true, value_mode: ValueMode = ValueMode.CELL
 	) -> void:
 		if sorters.is_empty():
-			Logger.error(apply_sorting, "No sorters were provided!")
+			Log.error(apply_sorting, "No sorters were provided!")
 			return
 		
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
 		if item_root == null:
-			Logger.error(apply_sorting, "The root TreeItem is null!")
+			Log.error(apply_sorting, "The root TreeItem is null!")
 			return
 		
 		_sort_elements(sorters)
@@ -132,13 +132,13 @@ static func apply_filters(
 	value_mode: ValueMode = ValueMode.CELL
 	) -> void:
 		if filters.is_empty():
-			Logger.error(apply_filters, "No filters were provided!")
+			Log.error(apply_filters, "No filters were provided!")
 			return
 		
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
 		if item_root == null:
-			Logger.error(apply_filters, "The root TreeItem is null!")
+			Log.error(apply_filters, "The root TreeItem is null!")
 			return
 		
 		_sort_elements(filters)
@@ -272,7 +272,7 @@ static func set_visibility(source: Object, state: bool, recursive: bool = true) 
 	var item_root: TreeItem = _get_root_item_from_source(source)
 	
 	if item_root == null:
-		Logger.error(set_visibility, "The root TreeItem is null!")
+		Log.error(set_visibility, "The root TreeItem is null!")
 		return
 	
 	for item_row: TreeItem in item_root.get_children():
@@ -289,7 +289,7 @@ static func get_distinct(
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
 		if item_root == null:
-			Logger.error(get_distinct, "The root TreeItem is null!")
+			Log.error(get_distinct, "The root TreeItem is null!")
 			return []
 		
 		for item_row: TreeItem in item_root.get_children():
@@ -338,7 +338,7 @@ static func _get_root_item_from_source(source: Object) -> TreeItem:
 		return (source as Tree).get_root()
 	
 	else:
-		Logger.error(
+		Log.error(
 			_get_root_item_from_source, "Invalid source: '%s'! Must be either a TreeItem or Tree object." % source
 			)
 		return null

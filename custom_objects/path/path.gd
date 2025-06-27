@@ -62,7 +62,7 @@ func exists() -> bool:
 func remove(send_to_trash: bool = true, log_errors: bool = true) -> bool:
 	if not exists():
 		if log_errors:
-			Logger.error(remove, "Does not exist!")
+			Log.error(remove, "Does not exist!")
 		
 		return false
 	
@@ -75,7 +75,7 @@ func remove(send_to_trash: bool = true, log_errors: bool = true) -> bool:
 		
 		if not dir_contents.is_empty():
 			if log_errors:
-				Logger.error(remove, "Directory is not empty!")
+				Log.error(remove, "Directory is not empty!")
 			
 			return false
 	
@@ -83,7 +83,7 @@ func remove(send_to_trash: bool = true, log_errors: bool = true) -> bool:
 	
 	if error_code != OK:
 		if log_errors:
-			Logger.error(remove, "Could not be removed! %s" % error_string(error_code))
+			Log.error(remove, "Could not be removed! %s" % error_string(error_code))
 		
 		return false
 	
@@ -392,7 +392,7 @@ func _log_error(callback: Callable, message: String) -> void:
 	if options.logging_errors_enabled:
 		match options.logging_type:
 			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
-				Logger.error(callback, message)
+				Log.error(callback, message)
 			
 			_:
 				push_error("%s: %s" % [callback.get_method(), message])
@@ -402,7 +402,7 @@ func _log_warning(callback: Callable, message: String) -> void:
 	if options.logging_warnings_enabled:
 		match options.logging_type:
 			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
-				Logger.warning(callback, message)
+				Log.warning(callback, message)
 			
 			_:
 				push_warning("%s: %s" % [callback.get_method(), message])
@@ -412,7 +412,7 @@ func _log_success(callback: Callable, message: String) -> void:
 	if options.logging_successes_enabled:
 		match options.logging_type:
 			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
-				Logger.success(callback, message)
+				Log.success(callback, message)
 			
 			_:
 				print("%s: %s" % [callback.get_method(), message])
@@ -470,7 +470,7 @@ static func open_externally(file_path: String) -> Error:
 	var error_code: Error = OS.shell_open(file_path)
 	
 	if error_code != OK:
-		Logger.error(open_externally, "File at path: '%s' could not be opened externally!" % file_path)
+		Log.error(open_externally, "File at path: '%s' could not be opened externally!" % file_path)
 	
 	return error_code
 #endregion

@@ -92,9 +92,6 @@ var _triangles: PackedInt32Array
 var _triangle_areas: PackedInt32Array
 #endregion
 
-#region OnReady Variables
-#endregion
-
 #region Virtual Methods
 func _set(property: StringName, value: Variant) -> bool:
 	var is_handled: bool = true
@@ -462,15 +459,6 @@ func _execute_tool_shaper() -> void:
 		set(&"polygon", points)
 #endregion
 
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
-#endregion
-
 #region Setter Methods
 # Collision
 func _set_collision_type(arg: CollisionType) -> void:
@@ -531,7 +519,4 @@ func _set_tool_draw_label_shadow_offset(arg: Vector2) -> void:
 func _set_tool_draw_label_shadow_size(arg: int) -> void:
 	tool_draw_label_shadow_size = maxi(0, arg)
 	queue_redraw()
-#endregion
-
-#region Getter Methods
 #endregion

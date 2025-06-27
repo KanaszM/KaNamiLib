@@ -5,6 +5,10 @@ const DEFAULT_MICROSECONDS_PER_SECOND: float = 1000000.0
 const DEFAULT_PREFIX: String = "Time spent: "
 #endregion
 
+#region Private Variables
+var _start_value: float
+#endregion
+
 #region Public Methods
 func start() -> void:
 	_start_value = Time.get_ticks_usec()

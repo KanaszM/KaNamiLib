@@ -2,26 +2,8 @@
 class_name ExtendedPopupMenu
 extends PopupMenu
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
 #region Export Variables
 @export var free_on_hide: bool
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -266,10 +248,4 @@ class Enum extends Item:
 			
 			selected = selected_param
 	#endregion
-#endregion
-
-#region Setter Methods
-#endregion
-
-#region Getter Methods
 #endregion

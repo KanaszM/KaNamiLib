@@ -26,11 +26,11 @@ var _applied_operations: Array[TreeFooterAppliedOperation] = []
 #region Virtual Methods
 func _init(tree_reference: ExtendedTree, footer_columns_reference: Array[TreeFooterFooterColumn]) -> void:
 	if tree_reference == null:
-		Logger.error(_init, "The provided tree reference is null!")
+		Log.error(_init, "The provided tree reference is null!")
 		return
 	
 	if footer_columns_reference.is_empty():
-		Logger.error(_init, "No footer columns were provided!")
+		Log.error(_init, "No footer columns were provided!")
 		return
 	
 	tree = tree_reference

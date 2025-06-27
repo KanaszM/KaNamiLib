@@ -2,14 +2,8 @@
 class_name ExtendedScrollContainer
 extends ScrollContainer
 
-#region Signals
-#endregion
-
 #region Enums
 enum FollowScrollSmoothMode {FIXED, BY_LENGTH}
-#endregion
-
-#region Constants
 #endregion
 
 #region Export Variables
@@ -21,12 +15,6 @@ enum FollowScrollSmoothMode {FIXED, BY_LENGTH}
 @export var follow_scroll_smooth_mode: FollowScrollSmoothMode = FollowScrollSmoothMode.FIXED
 @export var follow_scroll_smooth_fixed_speed: float = 0.25: set = _set_follow_scroll_smooth_fixed_speed
 @export var follow_scroll_smooth_by_length_weight: float = 2.0: set = _set_follow_scroll_smooth_by_length_weight
-#endregion
-
-#region Public Variables
-#endregion
-
-#region Private Variables
 #endregion
 
 #region OnReady Variables
@@ -98,9 +86,6 @@ func _set_max_scroll_vertical(mode: bool) -> void:
 		VerticalScrollBar.value = final_value
 #endregion
 
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_follow_scroll_enabled(arg: bool) -> void:
 	follow_scroll_enabled = arg
@@ -126,7 +111,4 @@ func _set_follow_scroll_smooth_fixed_speed(arg: float) -> void:
 
 func _set_follow_scroll_smooth_by_length_weight(arg: float) -> void:
 	follow_scroll_smooth_by_length_weight = maxf(1.0, arg)
-#endregion
-
-#region Getter Methods
 #endregion

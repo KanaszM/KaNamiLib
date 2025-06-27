@@ -2,15 +2,6 @@
 class_name ExtendedStyleBoxFlat
 extends StyleBoxFlat
 
-#region Signals
-#endregion
-
-#region Enums
-#endregion
-
-#region Constants
-#endregion
-
 #region Export Variables
 @export var invert_colors: bool: set = _set_invert_colors
 
@@ -21,14 +12,8 @@ extends StyleBoxFlat
 @export_range(0, 9, 1) var border_color_idx: int: set = _set_border_color_idx
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _block_updates: bool = true
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -54,12 +39,6 @@ func update() -> void:
 	else:
 		bg_color = Shade.get_color(bg_color_type, bg_color_idx)
 		border_color = Shade.get_color(border_color_type, border_color_idx)
-#endregion
-
-#region Private Methods
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods
@@ -91,7 +70,4 @@ func _set_border_color_idx(arg: int) -> void:
 	border_color_idx = arg
 	changed.emit()
 	update()
-#endregion
-
-#region Getter Methods
 #endregion

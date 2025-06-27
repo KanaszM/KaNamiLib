@@ -2,15 +2,9 @@
 class_name ExtendedLineEdit
 extends LineEdit
 
-#region Signals
-#endregion
-
 #region Enums
 enum PatternType {ANY, LETTERS, INTEGER, POSITIVE_INTEGER, FLOAT, POSITIVE_FLOAT, ALPHANUMERIC}
 enum ConversionType {NONE, LOWER, UPPER, CAPITALIZE}
-#endregion
-
-#region Constants
 #endregion
 
 #region Export Variables
@@ -21,15 +15,9 @@ enum ConversionType {NONE, LOWER, UPPER, CAPITALIZE}
 @export var conversion_strip_enabled: bool: set = _set_conversion_strip_enabled
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _block_updates: bool = true
 var _previous_valid_numeric_text: String
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -126,9 +114,6 @@ func set_read_only_style(style: StyleBox) -> void:
 	add_theme_stylebox_override(&"read_only", style)
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Signal Callbacks
 func _on_text_changed(_new_text: String) -> void:
 	var pattern_type: String
@@ -169,9 +154,6 @@ func _on_text_changed(_new_text: String) -> void:
 				caret_column -= _previous_valid_numeric_text.length() - text.length()
 #endregion
 
-#region SubClasses
-#endregion
-
 #region Setter Methods
 func _set_pattern(arg: PatternType) -> void:
 	pattern = arg
@@ -191,7 +173,4 @@ func _set_conversion_type(arg: ConversionType) -> void:
 func _set_conversion_strip_enabled(arg: bool) -> void:
 	conversion_strip_enabled = arg
 	apply_conversion()
-#endregion
-
-#region Getter Methods
 #endregion

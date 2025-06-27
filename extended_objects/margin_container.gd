@@ -10,9 +10,6 @@ signal margin_changed
 enum Mode {UNIT, PERCENTAGE}
 #endregion
 
-#region Constants
-#endregion
-
 #region Export Variables
 @export var mode: Mode = Mode.UNIT: set = _set_mode
 
@@ -33,15 +30,9 @@ enum Mode {UNIT, PERCENTAGE}
 @export_range(0.0, 100.0, 0.01, "suffix:%") var percent_margin_bottom: float: set = _set_percent_margin_bottom
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _percent_margins_h: Vector2
 var _percent_margins_v: Vector2
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -98,9 +89,6 @@ func _update_margins() -> void:
 			set_margin(size_h.y, false, true, false, false)
 			set_margin(size_v.x, false, false, true, false)
 			set_margin(size_v.y, false, false, false, true)
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods
@@ -173,7 +161,4 @@ func _set_percent_margin_bottom(arg: float) -> void:
 	percent_margin_bottom = arg
 	_percent_margins_v.y = percent_margin_bottom / 100.0
 	_update_margins()
-#endregion
-
-#region Getter Methods
 #endregion

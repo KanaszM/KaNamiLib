@@ -15,7 +15,6 @@ const DEFAULT_LIMIT: int = 10000000
 #endregion
 
 #region Export Variables
-#region Export Variables
 @export_group("Move", "move_")
 @export var move_enabled: bool = true
 @export var move_speed: float = 1000.0: set = _set_move_speed
@@ -54,17 +53,11 @@ const DEFAULT_LIMIT: int = 10000000
 @export var input_accelerate_action: StringName = &"ui_select"
 #endregion
 
-#region Public Variables
-#endregion
-
 #region Private Variables
 var _input_acceleration: float: get = _get_input_acceleration
 var _cached_limit_bounds: Vector2
 var _can_move_horizontally: bool = true
 var _can_move_vertically: bool = true
-#endregion
-
-#region OnReady Variables
 #endregion
 
 #region Virtual Methods
@@ -183,15 +176,6 @@ func _apply_clamped_position(new_position: Vector2) -> void:
 	
 	if _can_move_vertically:
 		position.y = clampf(new_position.y, (float(limit_top) + viewport_size.y), float(limit_bottom) - viewport_size.y)
-#endregion
-
-#region Static Methods
-#endregion
-
-#region Signal Callbacks
-#endregion
-
-#region SubClasses
 #endregion
 
 #region Setter Methods
