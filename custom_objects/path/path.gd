@@ -20,9 +20,6 @@ var modified_time: int: get = _get_modified_time
 var _file_stream: FileAccess
 #endregion
 
-#region OnReady Variables
-#endregion
-
 #region Virtual Methods
 func _init(path_arg: String, options_arg: PathOptions = null) -> void:
 	options = PathOptions.new() if options_arg == null else options_arg

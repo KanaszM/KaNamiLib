@@ -52,9 +52,6 @@ var _custom_color_bg_1: Color = Color.TRANSPARENT
 var _custom_color_bg_2: Color = Color.TRANSPARENT
 #endregion
 
-#region OnReady Variables
-#endregion
-
 #region Virtual Methods
 func _init() -> void:
 	gradient = Gradient.new()

@@ -82,9 +82,6 @@ func get_font_color() -> Color:
 	return get_theme_color(&"font_color")
 #endregion
 
-#region Private Methods
-#endregion
-
 #region Static Methods
 static func static_popup_at_mouse_position(
 	popup_node: Popup, position_offset: Vector2 = Vector2.ZERO, popup_size: Vector2 = Vector2.ONE
