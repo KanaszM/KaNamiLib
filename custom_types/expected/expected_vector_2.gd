@@ -26,4 +26,8 @@ func is_warning(message: String, callback: Callable = Callable()) -> ExpectedVec
 
 func is_fatal(message: String, callback: Callable = Callable()) -> ExpectedVector2:
 	return super.is_fatal(message, callback) as ExpectedVector2
+
+
+func is_valid(message: String, callback: Callable = Callable()) -> ExpectedVector2:
+	return super.is_valid(message, callback) as ExpectedVector2
 #endregion

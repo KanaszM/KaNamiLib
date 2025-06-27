@@ -26,4 +26,8 @@ func is_warning(message: String, callback: Callable = Callable()) -> ExpectedStr
 
 func is_fatal(message: String, callback: Callable = Callable()) -> ExpectedString:
 	return super.is_fatal(message, callback) as ExpectedString
+
+
+func is_valid(message: String, callback: Callable = Callable()) -> ExpectedString:
+	return super.is_valid(message, callback) as ExpectedString
 #endregion

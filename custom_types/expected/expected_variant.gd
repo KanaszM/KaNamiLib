@@ -1,4 +1,4 @@
-class_name ExpectedVariant
+abstract class_name ExpectedVariant
 
 #region Private Variables
 var _type: Variant.Type = TYPE_NIL
@@ -54,6 +54,20 @@ func is_fatal(message: String, callback: Callable = Callable()) -> ExpectedVaria
 		
 		Log.fatal(callback, message)
 		UtilsEngine.get_tree().quit.call_deferred()
+	
+	return self
+
+
+func is_valid(message: String, callback: Callable = Callable()) -> ExpectedVariant:
+	_is_ok = true
+	_message = message
+	
+	if not message.is_empty() and callback.is_valid():
+		if Engine.is_editor_hint():
+			print("%s %s" % [UtilsCallback.to_str(callback), message])
+			return self
+		
+		Log.success(callback, message)
 	
 	return self
 #endregion
