@@ -14,6 +14,7 @@ const DEFAULT_CORNER_DETAIL_THRESHOLD: int = 30
 @export var alignment: Alignment = Alignment.CENTER: set = _set_alignment
 @export var style: StyleBoxFlat: set = _set_style
 @export var corner_detail_override: int: set = _set_corner_detail_override
+@export var corner_radius_offset: int = 2
 #endregion
 
 #region Private Variables
@@ -54,7 +55,7 @@ func _update() -> void:
 		Alignment.CENTER: _aspect.alignment_horizontal = AspectRatioContainer.ALIGNMENT_CENTER
 		Alignment.RIGHT: _aspect.alignment_horizontal = AspectRatioContainer.ALIGNMENT_END
 	
-	var corner_radius: int = int(size.x / 2.0) - 1
+	var corner_radius: int = int(size.x / 2.0) - corner_radius_offset
 	var corner_detail_default: int = _get_default_corner_detail(corner_radius)
 	
 	_style.corner_detail = corner_detail_default if corner_detail_override == 0 else corner_detail_override
