@@ -68,6 +68,7 @@ const TOOL_STORE_DEFAULT_KEY: String = "1"
 @export_subgroup("Label", "tool_draw_label_")
 @export var tool_draw_label_enabled: bool: set = _set_tool_draw_label_enabled
 @export var tool_draw_label_centered: bool: set = _set_tool_draw_label_centered
+@export var tool_draw_label_text: String: set = _set_tool_draw_label_text
 @export var tool_draw_label_size: int = 16: set = _set_tool_draw_label_size
 @export var tool_draw_label_color: Color = Color.WHITE: set = _set_tool_draw_label_color
 @export var tool_draw_label_shadow_color: Color = Color.BLACK: set = _set_tool_draw_label_shadow_color
@@ -158,7 +159,7 @@ func _draw() -> void:
 		draw_rect(rect, tool_draw_rect_color, false, tool_draw_rect_width)
 	
 	if tool_draw_label_enabled:
-		var text: String = str(self)
+		var text: String = str(self) if tool_draw_label_text.is_empty() else tool_draw_label_text
 		var text_font: Font = ThemeDB.fallback_font
 		var text_size: Vector2 = text_font.get_string_size(
 			text, HORIZONTAL_ALIGNMENT_CENTER, -1, tool_draw_label_size
@@ -492,6 +493,11 @@ func _set_tool_draw_label_enabled(arg: bool) -> void:
 
 func _set_tool_draw_label_centered(arg: bool) -> void:
 	tool_draw_label_centered = arg
+	queue_redraw()
+
+
+func _set_tool_draw_label_text(arg: String) -> void:
+	tool_draw_label_text = arg
 	queue_redraw()
 
 
