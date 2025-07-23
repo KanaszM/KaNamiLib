@@ -4,9 +4,13 @@ class_name Collection extends Resource
 var _items: Dictionary[Variant, int]
 #endregion
 
-#region Virtual Methods
-func _to_string() -> String:
-	return "<Collection:%s>" % str(items())
+#region Constructor
+static func new_from_array(array: Array) -> Collection:
+	return Collection.new().add_array(array)
+
+
+static func new_from_collection(collection: Collection) -> Collection:
+	return Collection.new().merge(collection)
 #endregion
 
 #region Public Methods
@@ -124,11 +128,7 @@ func dump_to_file(file: FileAccess, close_on_finished: bool = true) -> void:
 		file.close()
 #endregion
 
-#region Static Methods
-static func new_from_array(array: Array) -> Collection:
-	return Collection.new().add_array(array)
-
-
-static func new_from_collection(collection: Collection) -> Collection:
-	return Collection.new().merge(collection)
+#region Private Methods
+func _to_string() -> String:
+	return "<Collection:%s>" % str(items())
 #endregion

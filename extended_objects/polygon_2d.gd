@@ -92,7 +92,30 @@ var _triangles: PackedInt32Array
 var _triangle_areas: PackedInt32Array
 #endregion
 
-#region Virtual Methods
+#region Public Methods
+func set_collision_layer_value(layer_number: int, value: bool) -> void:
+	if collision_object != null:
+		collision_object.set_collision_layer_value(layer_number, value)
+
+
+func set_collision_mask_value(layer_number: int, value: bool) -> void:
+	if collision_object != null:
+		collision_object.set_collision_mask_value(layer_number, value)
+
+
+func get_random_point() -> Vector2:
+	if _triangle_areas.is_empty():
+		return Vector2.ZERO
+	
+	var idx: int = _triangle_areas.bsearch(int(randf() * _triangle_areas[-1]))
+	var point_a: Vector2 = polygon[_triangles[3 * idx + 0]]
+	var point_b: Vector2 = polygon[_triangles[3 * idx + 1]]
+	var point_c: Vector2 = polygon[_triangles[3 * idx + 2]]
+	
+	return UtilsRandom.get_triangle_point(point_a, point_b, point_c)
+#endregion
+
+#region Private Methods
 func _set(property: StringName, value: Variant) -> bool:
 	var is_handled: bool = true
 	
@@ -193,32 +216,8 @@ func _draw() -> void:
 			tool_draw_label_size, 
 			tool_draw_label_color
 			)
-#endregion
-
-#region Public Methods
-func set_collision_layer_value(layer_number: int, value: bool) -> void:
-	if collision_object != null:
-		collision_object.set_collision_layer_value(layer_number, value)
 
 
-func set_collision_mask_value(layer_number: int, value: bool) -> void:
-	if collision_object != null:
-		collision_object.set_collision_mask_value(layer_number, value)
-
-
-func get_random_point() -> Vector2:
-	if _triangle_areas.is_empty():
-		return Vector2.ZERO
-	
-	var idx: int = _triangle_areas.bsearch(int(randf() * _triangle_areas[-1]))
-	var point_a: Vector2 = polygon[_triangles[3 * idx + 0]]
-	var point_b: Vector2 = polygon[_triangles[3 * idx + 1]]
-	var point_c: Vector2 = polygon[_triangles[3 * idx + 2]]
-	
-	return UtilsRandom.get_triangle_point(point_a, point_b, point_c)
-#endregion
-
-#region Private Methods
 func _update_collision() -> void:
 	if not _update_collision_enabled:
 		return

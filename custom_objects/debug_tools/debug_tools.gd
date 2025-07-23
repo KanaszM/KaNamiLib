@@ -9,24 +9,11 @@ var instance_socket: TCPServer
 var _input_key_maps: Dictionary[Key, InputKeyMap]
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	set_process_input(false)
 	set_process_internal(false)
 	set_physics_process(false)
-
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		var key_event := event as InputEventKey
-		
-		if key_event.pressed:
-			if not key_event.keycode in _input_key_maps:
-				return
-			
-			var input_key_map: InputKeyMap = _input_key_maps[key_event.keycode]
-			
-			input_key_map.execute()
 #endregion
 
 #region Public Methods
@@ -95,6 +82,20 @@ static func print_array(array: Array, indexed: bool = true) -> void:
 		var entry: Variant = array[entry_idx]
 		
 		print("%s%s" % [("[%s] " % str(entry_idx + 1).lpad(max_index_length)) if indexed else "", entry])
+#endregion
+
+#region Private Methods
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+		
+		if key_event.pressed:
+			if not key_event.keycode in _input_key_maps:
+				return
+			
+			var input_key_map: InputKeyMap = _input_key_maps[key_event.keycode]
+			
+			input_key_map.execute()
 #endregion
 
 #region SubClasses

@@ -52,7 +52,7 @@ var _custom_color_bg_1: Color = Color.TRANSPARENT
 var _custom_color_bg_2: Color = Color.TRANSPARENT
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	gradient = Gradient.new()
 	gradient_texture = GradientTexture2D.new()

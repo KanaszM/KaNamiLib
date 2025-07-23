@@ -16,7 +16,7 @@ var _current_scene_node: Node
 var _init_is_valid: bool
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(scene_container: Node, scenes_map: Dictionary[Variant, PackedScene]) -> void:
 	if scene_container == null:
 		Log.critical(_init, "The scene container cannot be null!")
@@ -39,10 +39,6 @@ func _init(scene_container: Node, scenes_map: Dictionary[Variant, PackedScene]) 
 	_scene_container = scene_container
 	_scenes_map = scenes_map
 	_init_is_valid = true
-
-
-func _to_string() -> String:
-	return "SceneManager"
 #endregion
 
 #region Public Methods
@@ -103,4 +99,9 @@ func set_scene(scene_index: Variant, options: SceneManagerOptions = null) -> voi
 	)
 	
 	scene_set.emit(true)
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return "SceneManager"
 #endregion

@@ -7,7 +7,7 @@ var copy_row_divider: String = ", "
 var copy_column_divider: String = "\n"
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	gui_input.connect(_on_gui_input)
 #endregion

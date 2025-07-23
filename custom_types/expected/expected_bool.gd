@@ -4,7 +4,7 @@ class_name ExpectedBool extends ExpectedVariant
 var _value: bool
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(value_arg: bool) -> void:
 	_type = TYPE_BOOL
 	_value = value_arg

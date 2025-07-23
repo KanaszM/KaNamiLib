@@ -5,12 +5,6 @@ class_name ExtendedPopupMenu extends PopupMenu
 @export var free_on_hide: bool
 #endregion
 
-#region Virtual Methods
-func _ready() -> void:
-	id_pressed.connect(_on_id_pressed)
-	UtilsSignal.connect_safe_if(popup_hide, _on_popup_hide, free_on_hide)
-#endregion
-
 #region Public Methods
 func popup_at_mouse_position(
 	position_offset: Vector2 = Vector2.ZERO, popup_size_override: Vector2 = Vector2.ONE
@@ -133,6 +127,12 @@ static func static_context_menu(
 			static_popup_at_mouse_position(popup_menu, position_offset, popup_size_override)
 #endregion
 
+#region Private Methods
+func _ready() -> void:
+	id_pressed.connect(_on_id_pressed)
+	UtilsSignal.connect_safe_if(popup_hide, _on_popup_hide, free_on_hide)
+#endregion
+
 #region Signal Callbacks
 func _on_popup_hide() -> void:
 	queue_free()
@@ -175,16 +175,10 @@ class Item:
 	var icon_custom_color: Color = Color.TRANSPARENT
 	#endregion
 	
-	#region Virtual Methods
+	#region Constructor
 	func _init(text_param: String, callback_param: Callable = Callable()) -> void:
 		text = text_param
 		callback = callback_param
-	
-	func _to_string() -> String:
-		return (
-			"<ExtendedPopupMenu.Item[%s][\"%s\"]%s>"
-			% [UtilsDictionary.enum_to_str(Type, type, true), text, UtilsCallback.to_str(callback)]
-			)
 	#endregion
 	
 	#region Public Methods
@@ -198,10 +192,18 @@ class Item:
 			
 			return self
 	#endregion
+	
+	#region Private Methods
+	func _to_string() -> String:
+		return (
+			"<ExtendedPopupMenu.Item[%s][\"%s\"]%s>"
+			% [UtilsDictionary.enum_to_str(Type, type, true), text, UtilsCallback.to_str(callback)]
+			)
+	#endregion
 
 
 class Divider extends Item:
-	#region Virtual Methods
+	#region Constructor
 	func _init(text_param: String = "", callback_param: Callable = Callable()) -> void:
 		type = Item.Type.DIVIDER
 		super._init(text_param, callback_param)
@@ -213,7 +215,7 @@ class Check extends Item:
 	var checked: bool
 	#endregion
 	
-	#region Virtual Methods
+	#region Constructor
 	func _init(text_param: String, callback_param: Callable = Callable(), checked_param: bool = false) -> void:
 		type = Item.Type.CHECK
 		super._init(text_param, callback_param)
@@ -228,7 +230,7 @@ class Enum extends Item:
 	var selected: int
 	#endregion
 	
-	#region Virtual Methods
+	#region Constructor
 	func _init(
 		text_param: String,
 		callback_param: Callable = Callable(),

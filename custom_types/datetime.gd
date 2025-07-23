@@ -30,17 +30,13 @@ const DATE_NAMES_EN: Dictionary[DateNameType, Array] = {
 @export var year: int: set = _set_year
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(d: int = 0, m: int = 0, y: int = 0) -> void:
 	var today_dict: Dictionary[String, int] = get_today_dict()
 	
 	day = d if d > 0 else today_dict.day
 	month = m if m > 0 else today_dict.month
 	year = y if y > 0 else today_dict.year
-
-
-func _to_string() -> String:
-	return format_date(2, 4, 4)
 #endregion
 
 #region Increment Methods
@@ -476,6 +472,11 @@ static func split_system_stamp(datetime_stamp: String) -> Dictionary[String, int
 		"minute": int(datetime_stamp.substr(10, 2)),
 		"second": int(datetime_stamp.substr(12, 2)),
 	}
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return format_date(2, 4, 4)
 #endregion
 
 #region Setter Methods

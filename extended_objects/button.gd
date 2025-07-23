@@ -35,42 +35,6 @@ var _callbacks: Array[Callable]
 var _signals: Array[Signal]
 #endregion
 
-#region Virtual Methods
-func _set(property: StringName, value: Variant) -> bool:
-	match property:
-		&"disabled":
-			disabled = value as bool
-			mouse_default_cursor_shape = disabled_cursor_shape if disabled else active_cursor_shape
-			
-			disabled_set.emit(disabled)
-			return true
-	
-	return false
-
-
-func _ready() -> void:
-	_set_block_time(block_time)
-	_set_continuous(continuous)
-	
-	focus_mode = Control.FOCUS_NONE
-	
-	set(&"disabled", disabled)
-	
-	pressed.connect(_on_pressed)
-
-
-func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-	
-	if button_pressed:
-		if _continuous_timer.is_stopped():
-			execute_everything()
-			
-			if continuous_delay > 0.0:
-				_continuous_timer.start(continuous_delay)
-#endregion
-
 #region Public Methods
 func set_blocked(mode: bool) -> void:
 	if block_time <= 0.0 or _block_timer == null:
@@ -219,6 +183,42 @@ func reall_signals() -> void:
 func execute_signals() -> void:
 	for signal_param: Signal in _signals:
 		signal_param.emit()
+#endregion
+
+#region Private Methods
+func _set(property: StringName, value: Variant) -> bool:
+	match property:
+		&"disabled":
+			disabled = value as bool
+			mouse_default_cursor_shape = disabled_cursor_shape if disabled else active_cursor_shape
+			
+			disabled_set.emit(disabled)
+			return true
+	
+	return false
+
+
+func _ready() -> void:
+	_set_block_time(block_time)
+	_set_continuous(continuous)
+	
+	focus_mode = Control.FOCUS_NONE
+	
+	set(&"disabled", disabled)
+	
+	pressed.connect(_on_pressed)
+
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	if button_pressed:
+		if _continuous_timer.is_stopped():
+			execute_everything()
+			
+			if continuous_delay > 0.0:
+				_continuous_timer.start(continuous_delay)
 #endregion
 
 #region Signal Callbacks

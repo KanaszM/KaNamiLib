@@ -4,7 +4,7 @@ class_name ExpectedFloat extends ExpectedVariant
 var _value: float
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(value_arg: float) -> void:
 	_type = TYPE_FLOAT
 	_value = value_arg

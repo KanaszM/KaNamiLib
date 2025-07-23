@@ -7,7 +7,7 @@ var operation: Callable
 var selection_only: bool
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(
 	item_reference: TreeItem, index_value: int, operation_reference: Callable, selection_only_state: bool
 	) -> void:

@@ -13,7 +13,7 @@ var _results: PackedStringArray
 var _results_skip_empty_rows: bool
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(
 	text_editor_path: String = r"C:\windows\system32\notepad.exe",
 	processing_wait_time: float = 0.5,

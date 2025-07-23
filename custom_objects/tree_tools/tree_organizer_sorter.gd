@@ -10,7 +10,7 @@ var type: Type = Type.ASC
 var mode: Mode = Mode.TEXT
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(column_index: int) -> void:
 	col_idx = column_index
 #endregion

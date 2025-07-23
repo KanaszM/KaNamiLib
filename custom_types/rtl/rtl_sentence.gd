@@ -5,7 +5,7 @@ var rtls: Array[RTL]
 var join_character: String
 #endregion
 
-#region OnReady Variables
+#region Constructor
 func _init(rtls_arg: Array[RTL], join_character_arg: String = " ") -> void:
 	rtls = rtls_arg
 	join_character = join_character_arg

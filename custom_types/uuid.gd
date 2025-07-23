@@ -8,13 +8,9 @@ const FORMAT: String = "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x
 var b: PackedByteArray
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	b = UUID.get_binary()
-
-
-func _to_string() -> String:
-	return UUID.get_formatted(b)
 #endregion
 
 #region Public Methods
@@ -59,4 +55,9 @@ static func get_formatted(_b: PackedByteArray = get_binary()) -> String:
 		_b[0], _b[1], _b[2], _b[3], _b[4], _b[5], _b[6], _b[7], _b[8],
 		_b[9], _b[10], _b[11], _b[12], _b[13], _b[14], _b[15]
 		]
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return UUID.get_formatted(b)
 #endregion

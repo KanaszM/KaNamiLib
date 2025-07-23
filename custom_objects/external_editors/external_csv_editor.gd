@@ -15,7 +15,7 @@ var _headers_size: int
 var _divider: String
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(
 	headers: PackedStringArray,
 	rows: Array[PackedStringArray] = [],

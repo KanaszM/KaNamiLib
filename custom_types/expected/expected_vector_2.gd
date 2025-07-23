@@ -4,7 +4,7 @@ class_name ExpectedVector2 extends ExpectedVariant
 var _value: Vector2
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(value_arg: Vector2) -> void:
 	_type = TYPE_VECTOR2
 	_value = value_arg

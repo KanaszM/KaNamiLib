@@ -5,7 +5,7 @@ class_name ExtendedCheckBox extends CheckBox
 var _signals: Array[Signal]
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	pressed.connect(execute_signals)
 #endregion

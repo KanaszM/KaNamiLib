@@ -15,7 +15,7 @@ class_name ExtendedStyleBoxFlat extends StyleBoxFlat
 var _block_updates: bool = true
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	_set_bg_color_type(bg_color_type)
 	_set_bg_color_idx(bg_color_idx)

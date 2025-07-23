@@ -34,11 +34,6 @@ var _percent_margins_h: Vector2
 var _percent_margins_v: Vector2
 #endregion
 
-#region Virtual Methods
-func _ready() -> void:
-	_update_margins()
-#endregion
-
 #region Public Methods
 func set_margin(value: int, left: bool, right: bool, top: bool, bottom: bool) -> ExtendedMarginContainer:
 	if left:
@@ -60,6 +55,10 @@ func set_margin(value: int, left: bool, right: bool, top: bool, bottom: bool) ->
 #endregion
 
 #region Private Methods
+func _ready() -> void:
+	_update_margins()
+
+
 func _update_margins() -> void:
 	match mode:
 		Mode.UNIT:

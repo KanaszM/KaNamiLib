@@ -11,11 +11,6 @@ var _caret_column: int
 var _caret_line: int
 #endregion
 
-#region Virtual Methods
-func _ready() -> void:
-	_set_max_length(max_length)
-#endregion
-
 #region Public Methods
 func is_empty() -> bool:
 	return text.strip_edges().strip_escapes().is_empty()
@@ -64,6 +59,11 @@ func set_read_only_style(style: StyleBox) -> void:
 
 func get_normal_style() -> StyleBox:
 	return get_theme_stylebox(&"normal")
+#endregion
+
+#region Private Methods
+func _ready() -> void:
+	_set_max_length(max_length)
 #endregion
 
 #region Signal Callbacks

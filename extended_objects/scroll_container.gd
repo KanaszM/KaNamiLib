@@ -22,11 +22,6 @@ enum FollowScrollSmoothMode {FIXED, BY_LENGTH}
 @onready var ScrollBars: Array[ScrollBar] = [HorizontalScrollBar, VerticalScrollBar]
 #endregion
 
-#region Virtual Methods
-func _ready() -> void:
-	_set_follow_scroll_enabled(follow_scroll_enabled)
-#endregion
-
 #region Public Methods
 func any_scroll_bar_has_focus() -> bool:
 	return VerticalScrollBar.has_focus() or HorizontalScrollBar.has_focus()
@@ -61,6 +56,10 @@ func v_scroll_to_center(deferred: bool = true) -> void:
 #endregion
 
 #region Private Methods
+func _ready() -> void:
+	_set_follow_scroll_enabled(follow_scroll_enabled)
+
+
 func _set_max_scroll_vertical(mode: bool) -> void:
 	var final_value: float = VerticalScrollBar.max_value if mode else 0.0
 	

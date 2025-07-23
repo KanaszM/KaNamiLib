@@ -6,7 +6,7 @@ var is_numeric: bool
 var alignment: HorizontalAlignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(
 	idx_value: int,
 	is_numeric_state: bool = false,

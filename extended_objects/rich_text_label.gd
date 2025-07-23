@@ -1,7 +1,7 @@
 @tool
 class_name ExtendedRichTextLabel extends RichTextLabel
 
-#region Virtual Methods
+#region Constructor
 func _init() -> void:
 	bbcode_enabled = true
 	fit_content = true

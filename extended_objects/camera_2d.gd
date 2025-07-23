@@ -59,7 +59,22 @@ var _can_move_horizontally: bool = true
 var _can_move_vertically: bool = true
 #endregion
 
-#region Virtual Methods
+#region Public Methods
+func get_rect() -> Rect2:
+	var viewport: Viewport = get_viewport()
+	
+	return (viewport.global_canvas_transform * get_canvas_transform()).affine_inverse() * viewport.get_visible_rect()
+
+
+func apply_incremented_zoom(mode: bool) -> void:
+	var increment: Vector2 = Vector2.ONE * (zoom_increment * _input_acceleration)
+	var new_zoom: Vector2 = (zoom + increment) if mode else (zoom - increment)
+	
+	_apply_clamped_zoom(new_zoom)
+	_apply_limit_bounds(_cached_limit_bounds)
+#endregion
+
+#region Private Methods
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and input_mouse_zoom_enabled:
 		var mouse_button_event := event as InputEventMouseButton
@@ -116,24 +131,8 @@ func _physics_process(delta: float) -> void:
 		var new_position: Vector2 = position + direction
 		
 		_apply_clamped_position(new_position)
-#endregion
-
-#region Public Methods
-func get_rect() -> Rect2:
-	var viewport: Viewport = get_viewport()
-	
-	return (viewport.global_canvas_transform * get_canvas_transform()).affine_inverse() * viewport.get_visible_rect()
 
 
-func apply_incremented_zoom(mode: bool) -> void:
-	var increment: Vector2 = Vector2.ONE * (zoom_increment * _input_acceleration)
-	var new_zoom: Vector2 = (zoom + increment) if mode else (zoom - increment)
-	
-	_apply_clamped_zoom(new_zoom)
-	_apply_limit_bounds(_cached_limit_bounds)
-#endregion
-
-#region Private Methods
 func _apply_limit_bounds(new_bounds: Vector2) -> void:
 	if new_bounds == Vector2.ZERO:
 		return

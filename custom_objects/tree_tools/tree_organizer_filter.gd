@@ -9,7 +9,7 @@ var type: Type = Type.TEXT
 var negative: bool
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(filter_type: Type, column_index: int) -> void:
 	type = filter_type
 	col_idx = column_index

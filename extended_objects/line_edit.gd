@@ -19,16 +19,6 @@ var _block_updates: bool = true
 var _previous_valid_numeric_text: String
 #endregion
 
-#region Virtual Methods
-func _ready() -> void:
-	_set_pattern(pattern)
-	_set_conversion_type(conversion_type)
-	_set_conversion_strip_enabled(conversion_strip_enabled)
-	
-	_block_updates = false
-	apply_conversion()
-#endregion
-
 #region Public Methods
 func apply_conversion(text_ovveride: String = "") -> ExtendedLineEdit:
 	if not _block_updates:
@@ -111,6 +101,16 @@ func set_normal_style(style: StyleBox) -> void:
 
 func set_read_only_style(style: StyleBox) -> void:
 	add_theme_stylebox_override(&"read_only", style)
+#endregion
+
+#region Private Methods
+func _ready() -> void:
+	_set_pattern(pattern)
+	_set_conversion_type(conversion_type)
+	_set_conversion_strip_enabled(conversion_strip_enabled)
+	
+	_block_updates = false
+	apply_conversion()
 #endregion
 
 #region Signal Callbacks

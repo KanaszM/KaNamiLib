@@ -23,7 +23,7 @@ var roots_with_footers: Dictionary[TreeItem, TreeItem]
 var _applied_operations: Array[TreeFooterAppliedOperation] = []
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(tree_reference: ExtendedTree, footer_columns_reference: Array[TreeFooterFooterColumn]) -> void:
 	if tree_reference == null:
 		Log.error(_init, "The provided tree reference is null!")

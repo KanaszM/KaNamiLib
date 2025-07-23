@@ -25,7 +25,7 @@ var _aspect: AspectRatioContainer
 var _updates_enabled: bool
 #endregion
 
-#region Virtual Methods
+#region Private Methods
 func _ready() -> void:
 	_panel = Panel.new()
 	_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -43,9 +43,8 @@ func _ready() -> void:
 	_update()
 	
 	resized.connect(_update)
-#endregion
 
-#region Private Methods
+
 func _update() -> void:
 	if not _updates_enabled:
 		return

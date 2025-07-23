@@ -43,7 +43,7 @@ class_name DebugToolsTileMap extends Node2D
 #endregion
 #endregion
 
-#region Virtual Methods
+#region Private Methods
 func _ready() -> void:
 	set_process(false)
 	

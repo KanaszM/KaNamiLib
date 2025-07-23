@@ -20,7 +20,7 @@ var selection_color: Color = Shade.green(2): set = _set_selection_color
 var selected_rows: Array[TreeItem]
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(tree_reference: ExtendedTree) -> void:
 	tree = tree_reference
 	

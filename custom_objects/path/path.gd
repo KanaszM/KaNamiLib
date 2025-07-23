@@ -20,20 +20,26 @@ var modified_time: int: get = _get_modified_time
 var _file_stream: FileAccess
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(path_arg: String, options_arg: PathOptions = null) -> void:
 	options = PathOptions.new() if options_arg == null else options_arg
 	path = path_arg
 
 
-func _to_string() -> String:
-	var path_str: String = (
-		path
-		if options.to_str_show_full_path
-		else UtilsText.truncate_middle(path, options.to_str_left_length, options.to_str_right_length)
-		)
-	
-	return "<PathFile[%d][%s][%s]>" % [type, is_valid, path_str]
+static func new_from_path(other_path: Path, options_arg: PathOptions = null) -> Path:
+	return Path.new(other_path.path, options_arg)
+
+
+static func new_user_data_dir(options_arg: PathOptions = null) -> Path:
+	return Path.new(OS.get_user_data_dir(), options_arg)
+
+
+static func new_temp_dir(options_arg: PathOptions = null) -> Path:
+	return Path.new(get_temp_dir_path(), options_arg)
+
+
+static func new_from_file_steam(file_stream: FileAccess, options_arg: PathOptions = null) -> Path:
+	return Path.new(file_stream.get_path() if file_stream != null else "", options_arg)
 #endregion
 
 #region General Public Methods
@@ -384,54 +390,7 @@ func dir_remove_contents(dir_remove_contents_options: PathDirRemoveContentsOptio
 	return results.all(func(result: bool) -> bool: return result)
 #endregion
 
-#region Private Methods
-func _log_error(callback: Callable, message: String) -> void:
-	if options.logging_errors_enabled:
-		match options.logging_type:
-			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
-				Log.error(callback, message)
-			
-			_:
-				push_error("%s: %s" % [callback.get_method(), message])
-
-
-func _log_warning(callback: Callable, message: String) -> void:
-	if options.logging_warnings_enabled:
-		match options.logging_type:
-			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
-				Log.warning(callback, message)
-			
-			_:
-				push_warning("%s: %s" % [callback.get_method(), message])
-
-
-func _log_success(callback: Callable, message: String) -> void:
-	if options.logging_successes_enabled:
-		match options.logging_type:
-			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
-				Log.success(callback, message)
-			
-			_:
-				print("%s: %s" % [callback.get_method(), message])
-#endregion
-
 #region Static Methods
-static func new_from_path(other_path: Path, options_arg: PathOptions = null) -> Path:
-	return Path.new(other_path.path, options_arg)
-
-
-static func new_user_data_dir(options_arg: PathOptions = null) -> Path:
-	return Path.new(OS.get_user_data_dir(), options_arg)
-
-
-static func new_temp_dir(options_arg: PathOptions = null) -> Path:
-	return Path.new(get_temp_dir_path(), options_arg)
-
-
-static func new_from_file_steam(file_stream: FileAccess, options_arg: PathOptions = null) -> Path:
-	return Path.new(file_stream.get_path() if file_stream != null else "", options_arg)
-
-
 static func get_sorted_by_modified_time(paths: Array[Path], asc: bool = true) -> Array[Path]:
 	paths.sort_custom(func(path_1: Path, path_2: Path) -> bool:
 		return path_1.modified_time > path_2.modified_time if asc else path_1.modified_time < path_2.modified_time
@@ -470,6 +429,47 @@ static func open_externally(file_path: String) -> Error:
 		Log.error(open_externally, "File at path: '%s' could not be opened externally!" % file_path)
 	
 	return error_code
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	var path_str: String = (
+		path
+		if options.to_str_show_full_path
+		else UtilsText.truncate_middle(path, options.to_str_left_length, options.to_str_right_length)
+		)
+	
+	return "<PathFile[%d][%s][%s]>" % [type, is_valid, path_str]
+
+
+func _log_error(callback: Callable, message: String) -> void:
+	if options.logging_errors_enabled:
+		match options.logging_type:
+			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
+				Log.error(callback, message)
+			
+			_:
+				push_error("%s: %s" % [callback.get_method(), message])
+
+
+func _log_warning(callback: Callable, message: String) -> void:
+	if options.logging_warnings_enabled:
+		match options.logging_type:
+			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
+				Log.warning(callback, message)
+			
+			_:
+				push_warning("%s: %s" % [callback.get_method(), message])
+
+
+func _log_success(callback: Callable, message: String) -> void:
+	if options.logging_successes_enabled:
+		match options.logging_type:
+			PathOptions.LoggingType.INTERNAL when not Engine.is_editor_hint():
+				Log.success(callback, message)
+			
+			_:
+				print("%s: %s" % [callback.get_method(), message])
 #endregion
 
 #region Setter Methods

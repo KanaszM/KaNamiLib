@@ -22,7 +22,32 @@ var _smooth_target_value: float
 var _smooth_current_value: float
 #endregion
 
-#region Virtual Methods
+#region Theme Methods
+func get_font_size() -> int:
+	return get_theme_font_size(&"font_size")
+
+
+func get_background_style() -> StyleBox:
+	return get_theme_stylebox(&"background")
+
+
+func get_fill_style() -> StyleBox:
+	return get_theme_stylebox(&"fill")
+
+
+func set_font_size(font_size: int) -> void:
+	add_theme_font_size_override(&"font_size", font_size)
+
+
+func set_background_style(style: StyleBox) -> void:
+	add_theme_stylebox_override(&"background", style)
+
+
+func set_fill_style(style: StyleBox) -> void:
+	add_theme_stylebox_override(&"fill", style)
+#endregion
+
+#region Private Methods
 func _set(property: StringName, new_value: Variant) -> bool:
 	var is_changed: bool = true
 	
@@ -57,31 +82,6 @@ func _process(_delta: float) -> void:
 	if absf(_smooth_current_value - _smooth_target_value) < SMOOTHING_THRESHOLD:
 		smooth_target_reached.emit()
 		set_process(false)
-#endregion
-
-#region Theme Methods
-func get_font_size() -> int:
-	return get_theme_font_size(&"font_size")
-
-
-func get_background_style() -> StyleBox:
-	return get_theme_stylebox(&"background")
-
-
-func get_fill_style() -> StyleBox:
-	return get_theme_stylebox(&"fill")
-
-
-func set_font_size(font_size: int) -> void:
-	add_theme_font_size_override(&"font_size", font_size)
-
-
-func set_background_style(style: StyleBox) -> void:
-	add_theme_stylebox_override(&"background", style)
-
-
-func set_fill_style(style: StyleBox) -> void:
-	add_theme_stylebox_override(&"fill", style)
 #endregion
 
 #region Setter Methods

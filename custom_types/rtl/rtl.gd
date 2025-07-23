@@ -20,13 +20,9 @@ var _newlines_before: int: set = newlines_before
 var _newlines_after: int: set = newlines_after
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(source: Variant = null) -> void:
 	(_set_as_list if UtilsArray.is_array(source) else _set_as_text).call(source)
-
-
-func _to_string() -> String:
-	return get_formatted()
 #endregion
 
 #region Public Methods
@@ -94,31 +90,6 @@ func get_formatted() -> String:
 	]))
 #endregion
 
-#region Private Methods
-func _set_as_text(source: Variant) -> RTL:
-	source = str(source)
-	_text = "" if UtilsText.is_empty_or_null(source) else source
-	
-	return self
-
-
-func _set_as_list(source: Array) -> RTL:
-	_text = "[ul]%s[/ul]" % "\n".join(source)
-	
-	return self
-
-
-func _set_indent(character: String, is_prefix: bool) -> RTL:
-	var temp_parts: PackedStringArray
-	
-	for part: String in _text.split("\n"):
-		temp_parts.append("%s %s" % [character if is_prefix else part, character if not is_prefix else part])
-	
-	_text = "\n".join(temp_parts)
-	
-	return self
-#endregion
-
 #region Static Methods
 static func append_to(label: RichTextLabel, rtl: RTL, clear: bool = false) -> void:
 	if clear:
@@ -177,6 +148,35 @@ static func append_paragraph_to(
 
 static func strip_tags(source: String) -> String:
 	return UtilsRegex.sub(UtilsRegex.SUB_BBCODE, source).strip_edges()
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return get_formatted()
+
+
+func _set_as_text(source: Variant) -> RTL:
+	source = str(source)
+	_text = "" if UtilsText.is_empty_or_null(source) else source
+	
+	return self
+
+
+func _set_as_list(source: Array) -> RTL:
+	_text = "[ul]%s[/ul]" % "\n".join(source)
+	
+	return self
+
+
+func _set_indent(character: String, is_prefix: bool) -> RTL:
+	var temp_parts: PackedStringArray
+	
+	for part: String in _text.split("\n"):
+		temp_parts.append("%s %s" % [character if is_prefix else part, character if not is_prefix else part])
+	
+	_text = "\n".join(temp_parts)
+	
+	return self
 #endregion
 
 #region Setter Methods

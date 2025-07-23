@@ -9,13 +9,9 @@ var mode: Mode = Mode.EQUALS
 var criteria: float
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(column_index: int) -> void:
 	super._init(Type.NUMERIC, column_index)
-
-
-func _to_string() -> String:
-	return _to_string_formatter("TreeOrganizerNumericFilter", UtilsDictionary.enum_to_str(Mode, mode, true), criteria)
 #endregion
 
 #region Public Methods
@@ -45,4 +41,9 @@ func lower_than(criteria_value: float, is_negative: bool = false) -> TreeOrganiz
 
 func lower_than_or_equals_to(criteria_value: float, is_negative: bool = false) -> TreeOrganizerNumericFilter:
 	return update(Mode.LOWER_THAN_OR_EQUAL_TO, criteria_value, is_negative)
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return _to_string_formatter("TreeOrganizerNumericFilter", UtilsDictionary.enum_to_str(Mode, mode, true), criteria)
 #endregion

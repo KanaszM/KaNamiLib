@@ -4,13 +4,13 @@ class_name Array1D extends Resource
 var contents: Array
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(array: Array = []) -> void:
 	append_array(array)
 
 
-func _to_string() -> String:
-	return str(contents)
+static func new_from_array_1d(array_1d: Array1D) -> Array1D:
+	return Array1D.new(array_1d.contents)
 #endregion
 
 #region Public Methods
@@ -155,11 +155,6 @@ func get_random_index() -> int:
 	var contents_size: int = size()
 	
 	return 0 if contents_size == 0 else (randi() % size())
-#endregion
-
-#region Static Methods
-static func new_from_array_1d(array_1d: Array1D) -> Array1D:
-	return Array1D.new(array_1d.contents)
 #endregion
 
 #region Array Shortcut Methods (Extended)
@@ -357,4 +352,9 @@ func sort() -> void:
 func sort_custom(method: Callable) -> void:
 	emit_changed()
 	contents.sort_custom(method)
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return str(contents)
 #endregion

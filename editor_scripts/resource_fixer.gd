@@ -10,7 +10,7 @@ const DEFAULT_ROOT_DIR_PATH: String = "res://"
 var _file_paths: PackedStringArray
 #endregion
 
-#region Virtual Methods
+#region Private Methods
 func _run() -> void:
 	_file_paths.clear()
 	
@@ -22,9 +22,8 @@ func _run() -> void:
 		print("%s | %s" % [resource, file_path])
 		
 		ResourceSaver.save(resource)
-#endregion
 
-#region Private Methods
+
 func _add_files(root_dir_path: String = DEFAULT_ROOT_DIR_PATH) -> void:
 	for file_path: String in DirAccess.get_files_at(root_dir_path):
 		if file_path.get_extension() in VALID_EXTENSIONS:

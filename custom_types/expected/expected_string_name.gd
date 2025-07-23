@@ -4,7 +4,7 @@ class_name ExpectedStringName extends ExpectedVariant
 var _value: StringName
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(value_arg: StringName) -> void:
 	_type = TYPE_STRING_NAME
 	_value = value_arg

@@ -10,13 +10,9 @@ var criteria: String
 var case_sensitive: bool
 #endregion
 
-#region Virtual Methods
+#region Constructor
 func _init(column_index: int) -> void:
 	super._init(Type.TEXT, column_index)
-
-
-func _to_string() -> String:
-	return _to_string_formatter("TreeOrganizerTextFilter", UtilsDictionary.enum_to_str(Mode, mode, true), criteria)
 #endregion
 
 #region Public Methods
@@ -61,4 +57,9 @@ func ends_with(
 func set_case_sensitive(state: bool = true) -> TreeOrganizerTextFilter:
 	case_sensitive = state
 	return self
+#endregion
+
+#region Private Methods
+func _to_string() -> String:
+	return _to_string_formatter("TreeOrganizerTextFilter", UtilsDictionary.enum_to_str(Mode, mode, true), criteria)
 #endregion

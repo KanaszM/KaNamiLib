@@ -32,33 +32,6 @@ var _callbacks: Array[Callable]
 var _signals: Array[Signal]
 #endregion
 
-#region Virtual Methods
-func _set(property: StringName, value: Variant) -> bool:
-	var is_changed: bool = true
-	
-	match property:
-		&"text":
-			var new_value := value as String
-			
-			if text != new_value:
-				text = new_value
-				text_changed.emit(new_value)
-			
-			if change_visibility_on_text_changed:
-				visible = not text.is_empty()
-		
-		_:
-			is_changed = false
-	
-	return is_changed
-
-
-func _ready() -> void:
-	_set_change_visibility_on_text_changed(change_visibility_on_text_changed)
-	_set_dynamic_font_size_enabled(dynamic_font_size_enabled)
-	_update_mouse_properties()
-#endregion
-
 #region Public Methods
 func append_text(new_text: String, skip_if_empty: bool = false, new_lines_count: int = 1) -> void:
 	if skip_if_empty and new_text.is_empty():
@@ -88,6 +61,33 @@ func execute_everything() -> void:
 func reeverything() -> void:
 	reall_callbacks()
 	reall_signals()
+#endregion
+
+#region Private Methods
+func _set(property: StringName, value: Variant) -> bool:
+	var is_changed: bool = true
+	
+	match property:
+		&"text":
+			var new_value := value as String
+			
+			if text != new_value:
+				text = new_value
+				text_changed.emit(new_value)
+			
+			if change_visibility_on_text_changed:
+				visible = not text.is_empty()
+		
+		_:
+			is_changed = false
+	
+	return is_changed
+
+
+func _ready() -> void:
+	_set_change_visibility_on_text_changed(change_visibility_on_text_changed)
+	_set_dynamic_font_size_enabled(dynamic_font_size_enabled)
+	_update_mouse_properties()
 #endregion
 
 #region Callback Methods
