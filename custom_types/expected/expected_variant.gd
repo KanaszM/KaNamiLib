@@ -1,4 +1,5 @@
-abstract class_name ExpectedVariant
+@abstract
+class_name ExpectedVariant
 
 #region Private Variables
 var _type: Variant.Type = TYPE_NIL
