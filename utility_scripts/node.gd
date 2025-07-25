@@ -46,3 +46,19 @@ static func recursive_set_owner(child: Node, owner: Node) -> void:
 		
 		if sub_child.get_child_count() > 0:
 			recursive_set_owner(sub_child, owner)
+
+
+static func has_ancestor(origin: Node, ancestor_node: Node) -> bool:
+	var current_parent: Node = origin.get_parent()
+	
+	while current_parent != null:
+		if current_parent == ancestor_node:
+			return true
+		
+		current_parent = current_parent.get_parent()
+	
+	return false
+
+
+static func get_node_or_null_by_name(origin: Node, name: StringName) -> Node:
+	return origin.get_node_or_null(NodePath(name))
