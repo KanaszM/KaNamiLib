@@ -35,6 +35,18 @@ var _callbacks: Array[Callable]
 var _signals: Array[Signal]
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	_set_block_time(block_time)
+	_set_continuous(continuous)
+	
+	focus_mode = Control.FOCUS_NONE
+	
+	set(&"disabled", disabled)
+	
+	pressed.connect(_on_pressed)
+#endregion
+
 #region Public Methods
 func set_blocked(mode: bool) -> void:
 	if block_time <= 0.0 or _block_timer == null:
@@ -196,17 +208,6 @@ func _set(property: StringName, value: Variant) -> bool:
 			return true
 	
 	return false
-
-
-func _ready() -> void:
-	_set_block_time(block_time)
-	_set_continuous(continuous)
-	
-	focus_mode = Control.FOCUS_NONE
-	
-	set(&"disabled", disabled)
-	
-	pressed.connect(_on_pressed)
 
 
 func _process(_delta: float) -> void:

@@ -5,6 +5,12 @@ class_name ExtendedPopupMenu extends PopupMenu
 @export var free_on_hide: bool
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	id_pressed.connect(_on_id_pressed)
+	UtilsSignal.connect_safe_if(popup_hide, _on_popup_hide, free_on_hide)
+#endregion
+
 #region Public Methods
 func popup_at_mouse_position(
 	position_offset: Vector2 = Vector2.ZERO, popup_size_override: Vector2 = Vector2.ONE
@@ -125,12 +131,6 @@ static func static_context_menu(
 		
 		if popup_after_build and not items.is_empty():
 			static_popup_at_mouse_position(popup_menu, position_offset, popup_size_override)
-#endregion
-
-#region Private Methods
-func _ready() -> void:
-	id_pressed.connect(_on_id_pressed)
-	UtilsSignal.connect_safe_if(popup_hide, _on_popup_hide, free_on_hide)
 #endregion
 
 #region Signal Callbacks

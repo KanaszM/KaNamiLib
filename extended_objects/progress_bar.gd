@@ -22,6 +22,11 @@ var _smooth_target_value: float
 var _smooth_current_value: float
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	_set_smoothing_enabled(smoothing_enabled)
+#endregion
+
 #region Theme Methods
 func get_font_size() -> int:
 	return get_theme_font_size(&"font_size")
@@ -64,10 +69,6 @@ func _set(property: StringName, new_value: Variant) -> bool:
 			is_changed = false
 	
 	return is_changed
-
-
-func _ready() -> void:
-	_set_smoothing_enabled(smoothing_enabled)
 
 
 func _process(_delta: float) -> void:

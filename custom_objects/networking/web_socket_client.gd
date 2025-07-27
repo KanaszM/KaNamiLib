@@ -19,6 +19,15 @@ var has_connection: bool
 var _paused: bool: set = _set_paused
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	socket = WebSocketPeer.new()
+	previous_state = WebSocketPeer.STATE_CLOSED
+	_paused = true
+#endregion
+
 #region Public Methods
 func connect_to_url(
 	host: String = "127.0.0.1", port: int = 8080, host_is_ip: bool = true, tls_options: TLSOptions = null,
@@ -103,14 +112,6 @@ func poll() -> void:
 #endregion
 
 #region Private Methods
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	
-	socket = WebSocketPeer.new()
-	previous_state = WebSocketPeer.STATE_CLOSED
-	_paused = true
-
-
 func _process(_delta: float) -> void:
 	poll()
 

@@ -92,6 +92,31 @@ var _triangles: PackedInt32Array
 var _triangle_areas: PackedInt32Array
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	_set_collision_type(collision_type)
+	
+	_set_tool_draw_enabled(tool_draw_enabled)
+	_set_tool_draw_rect_enabled(tool_draw_rect_enabled)
+	_set_tool_draw_rect_color(tool_draw_rect_color)
+	_set_tool_draw_rect_width(tool_draw_rect_width)
+	_set_tool_draw_label_enabled(tool_draw_label_enabled)
+	_set_tool_draw_label_centered(tool_draw_label_centered)
+	_set_tool_draw_label_size(tool_draw_label_size)
+	_set_tool_draw_label_color(tool_draw_label_color)
+	_set_tool_draw_label_shadow_color(tool_draw_label_shadow_color)
+	_set_tool_draw_label_shadow_offset(tool_draw_label_shadow_offset)
+	_set_tool_draw_label_shadow_size(tool_draw_label_shadow_size)
+	
+	_tool_draw_queue_enabled = true
+	_update_collision_enabled = true
+	
+	_update_collision()
+	_update_triangles()
+	
+	queue_redraw()
+#endregion
+
 #region Public Methods
 func set_collision_layer_value(layer_number: int, value: bool) -> void:
 	if collision_object != null:
@@ -134,30 +159,6 @@ func _set(property: StringName, value: Variant) -> bool:
 			is_handled = false
 	
 	return is_handled
-
-
-func _ready() -> void:
-	_set_collision_type(collision_type)
-	
-	_set_tool_draw_enabled(tool_draw_enabled)
-	_set_tool_draw_rect_enabled(tool_draw_rect_enabled)
-	_set_tool_draw_rect_color(tool_draw_rect_color)
-	_set_tool_draw_rect_width(tool_draw_rect_width)
-	_set_tool_draw_label_enabled(tool_draw_label_enabled)
-	_set_tool_draw_label_centered(tool_draw_label_centered)
-	_set_tool_draw_label_size(tool_draw_label_size)
-	_set_tool_draw_label_color(tool_draw_label_color)
-	_set_tool_draw_label_shadow_color(tool_draw_label_shadow_color)
-	_set_tool_draw_label_shadow_offset(tool_draw_label_shadow_offset)
-	_set_tool_draw_label_shadow_size(tool_draw_label_shadow_size)
-	
-	_tool_draw_queue_enabled = true
-	_update_collision_enabled = true
-	
-	_update_collision()
-	_update_triangles()
-	
-	queue_redraw()
 
 
 func _draw() -> void:

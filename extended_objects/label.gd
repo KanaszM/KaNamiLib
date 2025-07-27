@@ -32,6 +32,13 @@ var _callbacks: Array[Callable]
 var _signals: Array[Signal]
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	_set_change_visibility_on_text_changed(change_visibility_on_text_changed)
+	_set_dynamic_font_size_enabled(dynamic_font_size_enabled)
+	_update_mouse_properties()
+#endregion
+
 #region Public Methods
 func append_text(new_text: String, skip_if_empty: bool = false, new_lines_count: int = 1) -> void:
 	if skip_if_empty and new_text.is_empty():
@@ -82,12 +89,6 @@ func _set(property: StringName, value: Variant) -> bool:
 			is_changed = false
 	
 	return is_changed
-
-
-func _ready() -> void:
-	_set_change_visibility_on_text_changed(change_visibility_on_text_changed)
-	_set_dynamic_font_size_enabled(dynamic_font_size_enabled)
-	_update_mouse_properties()
 #endregion
 
 #region Callback Methods

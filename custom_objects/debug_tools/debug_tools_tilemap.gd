@@ -43,7 +43,7 @@ class_name DebugToolsTileMap extends Node2D
 #endregion
 #endregion
 
-#region Private Methods
+#region Constructor
 func _ready() -> void:
 	set_process(false)
 	
@@ -56,8 +56,9 @@ func _ready() -> void:
 	
 	else:
 		queue_redraw()
+#endregion
 
-
+#region Private Methods
 func _process(_delta: float) -> void:
 	queue_redraw.call_deferred()
 

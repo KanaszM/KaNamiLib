@@ -36,6 +36,32 @@ var _context_menu_items: Array[ExtendedPopupMenu.Item] = [
 @onready var TabsBar := get_tab_bar() as TabBar
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	tab_changed.connect(_on_tab_changed)
+	TabsBar.select_with_rmb = true
+	TabsBar.tab_close_display_policy = TabBar.CLOSE_BUTTON_SHOW_ACTIVE_ONLY
+	
+	ContextMenu = ExtendedPopupMenu.new()
+	TabsMenu = ExtendedPopupMenu.new()
+	
+	add_child(ContextMenu, false, Node.INTERNAL_MODE_BACK)
+	add_child(TabsMenu, false, Node.INTERNAL_MODE_BACK)
+	
+	ContextMenu.build_from_items_array(_context_menu_items)
+	
+	TabsMenu.id_pressed.connect(_on_TabsMenu_id_pressed)
+	TabsMenu.about_to_popup.connect(_on_TabsMenu_about_to_popup)
+	TabsBar.tab_close_pressed.connect(_on_TabsBar_tab_close_pressed)
+	TabsBar.tab_rmb_clicked.connect(_on_TabsBar_tab_rmb_clicked)
+	
+	for _signal: Signal in [child_entered_tree, child_exiting_tree] as Array[Signal]:
+		_signal.connect(_on_child_detection.bind(_signal == child_entered_tree))
+	
+	_on_child_detection()
+	_update_tab_processes()
+#endregion
+
 #region Public Methods
 func add_tab(
 	pack: PackedScene,
@@ -182,31 +208,6 @@ func close_all_tabs() -> void:
 #endregion
 
 #region Private Methods
-func _ready() -> void:
-	tab_changed.connect(_on_tab_changed)
-	TabsBar.select_with_rmb = true
-	TabsBar.tab_close_display_policy = TabBar.CLOSE_BUTTON_SHOW_ACTIVE_ONLY
-	
-	ContextMenu = ExtendedPopupMenu.new()
-	TabsMenu = ExtendedPopupMenu.new()
-	
-	add_child(ContextMenu, false, Node.INTERNAL_MODE_BACK)
-	add_child(TabsMenu, false, Node.INTERNAL_MODE_BACK)
-	
-	ContextMenu.build_from_items_array(_context_menu_items)
-	
-	TabsMenu.id_pressed.connect(_on_TabsMenu_id_pressed)
-	TabsMenu.about_to_popup.connect(_on_TabsMenu_about_to_popup)
-	TabsBar.tab_close_pressed.connect(_on_TabsBar_tab_close_pressed)
-	TabsBar.tab_rmb_clicked.connect(_on_TabsBar_tab_rmb_clicked)
-	
-	for _signal: Signal in [child_entered_tree, child_exiting_tree] as Array[Signal]:
-		_signal.connect(_on_child_detection.bind(_signal == child_entered_tree))
-	
-	_on_child_detection()
-	_update_tab_processes()
-
-
 func _update_tab_processes() -> void:
 	if not single_tab_processing_enabled:
 		for tab_control: Control in get_tab_controls():

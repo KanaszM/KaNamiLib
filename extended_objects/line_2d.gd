@@ -15,6 +15,15 @@ enum SyncColorMode {DEFAULT, SYNCED, BLENDED}
 var _update_synced_polygon_enabled: bool
 #endregion
 
+#region Constructor
+func _ready() -> void:
+	_set_sync_polygon(sync_polygon)
+	_set_sync_color_mode(sync_color_mode)
+	
+	_update_synced_polygon_enabled = true
+	_update_synced_polygon()
+#endregion
+
 #region Public Methods
 func get_synced_polygon() -> PackedVector2Array:
 	if sync_polygon == null:
@@ -47,14 +56,6 @@ func get_synced_color() -> Color:
 #endregion
 
 #region Private Methods
-func _ready() -> void:
-	_set_sync_polygon(sync_polygon)
-	_set_sync_color_mode(sync_color_mode)
-	
-	_update_synced_polygon_enabled = true
-	_update_synced_polygon()
-
-
 func _update_synced_polygon() -> void:
 	if not _update_synced_polygon_enabled:
 		return
