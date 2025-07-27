@@ -153,5 +153,7 @@ static func _format_entry(type: Type, callback: Callable, message: Variant, opti
 			Type.WARNING, Type.ALERT: push_warning(formatted_message)
 			Type.SUCCESS: print("✅ %s" % formatted_message)
 			Type.NOTICE: print("💡 %s" % formatted_message)
+			Type.TRACE: print("🔍 %s" % formatted_message)
+			Type.DEBUG: print("⚙️ %s" % formatted_message)
 			_: print(formatted_message)
 #endregion
