@@ -144,36 +144,14 @@ static func _format_entry(type: Type, callback: Callable, message: Variant, opti
 		var formatted_message: String = "%s%s%s%s" % [
 			"".lpad(options.indent_length, " "),
 			"" if options.indent_prefix.is_empty() else ("%s " % options.indent_prefix),
-			"" if origin_string == options.placeholder_null else ("<%s.%s> " % [origin_string, origin_method]),
+			"" if origin_string == options.placeholder_null else ("%s.%s :: " % [origin_string, origin_method]),
 			str_message.strip_edges().strip_escapes(),
 			]
 		
-		if OS.has_feature("editor"):
-			var entry_html_color: String = (
-				options.output_custom_color if options.output_custom_color != Color.TRANSPARENT
-				else _get_entry_color(type)
-				).to_html()
-			
-			print_rich(
-				"[color=%s][font_size=%d]%s[/font_size][/color]"
-				% [entry_html_color, options.output_font_size, formatted_message]
-				)
-		
-		else:
-			print(formatted_message)
-
-
-static func _get_entry_color(type: Type) -> Color:
-	match type:
-		Type.INFO: return Shade.gray(3)
-		Type.ERROR: return Shade.red(4)
-		Type.WARNING: return Shade.yellow(4)
-		Type.SUCCESS: return Shade.green(4)
-		Type.DEBUG: return Shade.cyan(4)
-		Type.CRITICAL: return Shade.pink(5)
-		Type.TRACE: return Shade.indigo(4)
-		Type.NOTICE: return Shade.violet(4)
-		Type.ALERT: return Shade.orange(5)
-		Type.FATAL: return Shade.grape(6)
-		_: return Shade.gray(0) 
+		match type:
+			Type.ERROR, Type.CRITICAL: push_error(formatted_message)
+			Type.WARNING, Type.ALERT: push_warning(formatted_message)
+			Type.SUCCESS: print("✅ %s" % formatted_message)
+			Type.NOTICE: print("💡 %s" % formatted_message)
+			_: print(formatted_message)
 #endregion
