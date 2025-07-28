@@ -93,3 +93,14 @@ static func get_polygon_rect(polygon: PackedVector2Array) -> Rect2:
 
 static func get_triangle_area(a: Vector2, b: Vector2, c: Vector2) -> float:
 	return 0.5 * absf((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y))
+
+
+static func rotate_uv(uv_coord: Vector2, angle_deg: float) -> Vector2:
+	var angle_rad: float = deg_to_rad(angle_deg)
+	var cos_a: float = cos(angle_rad)
+	var sin_a: float = sin(angle_rad)
+	
+	return Vector2(
+		uv_coord.x * cos_a - uv_coord.y * sin_a,
+		uv_coord.x * sin_a + uv_coord.y * cos_a
+		)
