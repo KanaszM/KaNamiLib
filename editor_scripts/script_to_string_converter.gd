@@ -16,11 +16,12 @@ const PRINT_RESULT: bool = false
 const END_BLANK_LINES_COUNT: int = 2
 #endregion
 
-#region Private Methods
+#region Constructor
 func _run() -> void:
 	_convert_region()
+#endregion
 
-
+#region Private Methods
 func _convert_region() -> String:
 	if FILE_PATH.is_empty():
 		printerr("No file path was provided!")
