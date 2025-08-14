@@ -104,3 +104,109 @@ static func rotate_uv(uv_coord: Vector2, angle_deg: float) -> Vector2:
 		uv_coord.x * cos_a - uv_coord.y * sin_a,
 		uv_coord.x * sin_a + uv_coord.y * cos_a
 		)
+
+
+static func collect_mesh_vertices(mesh: Mesh) -> PackedVector3Array:
+	var result: PackedVector3Array
+	
+	for surface_idx: int in mesh.get_surface_count():
+		var surface_arrays: Array = mesh.surface_get_arrays(surface_idx)
+		
+		if surface_arrays.size() == 0:
+			continue
+		
+		for vert: Vector3 in surface_arrays[Mesh.ARRAY_VERTEX]:
+			result.append(vert)
+	
+	return result
+
+
+static func compute_3d_centroid(points: PackedVector3Array) -> Vector3:
+	if points.size() == 0:
+		return Vector3.ZERO
+	
+	var result: Vector3 = Vector3.ZERO
+	
+	for point: Vector3 in points:
+		result += point
+	
+	result /= points.size()
+	
+	return result
+
+
+static func shrink_3d_vertices_toward_centroid(
+	points: PackedVector3Array, centroid: Vector3, factor: float
+	) -> PackedVector3Array:
+		var result: PackedVector3Array
+		var clamped_factor: float = clampf(factor, 0.0, 1.0)
+		
+		for point: Vector3 in points:
+			result.append(centroid + (point - centroid) * clamped_factor)
+		
+		return result
+
+
+static func dedupe_vertices_xz(points: PackedVector3Array, scale: float = 10000.0) -> PackedVector2Array:
+	var result: PackedVector2Array
+	var seen_xz: Dictionary[String, bool]
+	
+	for point: Vector3 in points:
+		var key: String = "%d:%d" % [roundf(point.x * scale), roundf(point.z * scale)]
+		
+		if not key in seen_xz:
+			seen_xz[key] = true
+			result.append(Vector2(point.x, point.z))
+	
+	return result
+
+
+static func extrude_xz_to_thin_points(
+	xz_points: PackedVector2Array, top_y: float, thickness: float
+	) -> PackedVector3Array:
+		var result: PackedVector3Array
+		var clamped_thickness: float = maxf(0.0001, thickness)
+		
+		for xz_point: Vector2 in xz_points:
+			result.append(Vector3(xz_point.x, top_y, xz_point.y))
+			result.append(Vector3(xz_point.x, top_y - clamped_thickness, xz_point.y))
+		
+		return result
+
+
+static func get_recentered_vertices_to_origin(points: PackedVector3Array) -> PackedVector3Array:
+	var result: PackedVector3Array
+	var centroid: Vector3 = compute_3d_centroid(points)
+	
+	for point: Vector3 in points:
+		result.append(point - centroid)
+	
+	return result
+
+
+static func create_shrunken_convex_shape_limited_y(
+	mesh: Mesh,
+	shrink_factor: float = 0.95,
+	top_y: float = 0.5,
+	thickness: float = 0.5,
+	shrink_scale: float = 10000.0,
+	) -> ConvexPolygonShape3D:
+		var vertices: PackedVector3Array = collect_mesh_vertices(mesh)
+		
+		if vertices.size() == 0:
+			return null
+		
+		var centroid: Vector3 = compute_3d_centroid(vertices)
+		var shrinked_points: PackedVector3Array = shrink_3d_vertices_toward_centroid(vertices, centroid, shrink_factor)
+		var deduped_vertices: PackedVector2Array = dedupe_vertices_xz(shrinked_points, shrink_scale)
+		var extruded_points: PackedVector3Array = extrude_xz_to_thin_points(deduped_vertices, top_y, thickness)
+		
+		if extruded_points.size() < 4:
+			push_error("Not enough points after limiting Y/thickness to form a convex shape.")
+			return null
+		
+		var shape: ConvexPolygonShape3D = ConvexPolygonShape3D.new()
+		
+		shape.points = extruded_points
+		
+		return shape
