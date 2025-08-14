@@ -6,6 +6,17 @@ static func add_to_group_safe(node: Node, group: StringName) -> void:
 		node.add_to_group(group)
 
 
+static func add_to_group_safe_if(node: Node, group: StringName, condition: bool) -> void:
+	if node == null or group.is_empty():
+		return
+	
+	if condition and not node.is_in_group(group):
+		node.add_to_group(group)
+	
+	elif not condition and node.is_in_group(group):
+		node.remove_from_group(group)
+
+
 static func reparent_all_children(from: Node, to: Node, ignore: Array[Node] = []) -> void:
 	for child: Node in from.get_children():
 		if not child in ignore:
