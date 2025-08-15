@@ -109,7 +109,7 @@ func set_area_collision(
 			
 			area.collision_layer = layer
 			area.collision_mask = mask
-			shape.shape = mesh.create_trimesh_shape()
+			shape.shape = mesh.create_convex_shape()
 		
 		else:
 			if area != null:
