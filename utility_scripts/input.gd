@@ -5,6 +5,13 @@ static func move_mouse_cursor(origin: CanvasItem, factor: float = 0.0001) -> voi
 	Input.warp_mouse(origin.get_global_mouse_position() + Vector2.ONE * factor)
 
 
+static func event_action_press_callback(
+	event: InputEvent, action: StringName, callback: Callable, deferred: bool = false
+	) -> void:
+		if event.is_action_pressed(action):
+			UtilsCallback.call_safe(callback, deferred)
+
+
 static func event_key_press_callback(
 	event: InputEvent, key: Key, callback: Callable, deferred: bool = false
 	) -> void:
