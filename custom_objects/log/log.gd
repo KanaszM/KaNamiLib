@@ -9,7 +9,7 @@ static var _file: FileAccess
 static var _file_options: LogFileOptions = LogFileOptions.new()
 #endregion
 
-#region Static Methods
+#region Public Static Methods
 static func initialize_file_logging(options: LogFileOptions = null) -> void:
 	if options != null:
 		_file_options = options
@@ -87,8 +87,9 @@ static func alert(callback: Callable, message: Variant, options: LogEntryOptions
 
 static func fatal(callback: Callable, message: Variant, options: LogEntryOptions = null) -> void:
 	_format_entry(Type.FATAL, callback, message, options)
+#endregion
 
-
+#region Private Static Methods
 static func _format_entry(type: Type, callback: Callable, message: Variant, options: LogEntryOptions = null) -> void:
 	if options == null:
 		options = LogEntryOptions.new()
