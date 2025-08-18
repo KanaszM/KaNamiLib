@@ -140,8 +140,9 @@ static func _format_entry(type: Type, callback: Callable, message: Variant, opti
 			]
 		
 		match type:
-			Type.ERROR, Type.CRITICAL: push_error(formatted_message)
+			Type.ERROR, Type.CRITICAL, Type.FATAL: push_error(formatted_message)
 			Type.WARNING, Type.ALERT: push_warning(formatted_message)
+			Type.INFO: print("ℹ️ %s" % formatted_message)
 			Type.SUCCESS: print("✅ %s" % formatted_message)
 			Type.NOTICE: print("💡 %s" % formatted_message)
 			Type.TRACE: print("🔍 %s" % formatted_message)
