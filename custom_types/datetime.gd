@@ -332,7 +332,7 @@ static func format_system_datetime_stamp(
 static func format_system_datetime(
 	date_format: String,
 	time_format: String,
-	custom_system_datetime: Dictionary[String, int] = {},
+	custom_system_datetime: Dictionary = {},
 	date_separator: String = "-",
 	time_separator: String = ":",
 	between_separator: String = " ",
@@ -345,43 +345,38 @@ static func format_system_datetime(
 			]
 
 
-static func format_system_time(
-	format: String, custom_system_time: Dictionary[String, int] = {}, separator: String = ":"
-	) -> String:
-		var time_dict := Dictionary(
-			Time.get_time_dict_from_system() if custom_system_time.is_empty() else custom_system_time,
-			TYPE_STRING, &"", null, TYPE_INT, &"", null
-			) as Dictionary[String, int]
-		var formats: Dictionary[String, int]
+static func format_system_time(format: String, custom_system_time = {}, separator: String = ":") -> String:
+	var time_dict := Dictionary(
+		Time.get_time_dict_from_system() if custom_system_time.is_empty() else custom_system_time,
+		TYPE_STRING, &"", null, TYPE_INT, &"", null
+		) as Dictionary[String, int]
+	var formats: Dictionary[String, int]
+	
+	for chr: String in format:
+		if not chr in formats:
+			chr = chr.to_lower()
+			formats[chr] = 0
 		
-		for chr: String in format:
-			if not chr in formats:
-				chr = chr.to_lower()
-				formats[chr] = 0
-			
-			formats[chr] += 1
+		formats[chr] += 1
+	
+	var result: String = ""
+	
+	for chr: String in formats:
+		var time_value: int
 		
-		var result: String = ""
+		match chr:
+			"h": time_value = time_dict.hour
+			"m": time_value = time_dict.minute
+			"s": time_value = time_dict.second
 		
-		for chr: String in formats:
-			var time_value: int
-			
-			match chr:
-				"h": time_value = time_dict.hour
-				"m": time_value = time_dict.minute
-				"s": time_value = time_dict.second
-			
-			result += ("%02d" if formats[chr] >= 2 else "%d") % time_value
-			result += separator
-		
-		return result if separator.is_empty() else UtilsRegex.sub("%s+$" % separator, result)
+		result += ("%02d" if formats[chr] >= 2 else "%d") % time_value
+		result += separator
+	
+	return result if separator.is_empty() else UtilsRegex.sub("%s+$" % separator, result)
 
 
 static func format_system_date(
-	format: String,
-	custom_system_date: Dictionary[String, int] = {},
-	separator: String = "-",
-	language_flag: Language = Language.EN,
+	format: String, custom_system_date = {}, separator: String = "-", language_flag: Language = Language.EN,
 	) -> String:
 		var date_dict := Dictionary(
 			Time.get_date_dict_from_system() if custom_system_date.is_empty() else custom_system_date,
