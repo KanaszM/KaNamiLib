@@ -26,4 +26,14 @@ static func enum_get_flag(enum_arg: Dictionary, name: String, default_flag: int 
 	var enum_dict: Dictionary[String, int] = enum_to_typed_dict(enum_arg)
 	
 	return default_flag if not name in enum_dict else enum_dict[name]
+
+
+static func window_mode_enum_to_dict() -> Dictionary:
+	return {
+		"WINDOWED": 0,
+		"MINIMIZED": 1,
+		"MAXIMIZED": 2,
+		"FULLSCREEN": 3,
+		"EXCLUSIVE_FULLSCREEN": 4,
+		}
 #endregion
