@@ -21,7 +21,7 @@ func _init(
 	) -> void:
 		text_editor_path = UtilsText.strip(text_editor_path)
 		
-		if not Path.new(text_editor_path).exists():
+		if not FileAccess.file_exists(text_editor_path):
 			_reset("The povided text editor at path: '%s', does not exist" % text_editor_path)
 			return
 		
@@ -52,7 +52,7 @@ func _init(
 
 #region Private Methods
 func _read() -> void:
-	_results = Path.new(_active_instance_path).file_get_contents(_results_skip_empty_rows)
+	_results = UtilsFSO.get_file_contents(_active_instance_path)
 	_reset("")
 
 

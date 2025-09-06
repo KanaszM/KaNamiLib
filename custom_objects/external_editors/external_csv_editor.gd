@@ -25,7 +25,7 @@ func _init(
 	) -> void:
 		text_editor_path = UtilsText.strip(text_editor_path)
 		
-		if not Path.new(text_editor_path).exists():
+		if not FileAccess.file_exists(text_editor_path):
 			_reset("The povided text editor at path: '%s', does not exist" % text_editor_path)
 			return
 		
