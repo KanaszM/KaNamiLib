@@ -202,7 +202,10 @@ static func create_shrunken_convex_shape_limited_y(
 		var extruded_points: PackedVector3Array = extrude_xz_to_thin_points(deduped_vertices, top_y, thickness)
 		
 		if extruded_points.size() < 4:
-			push_error("Not enough points after limiting Y/thickness to form a convex shape.")
+			Log.error(
+				"Not enough points after limiting Y/thickness to form a convex shape.", 
+				create_shrunken_convex_shape_limited_y
+				)
 			return null
 		
 		var shape: ConvexPolygonShape3D = ConvexPolygonShape3D.new()

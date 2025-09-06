@@ -8,29 +8,14 @@ enum ValueMode {CELL, TOOLTIP, CELL_AND_TOOLTIP}
 const GET_DISTINCT_CELL_AND_TOOLTIP_VALUE_SEPARATOR: String = "|||"
 #endregion
 
-#region Private Variables
-var _current_result: Result
-#endregion
-
-#region Constructor
-func _init() -> void:
-	_current_result = Result.new()
-#endregion
-
 #region Public Methods
-func get_current_result() -> Result:
-	return _current_result
-
-
 func apply_grouping(
 	source: Object, col_idx: int, recursive: bool = true, value_mode: ValueMode = ValueMode.CELL
 	) -> void:
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
-		_current_result.clear()
-		
 		if item_root == null:
-			_current_result.error("The root TreeItem is null!", apply_grouping)
+			Log.error("The root TreeItem is null!", apply_grouping)
 			return
 		
 		var grouped_rows: Dictionary[String, Array]
@@ -68,23 +53,19 @@ func apply_grouping(
 		if recursive and not row_items_with_children.is_empty():
 			for item_row: TreeItem in row_items_with_children:
 				apply_grouping(item_row, col_idx, true, value_mode)
-		
-		_current_result.success()
 
 
 func apply_sorting(
 	source: Object, sorters: Array[TreeOrganizerSorter], recursive: bool = true, value_mode: ValueMode = ValueMode.CELL
 	) -> void:
-		_current_result.clear()
-		
 		if sorters.is_empty():
-			_current_result.error("No sorters were provided!", apply_sorting)
+			Log.error("No sorters were provided!", apply_sorting)
 			return
 		
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
 		if item_root == null:
-			_current_result.error("The root TreeItem is null!", apply_sorting)
+			Log.error("The root TreeItem is null!", apply_sorting)
 			return
 		
 		_sort_elements(sorters)
@@ -141,8 +122,6 @@ func apply_sorting(
 		if recursive and not row_items_with_children.is_empty():
 			for item_row: TreeItem in row_items_with_children:
 				apply_sorting(item_row, sorters, true, value_mode)
-		
-		_current_result.success()
 
 
 func apply_filters(
@@ -152,16 +131,14 @@ func apply_filters(
 	recursive: bool = true,
 	value_mode: ValueMode = ValueMode.CELL
 	) -> void:
-		_current_result.clear()
-		
 		if filters.is_empty():
-			_current_result.error("No filters were provided!", apply_filters)
+			Log.error("No filters were provided!", apply_filters)
 			return
 		
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
 		if item_root == null:
-			_current_result.error("The root TreeItem is null!", apply_filters)
+			Log.error("The root TreeItem is null!", apply_filters)
 			return
 		
 		_sort_elements(filters)
@@ -289,17 +266,13 @@ func apply_filters(
 		
 		if recursive and visible_row_items_count > 0:
 			item_root.visible = true
-		
-		_current_result.success()
 
 
 func set_visibility(source: Object, state: bool, recursive: bool = true) -> void:
 	var item_root: TreeItem = _get_root_item_from_source(source)
 	
-	_current_result.clear()
-	
 	if item_root == null:
-		_current_result.error("The root TreeItem is null!", set_visibility)
+		Log.error("The root TreeItem is null!", set_visibility)
 		return
 	
 	for item_row: TreeItem in item_root.get_children():
@@ -307,8 +280,6 @@ func set_visibility(source: Object, state: bool, recursive: bool = true) -> void
 		
 		if item_row.get_child_count() > 0 and recursive:
 			set_visibility(item_row, state, true)
-	
-	_current_result.success()
 
 
 func get_distinct(
@@ -317,10 +288,8 @@ func get_distinct(
 		var results: Collection = Collection.new()
 		var item_root: TreeItem = _get_root_item_from_source(source)
 		
-		_current_result.clear()
-		
 		if item_root == null:
-			_current_result.error("The root TreeItem is null!", get_distinct)
+			Log.error("The root TreeItem is null!", get_distinct)
 			return []
 		
 		for item_row: TreeItem in item_root.get_children():
@@ -338,8 +307,6 @@ func get_distinct(
 			
 			if item_row.get_child_count() > 0 and recursive:
 				get_distinct(item_row, col_idx, true, value_mode)
-		
-		_current_result.success()
 		
 		return results.items()
 

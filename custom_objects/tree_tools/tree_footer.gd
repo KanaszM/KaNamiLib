@@ -30,14 +30,14 @@ func _init(tree_reference: ExtendedTree, footer_columns_reference: Array[TreeFoo
 #endregion
 
 #region Public Methods
-func set_enabled(state: bool) -> Result:
-	var result: Result = Result.new()
-	
+func set_enabled(state: bool) -> void:
 	if tree == null:
-		return result.error("The provided tree reference is null!", set_enabled)
+		Log.error("The provided tree reference is null!", set_enabled)
+		return
 	
 	if footer_columns.is_empty():
-		return result.error("No footer columns were provided!", set_enabled)
+		Log.error("No footer columns were provided!", set_enabled)
+		return
 	
 	UtilsSignal.connect_safe_if(tree.item_activated, _on_tree_item_activated, state)
 	
@@ -61,8 +61,6 @@ func set_enabled(state: bool) -> Result:
 	else:
 		for item_root: TreeItem in roots_with_footers:
 			item_root.remove_child(roots_with_footers[item_root])
-	
-	return result.success()
 
 
 func reapply_operations() -> void:

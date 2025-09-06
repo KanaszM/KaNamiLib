@@ -44,7 +44,10 @@ static func get_file_contents(path: String, skip_empty_rows: bool = true) -> Pac
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	
 	if file == null:
-		push_error("File at path: '%s', could not be read! %s" % [path, error_string(FileAccess.get_open_error())])
+		Log.error(
+			"File at path: '%s', could not be read! %s" % [path, error_string(FileAccess.get_open_error())],
+			get_file_contents
+			)
 		return contents
 	
 	var current_line: String
@@ -69,7 +72,10 @@ static func get_file_csv_contents(
 		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 		
 		if file == null:
-			push_error("File at path: '%s', could not be read! %s" % [path, error_string(FileAccess.get_open_error())])
+			Log.error(
+				"File at path: '%s', could not be read! %s" % [path, error_string(FileAccess.get_open_error())],
+				get_file_csv_contents
+				)
 			return contents
 		
 		var current_line: PackedStringArray
@@ -82,7 +88,10 @@ static func get_file_csv_contents(
 				"tsv":
 					current_line = file.get_csv_line("\t")
 				_:
-					push_error("Invalid file extension: '%s'! Must be either 'csv' or 'tsv'." % file_extension)
+					Log.error(
+						"Invalid file extension: '%s'! Must be either 'csv' or 'tsv'." % file_extension,
+						get_file_csv_contents
+						)
 					return contents
 			
 			if current_line.is_empty() and skip_empty_rows:
@@ -114,7 +123,10 @@ static func list_dir(
 		var dir: DirAccess = DirAccess.open(path)
 		
 		if dir == null:
-			push_error("Dir at path: '%s', could not be opened! %s" % [path, error_string(DirAccess.get_open_error())])
+			Log.error(
+				"Dir at path: '%s', could not be opened! %s" % [path, error_string(DirAccess.get_open_error())],
+				list_dir
+				)
 			return paths
 		
 		dir.list_dir_begin()

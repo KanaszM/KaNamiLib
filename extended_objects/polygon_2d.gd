@@ -331,7 +331,7 @@ func _execute_tool_store(mode: bool) -> void:
 		var file: FileAccess = FileAccess.open(store_path, FileAccess.WRITE)
 		
 		if file == null:
-			push_error("Could not write the file at path: '%s'!" % store_path)
+			Log.error("Could not write the file at path: '%s'!" % store_path, _execute_tool_store)
 			return
 		
 		file.flush()
@@ -340,16 +340,17 @@ func _execute_tool_store(mode: bool) -> void:
 	var store_load_error_code: Error = store_cfg.load(store_path)
 	
 	if store_load_error_code != OK:
-		push_error(
+		Log.error(
 			"Could not load the config file at path: '%s'! Error: %s" % [
-				store_path, error_string(store_load_error_code),
-				]
+				store_path, error_string(store_load_error_code)
+				],
+			_execute_tool_store
 			)
 		return
 	
 	if mode:
 		if not tool_store_save_overwrite and store_cfg.has_section_key(store_section, store_key):
-			push_warning("The polygon is already stored at address: '%s'." % store_address)
+			Log.warning("The polygon is already stored at address: '%s'." % store_address, _execute_tool_store)
 			return
 		
 		store_cfg.set_value(store_section, store_key, polygon)
@@ -357,10 +358,11 @@ func _execute_tool_store(mode: bool) -> void:
 		var store_save_error_code: Error = store_cfg.save(store_path)
 		
 		if store_save_error_code != OK:
-			push_error(
+			Log.error(
 				"Could not store the polygon at address: '%s'! Error: %s" % [
 					store_address, error_string(store_save_error_code),
-					]
+					],
+				_execute_tool_store
 				)
 	
 	else:
@@ -368,10 +370,11 @@ func _execute_tool_store(mode: bool) -> void:
 		var store_value_type: int = typeof(store_value)
 		
 		if store_value_type != TYPE_PACKED_VECTOR2_ARRAY:
-			push_error(
+			Log.error(
 				"Invalid stored value type: '%s', on address: '%s'!" % [
 					type_string(store_value_type), store_address,
-					]
+					],
+				_execute_tool_store
 				)
 			return
 		

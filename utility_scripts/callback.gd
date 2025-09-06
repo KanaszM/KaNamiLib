@@ -34,24 +34,24 @@ static func to_str(
 
 static func get_callback_data(callback: Callable) -> CallbackData:
 	if not callback.is_valid():
-		push_error("The provided callable is not valid!")
+		Log.error("The provided callable is not valid!", get_callback_data)
 		return null
 	
 	var object: Object = callback.get_object()
 	
 	if object == null:
-		push_error("The callable object could not be identified!")
+		Log.error("The callable object could not be identified!", get_callback_data)
 		return null
 	
 	if not object is Node:
-		push_error("The callable object must be a Node!")
+		Log.error("The callable object must be a Node!", get_callback_data)
 		return null
 	
 	var origin := object as Node
 	var method: StringName = callback.get_method()
 	
 	if method.is_empty() or method == &"<anonymous lambda>":
-		push_error("Invalid method name: '%s' on callable: '%s'!" % [method, callback])
+		Log.error("Invalid method name: '%s' on callable: '%s'!" % [method, callback], get_callback_data)
 		return null
 	
 	var callback_data: CallbackData = CallbackData.new()
