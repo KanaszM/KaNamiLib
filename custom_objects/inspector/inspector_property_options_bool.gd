@@ -1,0 +1,4 @@
+class_name InspectorPropertyOptionsBool extends InspectorPropertyOptions
+
+#region Public Variables
+#endregion

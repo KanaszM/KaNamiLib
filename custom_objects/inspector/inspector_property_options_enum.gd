@@ -1,0 +1,4 @@
+class_name InspectorPropertyOptionsEnum extends InspectorPropertyOptions
+
+#region Public Variables
+#endregion
