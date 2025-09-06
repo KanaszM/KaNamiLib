@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://djsw1nlsx1osl"]
+
+[ext_resource type="Script" uid="uid://bli1w0k6uchfj" path="res://lib/autoload_scenes/web_socket_client/web_socket_client.gd" id="1_fpyxo"]
+
+[node name="WebSocketClient" type="Node"]
+script = ExtResource("1_fpyxo")

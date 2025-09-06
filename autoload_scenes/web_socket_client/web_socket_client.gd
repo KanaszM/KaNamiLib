@@ -1,4 +1,4 @@
-class_name WebSocketClient extends Node
+extends Node # class_name WebSocketClient
 
 #region Signals
 signal connected
@@ -9,6 +9,7 @@ signal packet_received(packet: Packets.Packet)
 #region Public Variables
 var socket: WebSocketPeer
 var previous_state: WebSocketPeer.State
+var current_result: Result
 
 var url: String
 var client_id: int: set = _set_client_id
@@ -25,6 +26,8 @@ func _ready() -> void:
 	
 	socket = WebSocketPeer.new()
 	previous_state = WebSocketPeer.STATE_CLOSED
+	current_result = Result.new()
+	
 	_paused = true
 #endregion
 
@@ -32,6 +35,8 @@ func _ready() -> void:
 func connect_to_url(
 	host: String = "127.0.0.1", port: int = 8080, host_is_ip: bool = true, tls_options: TLSOptions = null,
 	) -> Error:
+		current_result.clear()
+		
 		if has_connection:
 			return OK
 		
@@ -41,20 +46,20 @@ func connect_to_url(
 		var host_error_message: String = UtilsNetwork.validate_host(host, host_is_ip)
 		
 		if not host_error_message.is_empty():
-			Log.error(connect_to_url, "Host validation error: %s" % host_error_message)
+			current_result.error("Host validation error: %s" % host_error_message, connect_to_url)
 			return ERR_INVALID_PARAMETER
 		
 		var port_error_message: String = UtilsNetwork.validate_port(port)
 		
 		if not port_error_message.is_empty():
-			Log.error(connect_to_url, "Port validation error: %s" % port_error_message)
+			current_result.error("Port validation error: %s" % port_error_message, connect_to_url)
 			return ERR_INVALID_PARAMETER
 		
 		url = "%s://%s:%d/ws" % ["wss" if tls_options else "ws", host, port]
 		
 		var connection_error: Error = socket.connect_to_url(url, tls_options)
 		
-		Log.info(connect_to_url, "Connecting to %s..." % url)
+		current_result.info("Connecting to %s..." % url, connect_to_url)
 		
 		if connection_error != OK:
 			_paused = true
@@ -97,12 +102,12 @@ func poll() -> void:
 			WebSocketPeer.STATE_OPEN:
 				connected.emit()
 				has_connection = true
-				Log.success(poll, "Connected")
+				current_result.success("Connected", poll)
 			
 			WebSocketPeer.STATE_CLOSED:
 				disconnected.emit()
 				has_connection = false
-				Log.success(poll, "Disconnected")
+				current_result.success("Disconnected", poll)
 	
 	while current_state == WebSocketPeer.STATE_OPEN and socket.get_available_packet_count():
 		var packet: Packets.Packet = _retrieve_packet()
@@ -125,7 +130,7 @@ func _retrieve_packet() -> Packets.Packet:
 	var result: int = packet.from_bytes(data)
 	
 	if result != OK:
-		Log.error(_retrieve_packet, "Error forming packet from data %s" % data.get_string_from_utf8())
+		current_result.error("Error forming packet from data %s" % data.get_string_from_utf8(), _retrieve_packet)
 	
 	return packet
 #endregion
@@ -144,7 +149,7 @@ class Packets:
 #region Setter Methods
 func _set_client_id(arg: int) -> void:
 	client_id = arg
-	Log.debug(_set_client_id, "Client ID is: %d" % client_id)
+	current_result.info("Client ID is: %d" % client_id, _set_client_id)
 
 
 func _set_paused(arg: bool) -> void:
