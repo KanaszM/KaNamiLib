@@ -113,7 +113,6 @@ func readd_callback(callback: Callable, unique: bool = true) -> void:
 
 func recallback(callback: Callable) -> void:
 	if callback_exists(callback):
-		Log.warning(recallback, "The callback: '%s' is not registered." % callback)
 		return
 	
 	_callbacks.erase(callback)
@@ -162,7 +161,6 @@ func readd_signal(signal_param: Signal) -> void:
 
 func resignal(signal_param: Signal) -> void:
 	if signal_exists(signal_param):
-		Log.warning(resignal, "The signal: '%s' is not registered." % signal_param)
 		return
 	
 	_signals.erase(signal_param)

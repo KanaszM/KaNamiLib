@@ -12,9 +12,7 @@ func _init(
 	is_numeric_state: bool = false,
 	alignment_value: HorizontalAlignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 	) -> void:
-		if idx_value < 0:
-			Log.error(_init, "The index value cannot be lower than 0!")
-			return
+		idx_value = maxi(0, idx_value)
 		
 		idx = idx_value
 		is_numeric = is_numeric_state

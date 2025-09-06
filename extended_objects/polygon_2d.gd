@@ -315,15 +315,7 @@ func _execute_tool_store(mode: bool) -> void:
 	if not OS.is_debug_build():
 		return
 	
-	var store_path_options: PathOptions = PathOptions.new()
-	
-	store_path_options.logging_type = PathOptions.LoggingType.ENGINE
-	store_path_options.logging_errors_enabled = true
-	store_path_options.logging_successes_enabled = true
-	store_path_options.logging_warnings_enabled = true
-	store_path_options.file_create_if_not_exists = true
-	
-	var store_path: Path = Path.new_user_data_dir(store_path_options).join(TOOL_STORE_FILE_NAME)
+	var store_path: String = OS.get_user_data_dir().path_join(TOOL_STORE_FILE_NAME)
 	var store_cfg: ConfigFile = ConfigFile.new()
 	var store_tool_name: String = tool_store_key.strip_edges()
 	var store_tool_section: String = tool_store_section.strip_edges()
@@ -335,12 +327,22 @@ func _execute_tool_store(mode: bool) -> void:
 		)
 	var store_address: String = "[%s][%s]" % [store_section, store_key]
 	
-	var store_load_error_code: Error = store_cfg.load(store_path.path)
+	if not FileAccess.file_exists(store_path):
+		var file: FileAccess = FileAccess.open(store_path, FileAccess.WRITE)
+		
+		if file == null:
+			push_error("Could not write the file at path: '%s'!" % store_path)
+			return
+		
+		file.flush()
+		file.close()
+	
+	var store_load_error_code: Error = store_cfg.load(store_path)
 	
 	if store_load_error_code != OK:
 		push_error(
 			"Could not load the config file at path: '%s'! Error: %s" % [
-				store_path.path, error_string(store_load_error_code),
+				store_path, error_string(store_load_error_code),
 				]
 			)
 		return
@@ -352,7 +354,7 @@ func _execute_tool_store(mode: bool) -> void:
 		
 		store_cfg.set_value(store_section, store_key, polygon)
 		
-		var store_save_error_code: Error = store_cfg.save(store_path.path)
+		var store_save_error_code: Error = store_cfg.save(store_path)
 		
 		if store_save_error_code != OK:
 			push_error(

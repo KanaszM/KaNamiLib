@@ -31,7 +31,6 @@ func readd_callback(callback: Callable, unique: bool = true) -> void:
 
 func recallback(callback: Callable) -> void:
 	if callback_exists(callback):
-		Log.warning(recallback, "The callback: '%s' is not registered." % callback)
 		return
 	
 	_callbacks.erase(callback)

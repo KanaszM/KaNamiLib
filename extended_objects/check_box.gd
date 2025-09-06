@@ -31,7 +31,6 @@ func readd_signal(signal_param: Signal) -> void:
 
 func resignal(signal_param: Signal) -> void:
 	if signal_exists(signal_param):
-		Log.warning(resignal, "The signal: '%s' is not registered." % signal_param)
 		return
 	
 	_signals.erase(signal_param)
