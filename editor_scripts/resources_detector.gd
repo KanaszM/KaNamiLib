@@ -1,16 +1,18 @@
 @tool
 extends EditorScript
 
+#region Constants
+const ROOT_DIR: String = "res://res"
+const METHOD_GET_CUSTOM_CLASS_NAME: StringName = &"_get_class"
+const IGNORED_EXTENSIONS: Array[String] = ["import", "uid"]
+#endregion
 
+#region Main Method
 func _run() -> void:
-	var root_dir: String = "res://resources"
-	var dir: DirAccess = DirAccess.open(root_dir)
+	var dir: DirAccess = DirAccess.open(ROOT_DIR)
 	
 	if dir == null:
-		var dir_open_error: String = error_string(DirAccess.get_open_error())
-		
-		push_error("Could not open the dir at path: '%s'! %s" % [root_dir, dir_open_error])
-		
+		push_error("Could not open the dir at path: '%s'! %s" % [ROOT_DIR, error_string(DirAccess.get_open_error())])
 		return
 	
 	dir.list_dir_begin()
@@ -20,16 +22,14 @@ func _run() -> void:
 	
 	while not current_element.is_empty():
 		if dir.current_is_dir():
-			var element_path: String = root_dir.path_join(current_element)
-			
-			results.append(_process_current_element(current_element, element_path))
+			results.append(_process_current_element(current_element, ROOT_DIR.path_join(current_element)))
 		
 		current_element = dir.get_next()
 	
 	dir.list_dir_end()
 	
 	if results.is_empty():
-		push_warning("No resources could be detected from root dir: '%s'." % root_dir)
+		push_warning("No resources could be detected from root dir: '%s'." % ROOT_DIR)
 		return
 	
 	var result_lines: PackedStringArray = PackedStringArray(
@@ -48,10 +48,9 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 	var dir: DirAccess = DirAccess.open(element_path)
 	
 	if dir == null:
-		var dir_open_error: String = error_string(DirAccess.get_open_error())
-		
-		push_error("Could not open the dir at path: '%s'! %s" % [element_path, dir_open_error])
-		
+		push_error(
+			"Could not open the dir at path: '%s'! %s" % [element_path, error_string(DirAccess.get_open_error())]
+			)
 		return
 	
 	result.category_name = element
@@ -59,14 +58,13 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 	dir.list_dir_begin()
 	
 	var current_sub_element: String = dir.get_next()
-	var ignored_extensions: PackedStringArray = PackedStringArray(["import", "uid"])
 	
 	while not current_sub_element.is_empty():
 		if not dir.current_is_dir():
 			var sub_element_path: String = element_path.path_join(current_sub_element)
 			var sub_element_extension: String = sub_element_path.get_extension()
 			
-			if not sub_element_extension in ignored_extensions:
+			if not sub_element_extension in IGNORED_EXTENSIONS:
 				var resource: Resource = load(sub_element_path)
 				
 				if resource == null:
@@ -74,10 +72,15 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 				
 				else:
 					var sub_element_name: String = sub_element_path.get_file().get_slice(".", 0)
-					
 					var resource_name: String = sub_element_name.to_upper()
-					var resource_class: String = resource.get_class()
+					var resource_class: String
 					var resource_uid: String = UtilsResource.get_uid(resource)
+					
+					if resource.has_method(METHOD_GET_CUSTOM_CLASS_NAME):
+						resource_class = UtilsScript.get_gd_script_from_object(resource).get_global_name()
+					
+					else:
+						resource_class = resource.get_class()
 					
 					if resource_uid.is_empty():
 						push_error("Could not detect the UID of resource at path: '%s'!" % sub_element_path)
@@ -94,11 +97,13 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 	dir.list_dir_end()
 	
 	return result
+#endregion
 
-
+#region SubClasses
 class _Result:
 	var category_name: String
 	var resource_lines: PackedStringArray
 	
 	func _to_string() -> String:
 		return "\n#region %s\n%s\n#endregion" % [category_name.capitalize(), "\n".join(resource_lines)]
+#endregion

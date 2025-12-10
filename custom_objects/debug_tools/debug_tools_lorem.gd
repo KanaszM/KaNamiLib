@@ -3,20 +3,17 @@ class_name DebugToolsLorem
 #region Static Methods
 static func get_words(
 	additional_entries: PackedStringArray = PackedStringArray([]),
-	custom_entries: PackedStringArray = PackedStringArray([])
 	) -> PackedStringArray:
-		if custom_entries == null:
-			var result: PackedStringArray = PackedStringArray([[
-				"adipisci", "aliquam", "amet", "consectetur", "dolor", "dolore", "dolorem", "eius", "est", "et",
-				"incidunt", "ipsum", "labore", "magnam", "modi", "neque", "non", "numquam", "porro", "quaerat", "qui",
-				"quia", "quisquam", "sed", "sit", "tempora", "ut", "velit", "voluptatem",
-				]])
-			
-			result.append_array(additional_entries)
-			
-			return result
+		var words: PackedStringArray = PackedStringArray([
+			"adipisci", "aliquam", "amet", "consectetur", "dolor", "dolore", "dolorem", "eius", "est", "et",
+			"incidunt", "ipsum", "labore", "magnam", "modi", "neque", "non", "numquam", "porro", "quaerat", "qui",
+			"quia", "quisquam", "sed", "sit", "tempora", "ut", "velit", "voluptatem",
+			])
 		
-		return custom_entries
+		if not additional_entries.is_empty():
+			words.append_array(additional_entries)
+		
+		return words
 
 
 static func get_random_word(custom_words: PackedStringArray = PackedStringArray([])) -> String:

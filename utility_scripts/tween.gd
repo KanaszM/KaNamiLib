@@ -2,8 +2,15 @@ class_name UtilsTween
 
 
 static func kill_tween_safe(tween: Tween) -> void:
-	if tween != null and tween.is_valid():
+	if is_valid(tween):
 		tween.kill()
+
+
+static func is_valid(tween: Tween) -> bool:
+	if tween == null or not tween.is_valid():
+		return false
+	
+	return true
 
 
 static func tween_property_by_data(object: Node, data: TweenPropertyData, tween: Tween = null) -> void:

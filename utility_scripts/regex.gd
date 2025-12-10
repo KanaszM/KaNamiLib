@@ -15,6 +15,8 @@ const MATCH_FLOAT: String = r"^(-|-?\d+\.?\d*|-?\.\d+)$"
 const MATCH_FLOAT_POSITIVE: String = r"^(\d+\.?\d*|\.\d+)$"
 const MATCH_HOST_IP: String = r"^(\d{1,3}\.){3}\d{1,3}$"
 const MATCH_HOST_DOMAIN: String = r"^(?:[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)$"
+const MATCH_ALPHA_START_ALPHANUM: String = r"^[A-Za-z][A-Za-z0-9_]*$"
+const MATCH_ALPHA: String = r"^[A-Za-z]+$"
 
 const FIND_FIRST_NEGATIVE_NUMBER: String = r"-\d+"
 const FIND_NON_EMPTY_TUPLE: String = r"\([^)]+\)"
@@ -43,10 +45,6 @@ static func get_match(pattern: String, text: String, offset: int = 0, end: int =
 
 static func compile(pattern: String) -> RegEx:
 	var regex: RegEx = RegEx.new()
-	var error: Error = regex.compile(pattern)
 	
-	if error != OK:
-		return null
-	
-	return regex
+	return regex if regex.compile(pattern) == Error.OK else null
 #endregion

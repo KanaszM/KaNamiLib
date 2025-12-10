@@ -54,7 +54,6 @@ static func update_file(config: ConfigBase, mode: UpdateMode) -> bool:
 			Log.warning(
 				"Missing section: [%s] and key: '%s'. Reseting..." % [property_section, property_key]
 				)
-			
 			config_file.set_value(property_section, property_key, config_object_value)
 			config_file_changed = true
 			continue
@@ -110,7 +109,7 @@ static func update_file(config: ConfigBase, mode: UpdateMode) -> bool:
 			var config_file_property: StringName = StringName("%s%s%s" % [section, KEY_DELIMITER, key])
 			
 			if not config_file_property in properties:
-				Log.warning( "Invalid key/section: '%s' [%s]. Not used." % [key, section])
+				Log.warning("Invalid key/section: '%s' [%s]. Not used." % [key, section])
 	
 	if config_file_changed:
 		var save_error_code: Error = config_file.save(file_path)
@@ -123,6 +122,14 @@ static func update_file(config: ConfigBase, mode: UpdateMode) -> bool:
 	
 	Log.success("Config file updated successfully at path: '%s'." % file_path)
 	return true
+
+
+static func save_file(config: ConfigBase) -> bool:
+	return update_file(config, UpdateMode.SAVE)
+
+
+static func load_file(config: ConfigBase) -> bool:
+	return update_file(config, UpdateMode.LOAD)
 #endregion
 
 #region Private Static Methods

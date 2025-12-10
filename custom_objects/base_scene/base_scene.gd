@@ -8,21 +8,21 @@ const GROUP: StringName = &"BaseScene"
 signal teardown_completed
 #endregion
 
-#region Abstract Methods
-@abstract func _teardown() -> void
-#endregion
-
 #region Private Variables
 var _id: String
 var _teardown_is_active: bool
 var _teardown_is_completed: bool
 #endregion
 
-#region Constructor
-func _init() -> void:
+#region Virtual Methods
+func _ready() -> void:
 	add_to_group(GROUP)
 	
 	teardown_completed.connect(_on_teardown_completed)
+
+
+func _to_string() -> String:
+	return "<BaseScene[%s]>" % ("N/A" if _id.is_empty() else _id)
 #endregion
 
 #region Public Methods
@@ -57,26 +57,9 @@ func teardown() -> void:
 	_teardown()
 #endregion
 
-#region Static Public Methods
-static func get_current(scene_tree: SceneTree) -> BaseScene:
-	if scene_tree == null:
-		Log.error("The provided scene tree reference is null!", get_current)
-		return null
-	
-	var detected_valid_nodes: Array[Node] = scene_tree.get_nodes_in_group(GROUP)
-	
-	if detected_valid_nodes.is_empty():
-		return
-	
-	if detected_valid_nodes.size() > 1:
-		Log.warning("More than one base scene have been detected. Returning the first one...", get_current)
-	
-	return detected_valid_nodes[0] as BaseScene
-#endregion
-
 #region Private Methods
-func _to_string() -> String:
-	return "<BaseScene[%s]>" % ("N/A" if _id.is_empty() else _id)
+func _teardown() -> void:
+	pass
 #endregion
 
 #region Signal Callbacks

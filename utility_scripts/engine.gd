@@ -13,6 +13,14 @@ static func get_current_scene() -> Node:
 	return get_tree().current_scene
 
 
+static func has_global(singleton_name: StringName) -> bool:
+	for child: Node in get_tree().root.get_children(true):
+		if child.name == singleton_name:
+			return true
+	
+	return false
+
+
 static func notification_to_str(notification_idx: int) -> String:
 	match notification_idx:
 		Object.NOTIFICATION_POSTINITIALIZE: return "[0] Object :: postinitialize"

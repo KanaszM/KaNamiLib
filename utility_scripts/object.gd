@@ -48,11 +48,16 @@ static func get_property_names(object: Object, property_names_to_ignore: Array[S
 		)
 
 
-static func inject_properties(object: Object, properties_map: Dictionary[StringName, Variant]) -> void:
+static func inject_properties(object: Object, properties_map: Dictionary) -> void:
 	if object == null:
 		return
 	
-	for property: StringName in properties_map:
+	for key: Variant in properties_map:
+		if not typeof(key) in PackedInt32Array([TYPE_STRING, TYPE_STRING_NAME]):
+			continue
+		
+		var property: StringName = StringName(str(key))
+		
 		if property in object:
 			object.set(property, properties_map[property])
 

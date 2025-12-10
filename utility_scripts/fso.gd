@@ -35,6 +35,26 @@ static func get_pack_file_path() -> String:
 	return OS.get_executable_path().replace(".exe", ".pck") if not OS.is_debug_build() else ""
 
 
+static func get_validated_file_path(file_path: String, expected_file_extension: String) -> String:
+	var validated_file_name: String = get_validated_file_name(get_file_name_from_path(file_path))
+	
+	if validated_file_name.is_empty():
+		return ""
+	
+	var file_extension: String = file_path.get_extension()
+	
+	if file_extension != expected_file_extension:
+		Log.error(
+			"Invalid extension: '%s' for file at path: '%s'! Must be: '%s'." % [
+				file_extension, file_path, expected_file_extension
+				],
+			get_validated_file_path
+			)
+		return ""
+	
+	return file_path.get_base_dir().path_join("%s.%s" % [validated_file_name, file_extension])
+
+
 static func open_externally(file_path: String) -> Error:
 	return OS.shell_open(file_path)
 
@@ -104,8 +124,27 @@ static func get_file_csv_contents(
 		return contents
 
 
-static func get_name(path: String) -> String:
-	return path.get_file().get_slice(".", 0)
+static func get_file_name_from_path(file_path: String) -> String:
+	return file_path.get_file().trim_suffix(file_path.get_extension()).replace(".", "")
+
+
+static func get_validated_file_name(file_name: String) -> String:
+	file_name = file_name.strip_edges().replace(" ", "_").replace("-", "_").replace(".", "")
+	file_name = file_name.validate_filename()
+	
+	if not file_name.is_valid_filename():
+		Log.error("Invalid file name: '%s'!" % file_name, get_validated_file_name)
+		return ""
+	
+	return file_name
+
+
+static func file_exists_at_path(file_path: String) -> bool:
+	return FileAccess.file_exists(file_path.strip_edges())
+
+
+static func dir_exists_at_path(dir_path: String) -> bool:
+	return DirAccess.dir_exists_absolute(dir_path.strip_edges())
 
 
 static func list_dir(
@@ -166,7 +205,7 @@ static func list_dir(
 						current_path_is_valid = false
 					
 					if not exclude_file_names.is_empty():
-						if get_name(current_path) in exclude_file_names:
+						if get_file_name_from_path(current_path) in exclude_file_names:
 							current_path_is_valid = false
 			
 			if current_path_is_valid:

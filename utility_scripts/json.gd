@@ -1,10 +1,13 @@
 class_name UtilsJSON
 
 
-static func safe_parse_dict(json: Variant) -> Dictionary[Variant, Variant]:
+static func safe_parse_dict(json: Variant) -> Dictionary:
 	var parsed: Variant = JSON.parse_string(str(json))
 	
-	return parsed if typeof(parsed) == TYPE_DICTIONARY else {}
+	if typeof(parsed) == TYPE_DICTIONARY:
+		return parsed
+	
+	return {}
 
 
 static func safe_parse_array(json: Variant) -> Array:
