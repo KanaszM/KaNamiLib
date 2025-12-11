@@ -25,9 +25,7 @@ func _get_class() -> String:
 
 #region Public Static Methods
 static func confilct_clause_types() -> Array[ConflictClauseType]:
-	var values: Array = ConflictClauseType.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[ConflictClauseType]
+	return Array(ConflictClauseType.values().slice(1), TYPE_INT, &"", null) as Array[ConflictClauseType]
 
 
 static func confilct_clause_type_str(confilct_clause_type_arg: ConflictClauseType) -> String:

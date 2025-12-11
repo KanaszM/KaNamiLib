@@ -44,9 +44,7 @@ func _get_class() -> String:
 
 #region Public Static Methods
 static func get_data_types() -> Array[DataType]:
-	var values: Array = DataType.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[DataType]
+	return Array(UniqueType.values().slice(1), TYPE_INT, &"", null) as Array[DataType]
 
 
 static func data_type_to_str(type: DataType) -> String:
@@ -57,9 +55,7 @@ static func data_type_to_str(type: DataType) -> String:
 
 
 static func get_unique_types() -> Array[UniqueType]:
-	var values: Array = UniqueType.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[UniqueType]
+	return Array(UniqueType.values().slice(1), TYPE_INT, &"", null) as Array[UniqueType]
 
 
 static func unique_type_to_str(type: UniqueType) -> String:

@@ -24,9 +24,7 @@ func _get_class() -> String:
 
 #region Public Static Methods
 static func get_resource_types() -> Array[ResourceType]:
-	var values: Array = ResourceType.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[ResourceType]
+	return Array(ResourceType.values().slice(1), TYPE_INT, &"", null) as Array[ResourceType]
 
 
 static func resource_type_to_str(resource_type: ResourceType) -> String:

@@ -56,15 +56,11 @@ func _get_class() -> String:
 
 #region Public Static Methods
 static func get_logical_operators() -> Array[LogicalOperator]:
-	var values: Array = LogicalOperator.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[LogicalOperator]
+	return Array(LogicalOperator.values().slice(1), TYPE_INT, &"", null) as Array[LogicalOperator]
 
 
 static func get_comparison_operators() -> Array[ComparisonOperator]:
-	var values: Array = ComparisonOperator.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[ComparisonOperator]
+	return Array(ComparisonOperator.values().slice(1), TYPE_INT, &"", null) as Array[ComparisonOperator]
 
 
 static func logical_operator_to_str(logical_operator_arg: LogicalOperator) -> String:

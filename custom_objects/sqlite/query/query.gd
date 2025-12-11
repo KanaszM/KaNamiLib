@@ -24,9 +24,7 @@ func _get_class() -> String:
 
 #region Public Static Methods
 static func get_query_types() -> Array[QueryType]:
-	var values: Array = QueryType.values()
-	values.remove_at(0)
-	return Array(values, TYPE_INT, &"", null) as Array[QueryType]
+	return Array(QueryType.values().slice(1), TYPE_INT, &"", null) as Array[QueryType]
 
 
 static func query_type_to_str(query_type: QueryType) -> String:
