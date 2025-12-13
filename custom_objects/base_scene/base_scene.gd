@@ -59,7 +59,7 @@ func teardown() -> void:
 
 #region Private Methods
 func _teardown() -> void:
-	pass
+	teardown_completed.emit()
 #endregion
 
 #region Signal Callbacks

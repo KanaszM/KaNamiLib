@@ -121,6 +121,9 @@ static func fatal(contents: Variant, origin: Callable = Callable(), format_optio
 
 #region Private Methods
 static func _format_entry(type: Type, contents: Variant, origin: Callable, format_options: FormatOptions) -> void:
+	if _options == null:
+		_options = Options.new()
+	
 	var is_enabled: bool = true
 	
 	match type:

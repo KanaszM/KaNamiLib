@@ -45,7 +45,7 @@ func _ready() -> void:
 		queue_free()
 		return
 	
-	UtilsNode.set_process(self, false)
+	set_process(false)
 	
 	if not _check_inputs():
 		return
@@ -53,34 +53,35 @@ func _ready() -> void:
 	_yaw_degrees = rotation_degrees.y
 	_pitch_degrees = rotation_degrees.x
 	
+	Input.use_accumulated_input = true
 	_set_mouse_capture(look_capture_on_ready)
-	UtilsNode.set_process(self, true)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
+	if event is InputEventKey:
 		var key_event := event as InputEventKey
 		
-		if key_event.keycode == input_key_mouse_capture_on:
-			_toggle_mouse_capture()
-			return
-		
-		if key_event.keycode == input_key_mouse_capture_off:
-			if _mouse_is_captured:
-				_set_mouse_capture(false)
+		if key_event.pressed and not key_event.echo:
+			if key_event.keycode == input_key_mouse_capture_on:
+				_toggle_mouse_capture()
+				return
 			
-			return
-	
-	if event is InputEventMouseMotion and _mouse_is_captured:
-		var mouse_motion_event := event as InputEventMouseMotion
-		
-		_yaw_degrees -= mouse_motion_event.relative.x * look_sensitivity
-		_pitch_degrees -= mouse_motion_event.relative.y * look_sensitivity
-		_pitch_degrees = clamp(_pitch_degrees, -PITCH_DEGREES_LIMIT, PITCH_DEGREES_LIMIT)
-		rotation_degrees = Vector3(_pitch_degrees, _yaw_degrees, 0.0)
+			if key_event.keycode == input_key_mouse_capture_off:
+				if _mouse_is_captured:
+					_set_mouse_capture(false)
 
 
 func _process(delta: float) -> void:
+	#region Mouse Movement Processing
+	var mouse_velocity: Vector2 = Input.get_last_mouse_velocity()
+	var mouse_relative: Vector2 = mouse_velocity * delta
+	
+	_yaw_degrees -= mouse_relative.x * look_sensitivity
+	_pitch_degrees -= mouse_relative.y * look_sensitivity
+	_pitch_degrees = clamp(_pitch_degrees, -PITCH_DEGREES_LIMIT, PITCH_DEGREES_LIMIT)
+	rotation_degrees = Vector3(_pitch_degrees, _yaw_degrees, 0.0)
+	#endregion
+	
 	#region Direction Processing
 	var direction: Vector3
 	
@@ -137,13 +138,14 @@ func _toggle_mouse_capture() -> void:
 func _set_mouse_capture(state: bool) -> void:
 	_mouse_is_captured = state
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state else Input.MOUSE_MODE_VISIBLE
+	set_process(state)
 
 
 func _check_inputs() -> bool:
 	var input_action_types: Array[StringName] = [
 		&"input_move_left", &"input_move_right", &"input_move_up", &"input_move_down", &"input_move_forward",
 		&"input_move_backward", &"input_increase_speed", &"input_decrease_speed"
-	]
+		]
 	
 	var is_valid: bool = true
 	

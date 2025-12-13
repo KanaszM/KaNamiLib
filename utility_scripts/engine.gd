@@ -21,6 +21,16 @@ static func has_global(singleton_name: StringName) -> bool:
 	return false
 
 
+static func has_globals(singleton_names: Array[StringName]) -> bool:
+	var available_globals: Array[StringName]
+	
+	for singleton_name: StringName in singleton_names:
+		if has_global(singleton_name):
+			available_globals.append(singleton_name)
+	
+	return available_globals.size() == singleton_names.size()
+
+
 static func notification_to_str(notification_idx: int) -> String:
 	match notification_idx:
 		Object.NOTIFICATION_POSTINITIALIZE: return "[0] Object :: postinitialize"
