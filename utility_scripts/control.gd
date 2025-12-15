@@ -1,6 +1,23 @@
 class_name UtilsControl
 
 
+static func set_scaled_full_rect(control: Control, scale: float, custom_viewport_size: Vector2 = Vector2.ZERO) -> void:
+	scale = maxf(1.0, scale)
+	
+	var viewport_size: Vector2 = (
+		control.get_viewport_rect().size if custom_viewport_size == Vector2.ZERO else custom_viewport_size
+		)
+	var anchor_offset: float = 1.0 - (1.0 / scale)
+	
+	control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	control.scale = Vector2.ONE * scale
+	control.call_deferred(&"set_size", viewport_size / scale)
+	control.call_deferred(&"set_anchor", SIDE_LEFT, 0.0)
+	control.call_deferred(&"set_anchor", SIDE_TOP, 0.0)
+	control.call_deferred(&"set_anchor", SIDE_RIGHT, 1.0 - anchor_offset)
+	control.call_deferred(&"set_anchor", SIDE_BOTTOM, 1.0 - anchor_offset)
+
+
 static func set_rect(control: Control, rect: Rect2, include_minimum_size: bool = false, deferred: bool = true) -> void:
 	control.position = rect.position
 	
