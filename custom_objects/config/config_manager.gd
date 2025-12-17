@@ -121,6 +121,11 @@ static func update_file(config: ConfigBase, mode: UpdateMode) -> bool:
 			return false
 	
 	Log.success("Config file updated successfully at path: '%s'." % file_path)
+	
+	match mode:
+		UpdateMode.SAVE: config.saved.emit()
+		UpdateMode.LOAD: config.loaded.emit()
+	
 	return true
 
 

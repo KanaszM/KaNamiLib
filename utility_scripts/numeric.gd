@@ -59,11 +59,23 @@ static func float_get_average_64(values: PackedFloat64Array) -> float:
 		sum += value
 	
 	return sum / values.size()
+
+
+static func float_is_between(value: float, first_value: float, second_value: float) -> bool:
+	return minf(first_value, second_value) <= value and value <= maxf(first_value, second_value)
+
+
+static func float_is_between_v(value: float, bounds: Vector2) -> bool:
+	return float_is_between(value, bounds.x, bounds.y)
 #endregion
 
 #region Public Static Methods [Int]
 static func int_is_between(value: int, first_value: int, second_value: int) -> bool:
 	return mini(first_value, second_value) <= value and value <= maxi(first_value, second_value)
+
+
+static func int_is_between_v(value: int, bounds: Vector2i) -> bool:
+	return int_is_between(value, bounds.x, bounds.y)
 
 
 static func int_get_squared(size: int) -> int:
