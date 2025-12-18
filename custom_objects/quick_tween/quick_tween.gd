@@ -1,11 +1,13 @@
 @tool
 class_name QuickTween extends Node
 
+#region Enums
+enum Type {VARIANT, FLOAT, INT, VECTOR_2, VECTOR_3}
+#endregion
+
 #region Exports
 @export var node: Node
 @export var property: StringName
-@export var value_target: Variant
-@export var value_from: Variant
 @export_range(0.0, 100.0, 0.001, "or_greater") var duration: float
 @export_range(0.0, 100.0, 0.001, "or_greater") var delay: float
 @export var transition_type: Tween.TransitionType
@@ -13,8 +15,8 @@ class_name QuickTween extends Node
 @export var parallel: bool
 @export var as_relative: bool
 @export var restart_on_animation_request: bool = true
-@export_tool_button("Animate") var callback_animate: Callable = animate
-@export_tool_button("Animate From Player") var callback_animate_from_parent: Callable = animate_from_parent
+@export_tool_button("Play") var callback_0: Callable = play
+@export_tool_button("Play From Player") var callback_1: Callable = play_from_quick_tween_player_parent
 #endregion
 
 #region Signals
@@ -24,22 +26,40 @@ signal finished
 
 #region Private Variables
 var _tween: Tween
+var _type: Type
+
+var _value_target: Variant: get = get_target_value
+var _value_from: Variant: get = get_from_value
+#endregion
+
+#region Virtual Methods
+func _to_string() -> String:
+	return "QuickTween%s" % type_to_str(_type)
+#endregion
+
+#region Public Static Methods
+static func get_types() -> Array[Type]:
+	return Array(Type.values().slice(1), TYPE_INT, &"", null) as Array[Type]
+
+
+static func type_to_str(type: Type) -> String:
+	return UtilsDictionary.enum_to_str(Type, type)
 #endregion
 
 #region Public Methods
-func animate() -> void:
+func play() -> void:
 	if node == null:
-		Log.error("Node reference not provided!", animate)
+		Log.error("Node reference not provided!", play)
 		return
 	
 	property = property.strip_edges()
 	
 	if property.is_empty():
-		Log.error("No property was provided!", animate)
+		Log.error("No property was provided!", play)
 		return
 	
-	if value_target == null:
-		Log.error("No target value was provided!", animate)
+	if _value_target == null:
+		Log.error("No target value was provided!", play)
 		return
 	
 	var tween_is_available: bool = _tween != null
@@ -65,14 +85,14 @@ func animate() -> void:
 	if parallel:
 		_tween.parallel()
 	
-	_animate_with_custom_tween(_tween)
+	_play_with_custom_tween(_tween)
 
 
-func animate_from_parent() -> void:
+func play_from_quick_tween_player_parent() -> void:
 	var quick_tween_player: QuickTweenPlayer = get_quick_tween_player()
 	
 	if quick_tween_player != null:
-		quick_tween_player.animate()
+		quick_tween_player.play()
 
 
 func get_quick_tween_player() -> QuickTweenPlayer:
@@ -86,35 +106,44 @@ func is_animating() -> bool:
 #endregion
 
 #region Private Methods
-func _animate_with_custom_tween(tween: Tween) -> void:
+func _play_with_custom_tween(tween: Tween) -> void:
 	if tween == null:
-		Log.error("The provided Tween reference is null!", _animate_with_custom_tween)
+		Log.error("The provided Tween reference is null!", _play_with_custom_tween)
 		return
 	
 	if node == null:
-		Log.error("Node reference not provided!", _animate_with_custom_tween)
+		Log.error("Node reference not provided!", _play_with_custom_tween)
 		return
 	
 	property = property.strip_edges()
 	
 	if property.is_empty():
-		Log.error("No property was provided!", _animate_with_custom_tween)
+		Log.error("No property was provided!", _play_with_custom_tween)
 		return
 	
-	if value_target == null:
-		Log.error("No target value was provided!", _animate_with_custom_tween)
+	if _value_target == null:
+		Log.error("No target value was provided!", _play_with_custom_tween)
 		return
 	
 	var tweener: PropertyTweener = tween.tween_property(
-		node, NodePath(property), value_target, duration
+		node, NodePath(property), _value_target, duration
 		).set_trans(transition_type).set_ease(ease_type)
 	
-	if value_from != null:
-		tweener.from(value_from)
+	if _value_from != null:
+		tweener.from(_value_from)
 	
 	if delay > 0.0:
 		tweener.set_delay(delay)
 	
 	if as_relative:
 		tweener.as_relative()
+#endregion
+
+#region Getter Methods
+func get_target_value() -> Variant:
+	return _value_target
+
+
+func get_from_value() -> Variant:
+	return _value_from
 #endregion

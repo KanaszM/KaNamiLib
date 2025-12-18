@@ -4,7 +4,7 @@ class_name QuickTweenPlayer extends Node
 #region Exports
 @export var parallel: bool
 @export var restart_on_animation_request: bool = true
-@export_tool_button("Animate") var callback_animate: Callable = animate
+@export_tool_button("Animate") var callback_play: Callable = play
 #endregion
 
 #region Signals
@@ -17,7 +17,7 @@ var _tween: Tween
 #endregion
 
 #region Public Methods
-func animate() -> void:
+func play() -> void:
 	var tween_is_available: bool = _tween != null
 	
 	if restart_on_animation_request:
@@ -42,7 +42,7 @@ func animate() -> void:
 		_tween.set_parallel()
 	
 	for quick_tween: QuickTween in get_quick_tweens():
-		quick_tween._animate_with_custom_tween(_tween)
+		quick_tween._play_with_custom_tween(_tween)
 
 
 func get_quick_tweens() -> Array[QuickTween]:
