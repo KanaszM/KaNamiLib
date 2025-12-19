@@ -16,6 +16,8 @@ signal pressed_down
 @export_group("Background", "background_")
 @export var background_color: Color = Color.DARK_GRAY: set = _set_background_color
 @export var background_texture: CompressedTexture2D: set = _set_background_texture
+@export var background_texture_flip_h: bool: set = _set_background_texture_flip_h
+@export var background_texture_flip_v: bool: set = _set_background_texture_flip_v
 @export var background_texture_filtering: bool: set = _set_background_texture_filtering
 @export_range(0.0, 50.0, 0.01, "suffix:%") var background_texture_margin: float: set = _set_background_texture_margin
 @export_range(0, 100, 1) var background_separation: int: set = _set_background_separation
@@ -29,6 +31,10 @@ signal pressed_down
 @export var label_text: String: set = _set_label_text
 @export_range(0.0, 10.0, 0.001, "or_greater") var label_stretch_ratio: float = 1.0: set = _set_label_stretch_ratio
 @export var label_position: LabelPosition = LabelPosition.RIGHT: set = _set_label_position
+
+@export_group("Timers", "timer_")
+@export_range(0.01, 10.0, 0.001, "or_greater") var timer_hold_interval: float = 0.1
+@export_range(0.01, 10.0, 0.001, "or_greater") var timer_presses_interval: float = 0.175
 
 @export_group("Press Skew", "skew_")
 @export var skew_enabled: bool = true
@@ -46,7 +52,6 @@ signal pressed_down
 
 #region Private Variables
 var _lmb_is_pressed: bool
-var _callbacks: Array[Callable]
 
 var _box: ExtendedBoxContainer
 var _panel: ExtendedPanelContainer
@@ -55,9 +60,17 @@ var _label: ExtendedLabel
 var _texture: TextureRect
 var _texture_margin: ExtendedMarginContainer
 var _tween_scale: Tween
+var _timer_hold: Timer
+var _timer_presses: Timer
 
 var _current_skew: Vector2
 var _current_skew_position: SkewPosition
+
+var _timer_hold_count_current: int = 0
+var _timer_presses_count_current: int = 0
+
+var _callbacks_regular: Dictionary[int, CallbackArray]
+var _callbacks_hold: Dictionary[float, CallbackArray]
 #endregion
 
 #region Virtual Methods
@@ -92,6 +105,19 @@ func update() -> void:
 	_box.set_separation(background_separation)
 	#endregion
 	
+	#region Timers
+	if _timer_hold == null:
+		_timer_hold = Timer.new()
+		_timer_hold.timeout.connect(_on_timer_hold_timeout)
+		add_child(_timer_hold, false, Node.INTERNAL_MODE_BACK)
+	
+	if _timer_presses == null:
+		_timer_presses = Timer.new()
+		_timer_presses.one_shot = true
+		_timer_presses.timeout.connect(_on_timer_presses_timeout)
+		add_child(_timer_presses, false, Node.INTERNAL_MODE_BACK)
+	#endregion
+	
 	#region Stylebox
 	if _style == null:
 		_style = StyleBoxFlat.new()
@@ -119,10 +145,13 @@ func update() -> void:
 			_texture_margin.add_child(_texture, false, Node.INTERNAL_MODE_BACK)
 		
 		_texture_margin.percent_margin_all = background_texture_margin
-		_texture.texture = background_texture
 		_texture_margin.texture_filter = (
 			TEXTURE_FILTER_LINEAR if background_texture_filtering else TEXTURE_FILTER_NEAREST
 			)
+		
+		_texture.texture = background_texture
+		_texture.flip_h = background_texture_flip_h
+		_texture.flip_v = background_texture_flip_v
 	
 	else:
 		if _texture_margin != null:
@@ -161,44 +190,24 @@ func update() -> void:
 	
 	#region Self
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	mouse_default_cursor_shape = Control.CURSOR_ARROW if _callbacks.is_empty() else Control.CURSOR_POINTING_HAND
-	
 	set_process(skew_enabled)
 	#endregion
 
 
-func callback_exists(callback: Callable) -> bool:
-	return callback in _callbacks
-
-
-func add_callback(callback: Callable, unique: bool = true) -> void:
-	if unique and callback_exists(callback):
-		return
+func add_regular_callback(callback: Callable, count: int = 1) -> SkewButton:
+	if not count in _callbacks_regular:
+		_callbacks_regular[count] = CallbackArray.new()
 	
-	if callback.is_null() or not callback.is_valid():
-		Log.error("The provided callback is null or invalid!", add_callback)
-		return
+	_callbacks_regular[count].append(Callback.new(callback))
+	return self
+
+
+func add_hold_callback(callback: Callable, interval: float = 0.01) -> SkewButton:
+	if not interval in _callbacks_hold:
+		_callbacks_hold[interval] = CallbackArray.new()
 	
-	_callbacks.append(callback)
-
-
-func add_callbacks(callbacks: Array[Callable], unique: bool = true) -> void:
-	for callback: Callable in callbacks:
-		add_callback(callback, unique)
-
-
-func remove_callback(callback: Callable) -> void:
-	if callback_exists(callback):
-		_callbacks.erase(callback)
-
-
-func remove_all_callbacks() -> void:
-	_callbacks.clear()
-
-
-func execute_all_callbacks() -> void:
-	for callback: Callable in _callbacks:
-		callback.call()
+	_callbacks_hold[interval].append(Callback.new(callback))
+	return self
 #endregion
 
 #region Private Methods
@@ -211,12 +220,10 @@ func _input_handler_base(event: InputEvent) -> void:
 				if not mouse_button_event.pressed:
 					if _lmb_is_pressed:
 						pressed_up.emit()
+						_timer_hold.stop()
 						_set_scale(false)
-						
-						if _has_cursor_point():
-							pressed.emit()
-							execute_all_callbacks()
 					
+					_timer_hold_count_current = 0
 					_lmb_is_pressed = false
 					_process_mouse_motion(Vector2.ZERO)
 
@@ -229,6 +236,10 @@ func _input_handler_background(event: InputEvent) -> void:
 			MOUSE_BUTTON_LEFT:
 				if mouse_button_event.pressed:
 					_lmb_is_pressed = true
+					_timer_presses_count_current += 1
+					_timer_hold.start(timer_hold_interval)
+					_timer_presses.start(timer_presses_interval)
+					
 					pressed_down.emit()
 					_set_scale(true)
 					
@@ -330,6 +341,35 @@ func _has_cursor_point() -> bool:
 	return get_global_rect().has_point(get_global_mouse_position())
 #endregion
 
+#region Signal Callbacks
+func _on_timer_hold_timeout() -> void:
+	_timer_hold_count_current += 1
+
+
+func _on_timer_presses_timeout() -> void:
+	if _has_cursor_point():
+		for interval: float in _callbacks_hold:
+			var executed: bool
+			
+			if _timer_hold_count_current >= interval:
+				for callback: Callback in _callbacks_hold[interval].get_callbacks():
+					callback.execute()
+					executed = true
+				
+				if executed:
+					pressed.emit()
+					_timer_presses_count_current = 0
+					return
+		
+		for count: int in _callbacks_regular:
+			if _timer_presses_count_current == count:
+				for callback: Callback in _callbacks_regular[count].get_callbacks():
+					callback.execute()
+				
+				pressed.emit()
+				_timer_presses_count_current = 0
+#endregion
+
 #region Setter Methods
 # Background:
 func _set_background_color(arg: Color) -> void:
@@ -339,6 +379,16 @@ func _set_background_color(arg: Color) -> void:
 
 func _set_background_texture(arg: CompressedTexture2D) -> void:
 	background_texture = arg
+	update()
+
+
+func _set_background_texture_flip_h(arg: bool) -> void:
+	background_texture_flip_h = arg
+	update()
+
+
+func _set_background_texture_flip_v(arg: bool) -> void:
+	background_texture_flip_v = arg
 	update()
 
 
@@ -385,4 +435,51 @@ func _set_label_stretch_ratio(arg: float) -> void:
 func _set_label_position(arg: LabelPosition) -> void:
 	label_position = arg
 	update()
+#endregion
+
+#region SubClasses
+class Callback:
+	#region Private Variables
+	var _callback: Callable
+	#endregion
+	
+	#region Virtual Methods
+	func _init(callback: Callable) -> void:
+		_callback = callback
+	#endregion
+	
+	#region Public Methods
+	func get_callback() -> Callable:
+		return _callback
+	
+	
+	func is_valid() -> bool:
+		return not _callback.is_null() and _callback.is_valid()
+	
+	
+	func execute() -> void:
+		if is_valid():
+			_callback.call()
+	
+	
+	func execute_deferred() -> void:
+		if is_valid():
+			_callback.call_deferred()
+	#endregion
+
+
+class CallbackArray:
+	#region Private Variables
+	var _callbacks: Array[Callback]
+	#endregion
+	
+	#region Public Methods
+	func get_callbacks() -> Array[Callback]:
+		return _callbacks
+	
+	
+	func append(callback: Callback) -> CallbackArray:
+		_callbacks.append(callback)
+		return self
+	#endregion
 #endregion
