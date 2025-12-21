@@ -13,12 +13,16 @@ signal pressed_down
 #endregion
 
 #region Exports
+@export_group("Mouse", "mouse_")
+@export var mouse_button_index: MouseButton = MouseButton.MOUSE_BUTTON_LEFT
+
 @export_group("Background", "background_")
 @export var background_color: Color = Color.DARK_GRAY: set = _set_background_color
 @export var background_texture: CompressedTexture2D: set = _set_background_texture
 @export var background_texture_flip_h: bool: set = _set_background_texture_flip_h
 @export var background_texture_flip_v: bool: set = _set_background_texture_flip_v
 @export var background_texture_filtering: bool: set = _set_background_texture_filtering
+@export var background_texture_stretch_mode: TextureRect.StretchMode: set = _set_background_texture_stretch_mode
 @export_range(0.0, 50.0, 0.01, "suffix:%") var background_texture_margin: float: set = _set_background_texture_margin
 @export_range(0, 100, 1) var background_separation: int: set = _set_background_separation
 
@@ -26,6 +30,10 @@ signal pressed_down
 @export var border_blend: bool = true: set = _set_border_blend
 @export var border_color: Color = Color.BLACK: set = _set_border_color
 @export_range(0, 100, 1, "or_greater") var border_width: int = 4: set = _set_border_width
+@export_range(0, 100, 1, "or_greater") var border_corner_top_left: int: set = _set_border_corner_top_left
+@export_range(0, 100, 1, "or_greater") var border_corner_top_right: int: set = _set_border_corner_top_right
+@export_range(0, 100, 1, "or_greater") var border_corner_bottom_left: int: set = _set_border_corner_bottom_left
+@export_range(0, 100, 1, "or_greater") var border_corner_bottom_right: int: set = _set_border_corner_bottom_right
 
 @export_group("Label", "label_")
 @export var label_text: String: set = _set_label_text
@@ -34,7 +42,7 @@ signal pressed_down
 
 @export_group("Timers", "timer_")
 @export_range(0.01, 10.0, 0.001, "or_greater") var timer_hold_interval: float = 0.1
-@export_range(0.01, 10.0, 0.001, "or_greater") var timer_presses_interval: float = 0.175
+@export_range(0, 10, 1, "or_greater") var timer_hold_max_count: int = 2
 
 @export_group("Press Skew", "skew_")
 @export var skew_enabled: bool = true
@@ -51,7 +59,7 @@ signal pressed_down
 #endregion
 
 #region Private Variables
-var _lmb_is_pressed: bool
+var _is_pressed: bool
 
 var _box: ExtendedBoxContainer
 var _panel: ExtendedPanelContainer
@@ -61,16 +69,16 @@ var _texture: TextureRect
 var _texture_margin: ExtendedMarginContainer
 var _tween_scale: Tween
 var _timer_hold: Timer
-var _timer_presses: Timer
 
 var _current_skew: Vector2
 var _current_skew_position: SkewPosition
 
 var _timer_hold_count_current: int = 0
-var _timer_presses_count_current: int = 0
 
-var _callbacks_regular: Dictionary[int, CallbackArray]
-var _callbacks_hold: Dictionary[float, CallbackArray]
+var _callback_single: Callable
+var _callback_hold: Callable
+
+var _hold_position: Vector2
 #endregion
 
 #region Virtual Methods
@@ -80,7 +88,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	_input_handler_base(event)
+	_input_handler_self(event)
 
 
 func _process(_delta: float) -> void:
@@ -89,11 +97,18 @@ func _process(_delta: float) -> void:
 
 #region Public Methods
 func update() -> void:
+	#region Timers
+	if _timer_hold == null:
+		_timer_hold = Timer.new()
+		_timer_hold.timeout.connect(_on_timer_hold_timeout)
+		add_child(_timer_hold, false, Node.INTERNAL_MODE_BACK)
+	#endregion
+	
 	#region Panel
 	if _panel == null:
 		_panel = ExtendedPanelContainer.new()
 		_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		_panel.gui_input.connect(_input_handler_background)
+		_panel.gui_input.connect(_input_handler_panel)
 		add_child(_panel, false, Node.INTERNAL_MODE_BACK)
 	#endregion
 	
@@ -105,19 +120,6 @@ func update() -> void:
 	_box.set_separation(background_separation)
 	#endregion
 	
-	#region Timers
-	if _timer_hold == null:
-		_timer_hold = Timer.new()
-		_timer_hold.timeout.connect(_on_timer_hold_timeout)
-		add_child(_timer_hold, false, Node.INTERNAL_MODE_BACK)
-	
-	if _timer_presses == null:
-		_timer_presses = Timer.new()
-		_timer_presses.one_shot = true
-		_timer_presses.timeout.connect(_on_timer_presses_timeout)
-		add_child(_timer_presses, false, Node.INTERNAL_MODE_BACK)
-	#endregion
-	
 	#region Stylebox
 	if _style == null:
 		_style = StyleBoxFlat.new()
@@ -126,6 +128,10 @@ func update() -> void:
 	_style.bg_color = background_color
 	_style.border_blend = border_blend
 	_style.border_color = border_color
+	_style.corner_radius_top_left = border_corner_top_left
+	_style.corner_radius_top_right = border_corner_top_right
+	_style.corner_radius_bottom_left = border_corner_bottom_left
+	_style.corner_radius_bottom_right = border_corner_bottom_right
 	_style.set_border_width_all(border_width)
 	#endregion
 	
@@ -141,7 +147,6 @@ func update() -> void:
 			_texture = TextureRect.new()
 			_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			_texture_margin.add_child(_texture, false, Node.INTERNAL_MODE_BACK)
 		
 		_texture_margin.percent_margin_all = background_texture_margin
@@ -150,6 +155,7 @@ func update() -> void:
 			)
 		
 		_texture.texture = background_texture
+		_texture.stretch_mode = background_texture_stretch_mode
 		_texture.flip_h = background_texture_flip_h
 		_texture.flip_v = background_texture_flip_v
 	
@@ -190,55 +196,62 @@ func update() -> void:
 	
 	#region Self
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	set_process(skew_enabled)
+	set_process(not Engine.is_editor_hint() and skew_enabled)
 	#endregion
 
 
-func add_regular_callback(callback: Callable, count: int = 1) -> SkewButton:
-	if not count in _callbacks_regular:
-		_callbacks_regular[count] = CallbackArray.new()
-	
-	_callbacks_regular[count].append(Callback.new(callback))
+func set_single_click_callback(callback: Callable) -> SkewButton:
+	_callback_single = callback
 	return self
 
 
-func add_hold_callback(callback: Callable, interval: float = 0.01) -> SkewButton:
-	if not interval in _callbacks_hold:
-		_callbacks_hold[interval] = CallbackArray.new()
-	
-	_callbacks_hold[interval].append(Callback.new(callback))
+func set_hold_click_callback(callback: Callable) -> SkewButton:
+	_callback_hold = callback
 	return self
 #endregion
 
 #region Private Methods
-func _input_handler_base(event: InputEvent) -> void:
+func _input_handler_self(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mouse_button_event := event as InputEventMouseButton
 		
 		match mouse_button_event.button_index:
-			MOUSE_BUTTON_LEFT:
+			mouse_button_index:
 				if not mouse_button_event.pressed:
-					if _lmb_is_pressed:
-						pressed_up.emit()
+					if _is_pressed:
 						_timer_hold.stop()
+						
+						if _has_cursor_point():
+							var func_call_callback: Callable = func(callback: Callable) -> void:
+								if UtilsCallback.is_valid(callback):
+									callback.call()
+									pressed.emit()
+							
+							if _timer_hold_count_current >= timer_hold_max_count:
+								func_call_callback.call(_callback_hold)
+							
+							else:
+								func_call_callback.call(_callback_single)
+						
+						pressed_up.emit()
+						
+						_hold_position = Vector2.ZERO
+						_timer_hold_count_current = 0
+						_is_pressed = false
+						
 						_set_scale(false)
-					
-					_timer_hold_count_current = 0
-					_lmb_is_pressed = false
-					_process_mouse_motion(Vector2.ZERO)
+						_process_mouse_motion(Vector2.ZERO)
 
 
-func _input_handler_background(event: InputEvent) -> void:
+func _input_handler_panel(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mouse_button_event := event as InputEventMouseButton
 		
 		match mouse_button_event.button_index:
-			MOUSE_BUTTON_LEFT:
+			mouse_button_index:
 				if mouse_button_event.pressed:
-					_lmb_is_pressed = true
-					_timer_presses_count_current += 1
+					_is_pressed = true
 					_timer_hold.start(timer_hold_interval)
-					_timer_presses.start(timer_presses_interval)
 					
 					pressed_down.emit()
 					_set_scale(true)
@@ -249,7 +262,8 @@ func _input_handler_background(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var mouse_motion_event := event as InputEventMouseMotion
 		
-		if _lmb_is_pressed:
+		if _is_pressed:
+			_hold_position = mouse_motion_event.relative
 			_process_mouse_motion(mouse_motion_event.position)
 
 
@@ -344,30 +358,6 @@ func _has_cursor_point() -> bool:
 #region Signal Callbacks
 func _on_timer_hold_timeout() -> void:
 	_timer_hold_count_current += 1
-
-
-func _on_timer_presses_timeout() -> void:
-	if _has_cursor_point():
-		for interval: float in _callbacks_hold:
-			var executed: bool
-			
-			if _timer_hold_count_current >= interval:
-				for callback: Callback in _callbacks_hold[interval].get_callbacks():
-					callback.execute()
-					executed = true
-				
-				if executed:
-					pressed.emit()
-					_timer_presses_count_current = 0
-					return
-		
-		for count: int in _callbacks_regular:
-			if _timer_presses_count_current == count:
-				for callback: Callback in _callbacks_regular[count].get_callbacks():
-					callback.execute()
-				
-				pressed.emit()
-				_timer_presses_count_current = 0
 #endregion
 
 #region Setter Methods
@@ -397,6 +387,11 @@ func _set_background_texture_filtering(arg: bool) -> void:
 	update()
 
 
+func _set_background_texture_stretch_mode(arg: TextureRect.StretchMode) -> void:
+	background_texture_stretch_mode = arg
+	update()
+
+
 func _set_background_texture_margin(arg: float) -> void:
 	background_texture_margin = clampf(arg, 0.0, 50.0)
 	update()
@@ -421,6 +416,26 @@ func _set_border_width(arg: int) -> void:
 	border_width = maxi(0, arg)
 	update()
 
+
+func _set_border_corner_top_left(arg: int) -> void:
+	border_corner_top_left = maxi(0, arg)
+	update()
+
+
+func _set_border_corner_top_right(arg: int) -> void:
+	border_corner_top_right = maxi(0, arg)
+	update()
+
+
+func _set_border_corner_bottom_left(arg: int) -> void:
+	border_corner_bottom_left = maxi(0, arg)
+	update()
+
+
+func _set_border_corner_bottom_right(arg: int) -> void:
+	border_corner_bottom_right = maxi(0, arg)
+	update()
+
 # Label:
 func _set_label_text(arg: String) -> void:
 	label_text = arg
@@ -435,51 +450,4 @@ func _set_label_stretch_ratio(arg: float) -> void:
 func _set_label_position(arg: LabelPosition) -> void:
 	label_position = arg
 	update()
-#endregion
-
-#region SubClasses
-class Callback:
-	#region Private Variables
-	var _callback: Callable
-	#endregion
-	
-	#region Virtual Methods
-	func _init(callback: Callable) -> void:
-		_callback = callback
-	#endregion
-	
-	#region Public Methods
-	func get_callback() -> Callable:
-		return _callback
-	
-	
-	func is_valid() -> bool:
-		return not _callback.is_null() and _callback.is_valid()
-	
-	
-	func execute() -> void:
-		if is_valid():
-			_callback.call()
-	
-	
-	func execute_deferred() -> void:
-		if is_valid():
-			_callback.call_deferred()
-	#endregion
-
-
-class CallbackArray:
-	#region Private Variables
-	var _callbacks: Array[Callback]
-	#endregion
-	
-	#region Public Methods
-	func get_callbacks() -> Array[Callback]:
-		return _callbacks
-	
-	
-	func append(callback: Callback) -> CallbackArray:
-		_callbacks.append(callback)
-		return self
-	#endregion
 #endregion

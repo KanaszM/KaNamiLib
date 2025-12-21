@@ -1,8 +1,12 @@
 class_name UtilsCallback
 
 
+static func is_valid(callback: Callable) -> bool:
+	return callback != null and not callback.is_null() and callback.is_valid()
+
+
 static func call_safe(callback: Callable, deferred: bool = false) -> void:
-	if callback.is_valid():
+	if is_valid(callback):
 		if deferred:
 			callback.call_deferred()
 		
@@ -29,7 +33,7 @@ static func to_str(
 			"]" if object_in_brackets else "",
 			]
 		
-		return ("%s%s%s" % [object_str, separator, callback.get_method()])
+		return "%s%s%s" % [object_str, separator, callback.get_method()]
 
 
 static func get_callback_data(callback: Callable) -> CallbackData:

@@ -1,6 +1,34 @@
 class_name UtilsVector
 
 
+static func vector_to_cardinal(direction: Vector2) -> Vector2:
+	direction = direction.normalized()
+	
+	if direction == Vector2.ZERO:
+		return Vector2.ZERO
+
+	var dot_up: float = direction.dot(Vector2.UP)
+	var dot_down: float = direction.dot(Vector2.DOWN)
+	var dot_left: float = direction.dot(Vector2.LEFT)
+	var dot_right: float = direction.dot(Vector2.RIGHT)
+	var dots: PackedFloat32Array = PackedFloat32Array([dot_up, dot_down, dot_left, dot_right])
+	
+	dots.sort()
+	
+	var max_dot: float = dots[0]
+
+	if max_dot == dot_up:
+		return Vector2.UP
+	
+	if max_dot == dot_down:
+		return Vector2.DOWN
+	
+	if max_dot == dot_left:
+		return Vector2.LEFT
+	
+	return Vector2.RIGHT
+
+
 static func sorted_vector2(vector: Vector2) -> Vector2:
 	var values: Array[float] = [vector.x, vector.y]
 	
