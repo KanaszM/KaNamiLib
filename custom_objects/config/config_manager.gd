@@ -134,6 +134,7 @@ static func update_file(
 			UpdateMode.SAVE: config.saved.emit()
 			UpdateMode.LOAD: config.loaded.emit()
 		
+		config.updated.emit()
 		return true
 
 
