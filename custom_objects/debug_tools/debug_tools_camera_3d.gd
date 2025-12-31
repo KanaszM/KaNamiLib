@@ -54,7 +54,7 @@ func _ready() -> void:
 	_pitch_degrees = rotation_degrees.x
 	
 	Input.use_accumulated_input = true
-	_set_mouse_capture(look_capture_on_ready)
+	set_mouse_capture(look_capture_on_ready)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -68,7 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			
 			if key_event.keycode == input_key_mouse_capture_off:
 				if _mouse_is_captured:
-					_set_mouse_capture(false)
+					set_mouse_capture(false)
 
 
 func _process(delta: float) -> void:
@@ -130,17 +130,18 @@ func _process(delta: float) -> void:
 	#endregion
 #endregion
 
-#region Private Methods
+#region Public Methods
 func _toggle_mouse_capture() -> void:
-	_set_mouse_capture(not _mouse_is_captured)
+	set_mouse_capture(not _mouse_is_captured)
 
 
-func _set_mouse_capture(state: bool) -> void:
+func set_mouse_capture(state: bool) -> void:
 	_mouse_is_captured = state
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state else Input.MOUSE_MODE_VISIBLE
 	set_process(state)
+#endregion
 
-
+#region Private Methods
 func _check_inputs() -> bool:
 	var input_action_types: Array[StringName] = [
 		&"input_move_left", &"input_move_right", &"input_move_up", &"input_move_down", &"input_move_forward",

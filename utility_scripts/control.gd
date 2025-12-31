@@ -32,6 +32,24 @@ static func set_rect(control: Control, rect: Rect2, include_minimum_size: bool =
 			control.set(&"size", rect.size)
 
 
+static func set_size_percent_f(control: Control, percent: float, deferred: bool = true) -> void:
+	set_size_percent_x(control, percent, deferred)
+	set_size_percent_y(control, percent, deferred)
+
+
+static func set_size_percent(control: Control, size: Vector2, deferred: bool = true) -> void:
+	set_size_percent_x(control, size.x, deferred)
+	set_size_percent_y(control, size.y, deferred)
+
+
+static func set_size_percent_x(control: Control, percent: float, deferred: bool = true) -> void:
+	set_size_x(control, UtilsWindow.get_window().size.x * (clampf(percent, 0.0, 100.0) / 100.0), deferred)
+
+
+static func set_size_percent_y(control: Control, percent: float, deferred: bool = true) -> void:
+	set_size_y(control, UtilsWindow.get_window().size.y * (clampf(percent, 0.0, 100.0) / 100.0), deferred)
+
+
 static func set_size(control: Control, size: Vector2, deferred: bool = true) -> void:
 	set_size_x(control, size.x, deferred)
 	set_size_y(control, size.y, deferred)
@@ -55,19 +73,6 @@ static func set_size_y(control: Control, size: float, deferred: bool = true) -> 
 	
 	else:
 		control.set(&"size:y", size)
-
-
-static func set_size_percent(control: Control, size: Vector2, deferred: bool = true) -> void:
-	set_size_percent_x(control, size.x, deferred)
-	set_size_percent_y(control, size.y, deferred)
-
-
-static func set_size_percent_x(control: Control, percent: float, deferred: bool = true) -> void:
-	set_size_x(control, UtilsWindow.get_window().size.x * (clampf(percent, 0.0, 100.0) / 100.0), deferred)
-
-
-static func set_size_percent_y(control: Control, percent: float, deferred: bool = true) -> void:
-	set_size_y(control, UtilsWindow.get_window().size.y * (clampf(percent, 0.0, 100.0) / 100.0), deferred)
 
 
 static func release_focus_recursive(control: Control) -> void:
