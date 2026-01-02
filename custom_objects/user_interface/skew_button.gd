@@ -18,13 +18,22 @@ signal pressed_down
 
 @export_group("Background", "background_")
 @export var background_color: Color = Color.DARK_GRAY: set = _set_background_color
+@export_range(0, 100, 1) var background_separation: int: set = _set_background_separation
+
+@export_subgroup("Texture", "background_texture_")
 @export var background_texture: CompressedTexture2D: set = _set_background_texture
+@export var background_texture_color: Color = Color.WHITE: set = _set_background_texture_color
+@export_range(0.0, 1.0, 0.001) var background_texture_alpha: float = 1.0: set = _set_background_texture_alpha
 @export var background_texture_flip_h: bool: set = _set_background_texture_flip_h
 @export var background_texture_flip_v: bool: set = _set_background_texture_flip_v
 @export var background_texture_filtering: bool: set = _set_background_texture_filtering
 @export var background_texture_stretch_mode: TextureRect.StretchMode: set = _set_background_texture_stretch_mode
 @export_range(0.0, 50.0, 0.01, "suffix:%") var background_texture_margin: float: set = _set_background_texture_margin
-@export_range(0, 100, 1) var background_separation: int: set = _set_background_separation
+
+@export_subgroup("Texture/Hold", "background_texture_hold_")
+@export var background_texture_hold: CompressedTexture2D
+@export var background_texture_hold_flip_h: bool
+@export var background_texture_hold_flip_v: bool
 
 @export_group("Border", "border_")
 @export var border_blend: bool = true: set = _set_border_blend
@@ -154,10 +163,11 @@ func update() -> void:
 			TEXTURE_FILTER_LINEAR if background_texture_filtering else TEXTURE_FILTER_NEAREST
 			)
 		
-		_texture.texture = background_texture
+		_texture.modulate = background_texture_color
+		_texture.modulate.a = background_texture_alpha
 		_texture.stretch_mode = background_texture_stretch_mode
-		_texture.flip_h = background_texture_flip_h
-		_texture.flip_v = background_texture_flip_v
+		
+		_set_hold_texture(false)
 	
 	else:
 		if _texture_margin != null:
@@ -239,6 +249,7 @@ func _input_handler_self(event: InputEvent) -> void:
 						_timer_hold_count_current = 0
 						_is_pressed = false
 						
+						_set_hold_texture(false)
 						_set_scale(false)
 						_process_mouse_motion(Vector2.ZERO)
 
@@ -353,11 +364,35 @@ func _set_scale(state: bool) -> void:
 
 func _has_cursor_point() -> bool:
 	return get_global_rect().has_point(get_global_mouse_position())
+
+
+func _set_hold_texture(state: bool) -> void:
+	if _texture == null:
+		return
+	
+	if state:
+		if background_texture_hold == null:
+			return
+		
+		_texture.texture = background_texture_hold
+		_texture.flip_h = background_texture_hold_flip_h
+		_texture.flip_v = background_texture_hold_flip_v
+	
+	else:
+		if background_texture == null:
+			return
+		
+		_texture.texture = background_texture
+		_texture.flip_h = background_texture_flip_h
+		_texture.flip_v = background_texture_flip_v
 #endregion
 
 #region Signal Callbacks
 func _on_timer_hold_timeout() -> void:
 	_timer_hold_count_current += 1
+	
+	if _timer_hold_count_current >= timer_hold_max_count:
+		_set_hold_texture(true)
 #endregion
 
 #region Setter Methods
@@ -367,8 +402,23 @@ func _set_background_color(arg: Color) -> void:
 	update()
 
 
+func _set_background_separation(arg: int) -> void:
+	background_separation = maxi(0, arg)
+	update()
+
+# Background Texture
 func _set_background_texture(arg: CompressedTexture2D) -> void:
 	background_texture = arg
+	update()
+
+
+func _set_background_texture_color(arg: Color) -> void:
+	background_texture_color = arg
+	update()
+
+
+func _set_background_texture_alpha(arg: float) -> void:
+	background_texture_alpha = clampf(arg, 0.0, 1.0)
 	update()
 
 
@@ -394,11 +444,6 @@ func _set_background_texture_stretch_mode(arg: TextureRect.StretchMode) -> void:
 
 func _set_background_texture_margin(arg: float) -> void:
 	background_texture_margin = clampf(arg, 0.0, 50.0)
-	update()
-
-
-func _set_background_separation(arg: int) -> void:
-	background_separation = maxi(0, arg)
 	update()
 
 # Border:

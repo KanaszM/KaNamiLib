@@ -2,9 +2,10 @@
 extends EditorScript
 
 #region Constants
-const ROOT_DIR: String = "res://res"
+const ROOT_DIR: String = "res://resources"
 const METHOD_GET_CUSTOM_CLASS_NAME: StringName = &"_get_class"
 const IGNORED_EXTENSIONS: Array[String] = ["import", "uid"]
+const NON_UID_EXTENSTIONS: Array[String] = ["png", "svg"]
 #endregion
 
 #region Main Method
@@ -74,7 +75,7 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 					var sub_element_name: String = sub_element_path.get_file().get_slice(".", 0)
 					var resource_name: String = sub_element_name.to_upper()
 					var resource_class: String
-					var resource_uid: String = UtilsResource.get_uid(resource)
+					var resource_path: String
 					
 					if resource.has_method(METHOD_GET_CUSTOM_CLASS_NAME):
 						resource_class = UtilsScript.get_gd_script_from_object(resource).get_global_name()
@@ -82,12 +83,18 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 					else:
 						resource_class = resource.get_class()
 					
-					if resource_uid.is_empty():
+					if sub_element_extension in NON_UID_EXTENSTIONS:
+						resource_path = resource.resource_path
+					
+					else:
+						resource_path = UtilsResource.get_uid(resource)
+					
+					if resource_path.is_empty():
 						push_error("Could not detect the UID of resource at path: '%s'!" % sub_element_path)
 					
 					else:
 						var resource_line: String = "const %s: %s = preload(\"%s\")" % [
-							resource_name, resource_class, resource_uid
+							resource_name, resource_class, resource_path
 							]
 						
 						result.resource_lines.append(resource_line)
@@ -101,9 +108,13 @@ func _process_current_element(element: String, element_path: String) -> _Result:
 
 #region SubClasses
 class _Result:
+	#region Public Variables
 	var category_name: String
 	var resource_lines: PackedStringArray
+	#endregion
 	
+	#region Virtual Methods
 	func _to_string() -> String:
 		return "\n#region %s\n%s\n#endregion" % [category_name.capitalize(), "\n".join(resource_lines)]
+	#endregion
 #endregion
